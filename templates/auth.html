@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'base/auth.css' %}">
+	<script type="text/javascript" src="{% static 'base/auth.js' %}">
+	</script>
+{% endblock %}
+
+{% block contents %}
+	<div class="block">
+		<img src="{% static 'base/res/auth_back.jpg' %}" width="100%" height="100%">
+		<div id="sign_up_block">
+			<h1>Registration</h1>
+			<form class="registration">
+				<input type="text" name="dname" placeholder="Display Name">
+				<input type="text" name="uname" placeholder="Space Name">
+				<input type="text" name="email" placeholder="Email">
+				<input type="number" name="phone" placeholder="Phone Number">
+				<input type="password" name="pass" placeholder="Password">
+				<input type="password" name="repass" placeholder="Retype Password">
+				<button>Register</button>
+			</form>
+			<h3>Have an account? <span onclick="showLogin()">Login</span></h3>
+		</div>
+
+		<div id="sign_in_block">
+			<h1>Log in</h1>
+			<form class="login">
+				<input type="text" name="email" placeholder="Email">
+				<input type="password" name="pass" placeholder="Password">
+				<button id="demo">Log in</button>
+			</form>
+			<h3>Need an account? <span onclick="showRegister()">Register</span></h3>
+		</div>
+	</div>
+{% endblock %}

@@ -8,3 +8,6 @@ def index(request):
 
 def about(request):
 	return render(request, 'about.html', {})
+
+def auth(request):
+	return render(request, 'auth.html', {})
