@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'base/about.css' %}">
+{% endblock %}
+
+{% block contents %}
+	<div class="block">
+		<img src="{% static 'base/res/about_back.jpg' %}" id="about_back">
+		<div class="content">
+			<h1>?</h1>
+			<p>
+				<span class="heading">Sakkhat</span> is a micro business platform where service providers and their customer facilitate some services. Simply this is virtual market space to deploy your ideas and ability into real world. For every individuals, sakkhat provides a space to perform. The space is defined as a dashboard to manage activities.  Service providers show off their services to make interest to their customers. Customer can directly contact with the service providers to get their services.
+			</p>
+		</div>
+	</div>
+{% endblock contents %}

@@ -1,0 +1,56 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
+	<title>Sakkhat</title>
+	<link rel="icon" href="{% static 'base/res/sakkhat_w_b.png' %}">
+	{% block extra_head %}
+	{% endblock %}
+</head>
+<body>
+	<div class="header">
+
+		<div class="banner">
+			<div class="site_logo">
+				<div class="site_logo_inner">
+					<div class="site_logo_front">
+						<img src="{% static 'base/res/sakkhat_black.png' %}" class="sakkhat_ic">
+					</div>
+					<div class="site_logo_back">
+						<img src="{% static 'base/res/sakkhat_black.png' %}" class="sakkhat_ic">
+					</div>
+				</div>
+			</div>
+
+			<div class="site_theme">
+				<a id="site_title" href="/">Sakkhat</a>
+				<p id="site_moto">meet your needs</p>
+			</div>
+		</div>
+		
+		<div class="option_block">
+			<div class="site_options">
+				<a href="/about">About</a>
+				<a href="">Dashboard</a>
+				<a href="">Enter</a>
+			</div>
+		</div>
+		
+	</div>
+
+	</div>
+
+	<div class="contents">
+		{% block contents %}
+		{% endblock %}
+	</div>
+
+	<div class="footer">	
+		
+	</div>
+
+
+</body>
+</html>
