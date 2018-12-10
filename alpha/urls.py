@@ -20,5 +20,5 @@ from home import views as index
 urlpatterns = [
 	
 	# managed all index functionality in home
-    url(r'^$', include('home.urls')),
+    path('', include('home.urls')),
 ]

@@ -6,6 +6,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'base/base.css' %}">
 	<title>Sakkhat</title>
 	<link rel="icon" href="{% static 'base/res/sakkhat_w_b.png' %}">
+	{% block extra_head %}
+	{% endblock %}
 </head>
 <body>
 	<div class="header">
@@ -23,17 +25,16 @@
 			</div>
 
 			<div class="site_theme">
-				<h1 id="site_title">Sakkhat</h1>
+				<a id="site_title" href="/">Sakkhat</a>
 				<p id="site_moto">meet your needs</p>
 			</div>
 		</div>
 		
 		<div class="option_block">
 			<div class="site_options">
-				<a href="">About</a>
+				<a href="/about">About</a>
 				<a href="">Dashboard</a>
-				<a href="">Registration</a>
-				<a href="">Log in</a>
+				<a href="">Enter</a>
 			</div>
 		</div>
 		
