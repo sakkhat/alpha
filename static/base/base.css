@@ -1,0 +1,102 @@
+body{
+	background-color: white;
+	margin: 0px;
+}
+
+.header{
+	height: 80px;
+	background-color: black;
+}
+.banner{
+	width: 600px;
+	display: inline-block;
+}	
+.site_logo{
+	width: 80px; height: 80px;
+	perspective: 1000px;
+	margin: 0px;
+	background-color: transparent;
+	float: left;
+}
+.site_logo_inner{
+	width: 100%; height: 100%;
+	position: relative;
+	transition: transform 0.8s;
+	transform-style: preserve-3d;
+}
+.site_logo:hover .site_logo_inner{
+	transform: rotateY(180deg);
+	cursor: pointer;
+}
+
+.site_logo_front, .site_logo_back{
+	position: absolute;
+	width: 100%; height: 100%;
+	backface-visibility: hidden;
+
+	border-radius: 10px;
+
+}
+.site_logo_front{
+	background-color: white;
+}
+.site_logo_back{
+	background-color: white;
+	transform: rotateY(180deg);
+}
+
+.sakkhat_ic{
+	width: 60px; height: 60px;
+	padding: 7.5px;
+}
+
+.site_theme{
+	color: white;
+	display: inline-block;
+}
+
+#site_title{
+	font-family: monospace;
+	font-size: 50px;
+	margin: 0px 0px 0px 10px;
+	line-height: 80px;
+	float: left;
+}
+
+#site_title:hover {
+	cursor: pointer;
+}
+
+#site_moto{
+	font-family: monospace;
+	font-size: 15px;
+	margin: 42px 0px 0px 5px;
+	display: inline-block;
+}
+
+.option_block{
+	left: 600px;
+	display: inline-block;
+	position: absolute;
+	float: right;
+}
+.site_options{
+	display: inline-block;
+	line-height: 80px;
+}
+
+.site_options a {
+	text-decoration: none;
+	color: black;
+	background-color: white;
+	margin-left: 10px;
+	font-size: 20px;
+	padding: 5px 10px 5px 10px;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
+.site_options a:hover {
+	background-color: lightgray;
+	color: black;
+}
