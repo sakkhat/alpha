@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # my applications
     'home', 'space'
+    
 ]
 
 MIDDLEWARE = [

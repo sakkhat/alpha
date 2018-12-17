@@ -3,6 +3,7 @@
 
 
 {% block extra_head %}
+	<title>auth : Sakkhat</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'base/auth.css' %}">
 	<script type="text/javascript" src="{% static 'base/auth.js' %}">
 	</script>
@@ -10,16 +11,17 @@
 
 {% block contents %}
 	<div class="block">
-		<img src="{% static 'base/res/auth_back.jpg' %}" width="100%" height="100%">
+		<img src="{% static 'base/res/auth_back.jpg' %}" width="100%" height="700px">
 		<div id="sign_up_block">
 			<h1>Registration</h1>
-			<form class="registration">
+			<form class="registration" method="POST" action="/signup">
+				{% csrf_token %}
 				<input type="text" name="dname" placeholder="Display Name">
-				<input type="text" name="uname" placeholder="Space Name">
+				<input type="text" name="sname" placeholder="Space Name">
 				<input type="text" name="email" placeholder="Email">
-				<input type="number" name="phone" placeholder="Phone Number">
-				<input type="password" name="pass" placeholder="Password">
-				<input type="password" name="repass" placeholder="Retype Password">
+				<input type="tel" name="phone" placeholder="Phone Number">
+				<input type="password" name="password" placeholder="Password">
+				<input type="password" name="re-pass" placeholder="Retype Password">
 				<button>Register</button>
 			</form>
 			<h3>Have an account? <span onclick="showLogin()">Login</span></h3>
@@ -27,9 +29,10 @@
 
 		<div id="sign_in_block">
 			<h1>Log in</h1>
-			<form class="login">
+			<form class="login" method="POST" action="/login">
+				{% csrf_token %}
 				<input type="text" name="email" placeholder="Email">
-				<input type="password" name="pass" placeholder="Password">
+				<input type="password" name="password" placeholder="Password">
 				<button id="demo">Log in</button>
 			</form>
 			<h3>Need an account? <span onclick="showRegister()">Register</span></h3>

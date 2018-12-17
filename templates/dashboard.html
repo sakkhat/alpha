@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block extra_head %}
+	<title>auth : Sakkhat</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'dash/dash.css' %}">
+{% endblock %}
+
+{% block contents %}
+	<div class="dash_block">
+		
+		<div class="dash_header">
+			<img src="{% static 'dash/res/banner_back.jpg' %}" id="banner_back"/>
+			<div class="space_panel">
+				<img src="{% static 'dash/res/space_logo.jpg' %}" id="space_logo"/>
+
+				<div class="right_options">
+					<a href="">New Post</a>
+				</div>
+				<div class="left_options">
+					 <a href="">L Option 1</a>
+					 <a href="">L Option 2</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="product_block">
+			<ul>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+				<li>
+					<h1>Title</h1>
+					<img src="{% static 'dash/res/post_ic.jpeg' %}">
+					<h3>$30</h3>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+{% endblock %}
