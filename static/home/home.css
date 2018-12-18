@@ -16,7 +16,7 @@
 .img6 { background-image: url("res/f.jpg"); }
 
 .front_text {
-	background-color: (0,0,0,.8);
+	background-color: rgba(0,0,0,0.3);
 	color: white; font-family: monospace;
 	font-weight: bold; font-size: 70px;
 	position: fixed; top: 50%; left: 50%;
