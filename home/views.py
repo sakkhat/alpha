@@ -52,5 +52,8 @@ def signup(request):
 
 	return redirect('/dashboard')
 
+
+def createpost(request):
+	return render(request, 'createpost.html', {})
 	
 

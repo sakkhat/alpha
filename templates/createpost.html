@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{load staticfiles}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block contents %}
+<form>
+	<fieldset id="group1" style="background-color: green;">
+		<input type="radio" name="group1" value="A">Type A<br>
+		<input type="radio" name="group1" value="B">Type B<br>
+		<input type="radio" name="group1" value="C">Type C<br>
+		<input type="radio" name="group1" value="D">Type D<br>
+	</fieldset>
+</form>
+
+{% endblock %}
