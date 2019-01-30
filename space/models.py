@@ -74,16 +74,30 @@ class Profile(models.Model):
 	address
 	location_zone
 	"""
-	pass
+
+	description = models.TextField()
+	# location
+	thumbnail = models.CharField(max_length=100) 
+	logo = models.CharField(max_length=100)
+	cover = models.CharField(max_length=100)
+	address = models.CharField(max_length=30)
+	location_zone = models.CharField(max_length = 5)
+	user = models.OneToOneField(Account, on_delete=models.CASCADE)
 
 
 
 class Post(models.Model):
 	"""
-	images
-	time and date
-	price
-	description
-	user
 	"""
-	pass
+	price = models.FloatField()
+	description = models.TextField()
+	time_date = models.DateTimeField(auto_now=now)
+	user = models.OneToOneField(Account, on_delete=models.CASCADE)
+
+
+class PostMedia(models.Model):
+	"""
+	"""
+	location = models.CharField(max_length=100)
+	is_image = models.BooleanField(default=True)
+	post = models.OneToOneField(Post, on_delete=models.CASCADE)
