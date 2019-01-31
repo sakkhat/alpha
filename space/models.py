@@ -45,7 +45,7 @@ class UserManager(BaseUserManager):
 class Account(AbstractBaseUser):
 	id_name = models.CharField(max_length=30, unique = True)
 	phone = models.CharField(max_length=12, unique=True, primary_key=True)
-	display_name = models.CharField(max_length=30)
+	display_name = models.CharField(max_length=50)
 
 	USERNAME_FIELD = 'id_name'
 	REQUIRED_FIELDS = ['phone', 'display_name']
