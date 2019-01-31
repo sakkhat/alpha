@@ -15,10 +15,10 @@ class LoginForm(forms.Form):
 
 class RegistrationForm(forms.Form):
 	id_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={
-		'placeholder' : 'ID Name'}))
+		'placeholder' : 'ID Name', 'pattern': '^[a-zA-Z][a-zA-Z0-9-_\.]{1,30}$'}))
 
 	phone = forms.CharField(max_length=12, widget=forms.TextInput(attrs={
-		'placeholder' : 'Phone Number', 'pattern' : '[0-9]'}))
+		'placeholder' : 'Phone Number', 'pattern' : '[0-9]+'}))
 
 	password1 = forms.CharField(widget=forms.PasswordInput(attrs={
 		'minlength' : '6', 'placeholder' : 'Password'}))
