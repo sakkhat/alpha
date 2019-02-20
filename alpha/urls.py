@@ -19,16 +19,17 @@ from django.urls import path
 from home import views as index
 
 
-from rest_framework import routers
-from space.views import PostViewSet
+# from rest_framework import routers
+# from space.views import PostViewSet
 
 
 
 urlpatterns = [
 	
 	# managed all index functionality in home
-    path('api/', PostViewSet.as_view()),
-    path('admin/', site.urls),
-    path('account/', include('space.urls')),
+    # path('api/', PostViewSet.as_view()),
     path('', include('home.urls')),
+    path('admin/', site.urls),
+    path('account/', include('account.urls')),
+    path('space/', include('space.urls')),
 ]

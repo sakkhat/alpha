@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Sakkhat</title>
+{% endblock %}
+
+
+{% block extra_content %}
+	<h5>Working</h5>
+	<div id="hello">
+		
+	</div>
+
+{% endblock %}
+
+
+{% block extra_script %}
+	<script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+	<script type="text/babel" src="{% static 'react/home/index.js' %}"></script>
+{% endblock %}

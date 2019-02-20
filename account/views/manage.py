@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+def info(request):
+	pass
 
 def update(request):
 	pass
