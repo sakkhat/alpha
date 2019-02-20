@@ -31,7 +31,7 @@ class RegistrationForm(forms.Form):
 		'placeholder' : 'Display Name'}))
 
 
-	description = forms.CharField(widget=forms.TextInput(attrs={
+	description = forms.CharField(widget=forms.Textarea(attrs={
 		'placeholder' : 'Short Description'}))
 
 
@@ -67,3 +67,8 @@ class RegistrationForm(forms.Form):
 			raise forms.ValidationError('Password not matched')
 
 		return password2
+
+
+
+class PasswordChangeForm(forms.Form):
+	pass
