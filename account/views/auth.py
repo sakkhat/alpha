@@ -37,6 +37,10 @@ def signin(request):
 			user = authenticate(phone=phone, password=password)
 
 			if user is not None:
+				if(not user.is_active):
+					user.is_active = True
+					user.save()
+			
 				login(request, user)
 				return redirect('/account/')
 

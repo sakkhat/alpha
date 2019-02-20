@@ -1,8 +1,9 @@
 from django.urls import path
-from . import views
+
+from space.views import *
 
 
 
 urlpatterns = [
-		
+	
 ]
