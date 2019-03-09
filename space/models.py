@@ -1,103 +1,97 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-# Create your models here.
+from account.models import Account
 
-class UserManager(BaseUserManager):
-	
-	def create_user(self, id_name, password, display_name, is_staff=False,  is_admin=False):
-		
-		if not id_name:
-			raise ValueError('Insert ID name')
+_CATEGORY = (
+	('Others', 'Others'),
+	('Gadgets', 'Gadgets'),
+	('Fashion', 'Fashion'),
+)
 
-		if not password:
-			raise ValueError('Insert password')
+_PRODUCT_REACT = (
+	('G', 'Good'),
+	('B', 'Bad'),
+	('F', 'Fake')
+)
 
-		if not display_name:
-			raise ValueError('Insert display name')
-
-		user = self.model(id_name = id_name)
-		user.display_name = display_name
-		user.is_staff = is_staff
-		user.is_admin = is_admin
-
-		user.set_password(password)
-		user.save()
-
-		return user
-
-
-	def create_superuser(self, id_name, password):
-		if not id_name or password:
-			raise ValueError('Fill up fields')
-
-		return self.create_user(id_name, password, 'Admin Account', True, True)
-		
-
-
-	def create_staffuser(self, id_name, password):
-		if not id_name or password:
-			raise ValueError('Fill up fields')
-
-		return  self.create_user(id_name, password, 'Staff Account', True, False)
-
-
-class Account(AbstractBaseUser):
-	id_name = models.CharField(max_length=30, unique = True)
-	phone = models.CharField(max_length=12, unique=True, primary_key=True)
-	display_name = models.CharField(max_length=30)
-
-	USERNAME_FIELD = 'id_name'
-	REQUIRED_FIELDS = ['phone', 'display_name']
-
-	is_admin = models.BooleanField(default = False)
-	is_staff = models.BooleanField(default = False)
-	is_active = models.BooleanField(default = True)
-
-	objects = UserManager()
-
-	def get_username(self):
-		return self.id_name
+class Category(models.Model):
+	"""
+	Doc here
+	"""
+	name = models.CharField(max_length=15, choices=_CATEGORY, default='Others',primary_key=True)
 
 	def __str__(self):
-		return self.id_name
+		return self.name
 
 
-
-class Profile(models.Model):
+class Space(models.Model):
 	"""
-	description
-	thumbnail 
-	logo
-	cover
-	category
-	address
-	location_zone
+	Doc here
 	"""
-
+	owner = models.OneToOneField(Account, on_delete=models.CASCADE)
+	name = models.CharField(max_length=30, unique=True, primary_key=True)
 	description = models.TextField()
-	# location
-	thumbnail = models.CharField(max_length=100) 
-	logo = models.CharField(max_length=100)
-	cover = models.CharField(max_length=100)
-	address = models.CharField(max_length=30)
-	location_zone = models.CharField(max_length = 5)
-	user = models.OneToOneField(Account, on_delete=models.CASCADE)
+	rating = models.PositiveSmallIntegerField(default=0)
+	category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
+	def __str__(self):
+		return self.name + ' : '+self.owner.name
 
 
 
-class Post(models.Model):
+class Banner(models.Model):
+	space = models.ForeignKey(Space, on_delete=models.CASCADE)
+	location = models.TextField(unique=True, primary_key=True)
+
+
+
+
+class Product(models.Model):
 	"""
+	Doc here
 	"""
+	uid = models.CharField(max_length=18, unique=True, primary_key=True)
+	title = models.CharField(max_length=30)
 	price = models.FloatField()
 	description = models.TextField()
-	time_date = models.DateTimeField(auto_now=now)
-	user = models.OneToOneField(Account, on_delete=models.CASCADE)
+	logo_url = models.TextField(default='Null')
+	time_date = models.DateTimeField(auto_now=True)
+	space = models.ForeignKey(Space, on_delete=models.CASCADE)
+	in_stack = models.BooleanField(default=True)
+	react_good = models.PositiveIntegerField(default=0)
+	react_bad = models.PositiveIntegerField(default=0)
+	react_fake = models.PositiveIntegerField(default=0)
 
 
-class PostMedia(models.Model):
+class ProductReact(models.Model):
 	"""
+	Doc here
 	"""
-	location = models.CharField(max_length=100)
+	user = models.ForeignKey(Account, on_delete=models.CASCADE)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)
+
+
+
+class ProductMedia(models.Model):
+	"""
+	Doc here
+	"""
+	location = models.TextField(unique=True,primary_key=True)
 	is_image = models.BooleanField(default=True)
-	post = models.OneToOneField(Post, on_delete=models.CASCADE)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.location
+
+
+
+class Sell(models.Model):
+	"""
+	Doc here
+	"""
+	uid = models.CharField(max_length=32, primary_key=True)
+	by = models.ForeignKey(Space, on_delete=models.CASCADE)
+	to = models.ForeignKey(Account, null=True, blank=True,on_delete=models.SET_NULL)
+	product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+	time_date = models.DateTimeField(auto_now=True)

@@ -40,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 
-    # my applications
-    'home', 'space'
+    # self applications
+    'account', 'home', 'space',
+
+    # third-party applications
+    'rest_framework',
     
 ]
 
@@ -110,6 +113,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Custom authentication model
+AUTH_USER_MODEL = 'account.Account'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -134,3 +141,10 @@ MEDIA_URL = '/data/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 
 django_heroku.settings(locals())
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

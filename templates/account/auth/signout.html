@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Sign Out</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+{% endblock %}
+
+
+{% block extra_content %}
+	<center><h5>Signed out</h5></center>
+	<div id="hello">
+		
+	</div>
+{% endblock %}
+
+
+{% block extra_script %}
+
+	<script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+	<script type="text/babel" src="{% static 'react/home/index.js' %}"></script>
+{% endblock %}

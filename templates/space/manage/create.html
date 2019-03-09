@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+    <title>Create Space</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/create.css' %}">
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="POST" class="space-create-form">
+                	{% csrf_token %}
+                    {{ form.name }}
+                    {{ form.description }}
+                    {{ form.category }}
+                    <input type="submit" value="Create" class="btn btn-success btn-block">
+                </form>
+
+            </div>
+            <div class="col-md-6"></div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extra_script %}
+
+{% endblock %}

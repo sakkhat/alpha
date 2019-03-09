@@ -1,0 +1,23 @@
+#product-card {
+	width: 300px;
+}
+/*#product-card:hover {
+	width: 303px;
+	box-shadow: 0px 3px 3px 0px #111;
+}*/
+
+#product-card .card-body {
+	padding: 5px;
+}
+#product-card img {
+	height: 220px; width: auto; max-width: 280px; margin: auto;
+}
+#product-card img:hover {
+	height: 230px;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
