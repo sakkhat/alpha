@@ -50,5 +50,4 @@ def change(request):
 
 	context['form'] = form
 
-	return HttpResponse('Password Change')
 	return render(request, 'account/password/change.html', context)

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <title>Product View</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/single.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill" href="#img1">
+                            <img class="product-avatar-select" src="{{ media.0.location }}">
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#img2">
+                            <img class="product-avatar-select" src="{{ media.1.location }}">
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="pill" href="#img3">
+                            <img class="product-avatar-select" src="{{ media.2.location }}">
+                        </a>
+                    </li>
+                </ul>
+
+              <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="img1" class="container tab-pane active product-avatar">
+                        <img src="{{ media.0.location }}">
+                    </div>
+                    <div id="img2" class="container tab-pane product-avatar">
+                        <img src="{{ media.1.location }}">
+                    </div>
+                    <div id="img3" class="container tab-pane product-avatar">
+                        <img src="{{ media.2.location }}">
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4 class="list-group-item bg-light">{{ product.title }}</h4>
+                <h5 class="list-group-item bg-light">{{ product.price }} TK</h5>
+                <a class="list-group-item bg-light" href="/space/{{product.space.name}}/">@{{ product.space.name }}</a>
+                <br>
+                <div class="list-group-item">
+                    <button class="btn btn-outline-dark">Men Fashion</button>
+                </div>
+                <div class="list-group-item">
+                    <p>{{ product.description | linebreaks }}</p>
+                </div>
+                <!-- <p class="list-group-item">
+                    {{ product.description }}
+                    100% Polyester<br>
+                    * Imported<br>
+                    * Machine Wash<br>
+                    A slim fit makes this golf polo a go-to on or off the links - if you enjoy Greg Norman or IZOD golf polos, we invite you to try Amazon Essentials<br>
+                    Lightweight performance quick-dry fabric wicks moisture to help keep you dry and provides UPF sun protection ranging from UPF 20 – UPF 40 depending on color selected*<br>
+                    Unbanded cuffs for full range of motion<br>
+                    Sport made better: we listen to customer feedback and fine-tune every detail to ensure quality, fit, and comfort<br>
+                    Model is 6'2" and wearing size Medium<br>
+                </p> -->
+                <br>
+                <div class="list-group-item">
+                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                        <i class="em em---1"></i><span class="badge badge-light">8</span>
+                    </button>
+                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                        <i class="em em--1"></i><span class="badge badge-light">3</span>
+                    </button>
+                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                    </button>
+                </div>
+                <br>
+                <a href="#" class="btn btn-success btn-block">Request Order</a>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="list-group-item bg-primary"><a href="#" style="text-decoration: none; color: white;">Products you may like</a></h4>
+                <br>
+                <div class="owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="card bg-light" id="product-card">
+                            <a href="#">
+                                <img src="{% static 'res/polo_tshirt.jpg' %}">
+                            </a>
+                            <div class="card-body">
+                                <center>
+                                   <a href="#"><h5>Polo T-Shirt</h5></a>
+                                   <h6 class="d-inline-block">250 TK</h6>            
+                                </center>
+                                <center>
+                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
+                                    </button>
+                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
+                                    </button>
+                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                                    </button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="card bg-light" id="product-card">
+                            <a href="#">
+                                <img src="{% static 'res/polo_tshirt_1.jpg' %}">
+                            </a>
+                            <div class="card-body">
+                                <center>
+                                   <a href="#"><h5>Polo T-Shirt</h5></a>
+                                   <h6 class="d-inline-block">250 TK</h6>            
+                                </center>
+                                <center>
+                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
+                                    </button>
+                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
+                                    </button>
+                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                                    </button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="card bg-light" id="product-card">
+                            <a href="#">
+                                <img src="{% static 'res/polo_tshirt_2.jpg' %}">
+                            </a>
+                            <div class="card-body">
+                                <center>
+                                   <a href="#"><h5>Polo T-Shirt</h5></a>
+                                   <h6 class="d-inline-block">250 TK</h6>            
+                                </center>
+                                <center>
+                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
+                                    </button>
+                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
+                                    </button>
+                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                                    </button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div> 
+{% endblock %}
+
+
+{% block extra_script %}
+	<script type="text/javascript" src="{% static 'lib/js/owl.carousel.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/generic/product_slider.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Sign In</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/auth/signin.css' %}">
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="sign-in-form" method="POST">
+                    {% csrf_token %}
+                	{{ form.phone }}
+                	{{ form.password }}
+                    <input type="submit" value="Sign In" class="btn btn-success btn-block">
+                </form>
+
+            </div>
+            <div class="col-md-6"></div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extra_script %}
+
+{% endblock %}

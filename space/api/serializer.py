@@ -11,3 +11,20 @@
 # 	class Meta:
 # 		model = Account
 # 		fields = ('id_name', 'display_name', 'phone')
+
+
+from rest_framework import serializers
+from space.models import Product
+
+class ProductAPI(serializers.ModelSerializer):
+	class Meta:
+		model = Product
+
+		fields = ('title', 'description')
+
+
+class ProductListAPI(serializers.ModelSerializer):
+	class Meta:
+		model = Product
+		fields = ('__all__')
+		

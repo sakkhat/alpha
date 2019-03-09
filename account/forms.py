@@ -6,16 +6,34 @@ from account.models import Account
 class SignupForm(forms.ModelForm):
 
 	password1 = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Password'}))
+		{'placeholder' : 'Password (min 6 length)', 'class' : 'form-control', 'minLength': '6'}))
 
 	password2 = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Confirm Password'}))
+		{'placeholder' : 'Confirm Password', 'class' : 'form-control'}))
 
 	class Meta:
 		model = Account
 		fields = [
-			'name', 'phone', 'gender','email'
+			'phone', 'name', 'email', 'gender'
 		]
+
+		widgets = {
+			'name' : forms.TextInput(attrs={
+				'placeholder' : 'Name', 'class' : 'form-control'
+				}),
+
+			'phone' : forms.TextInput(attrs={
+				'placeholder' : 'Phone', 'class' : 'form-control'
+				}),
+
+			'email' : forms.EmailInput(attrs={
+				'placeholder' : 'Email (optional)', 'class' : 'form-control'
+				}),
+
+			'gender' : forms.Select(attrs={
+				'class' : 'custom-select'
+				}),
+		}
 
 	def clean_phone(self):
 		phone = self.cleaned_data['phone']
@@ -44,35 +62,15 @@ class SignupForm(forms.ModelForm):
 		return user
 
 
-	widgets = {
-		'name' : forms.TextInput(attrs={
-			'placeholder' : 'Name',
-			}),
-
-		'phone' : forms.TextInput(attrs={
-			'placeholder' : 'Phone',
-			}),
-
-		'email' : forms.EmailInput(attrs={
-			'placeholder' : 'Email (optional)'
-			}),
-
-		'gender' : forms.Select(attrs={
-
-			}),
-	}
-
-	def __init__(self, *args, **kwargs):
-		super(SignupForm, self).__init__(args, kwargs)
-		self.fields['email'].required = False
-
 
 class SigninForm(forms.Form):
 	phone = forms.CharField(max_length=12, widget=forms.TextInput(attrs=
-		{'placeholder' : 'Phone'}))
+		{'placeholder' : 'Phone', 
+		'class' : 'form-control'}))
 
 	password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Password'}))
+		{'placeholder' : 'Password', 
+		'class' : 'form-control'}))
 
 
 class PasswordChangeForm(forms.Form):

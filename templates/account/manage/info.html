@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>User Name</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/manage/info.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div id="user-avatar">
+                        <img src="{% static 'res/tony.jpg' %}">
+                    </div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">Update Info</a>
+                    <a href="#" class="list-group-item list-group-item-action">Change Password</a>
+                    <a href="#" class="list-group-item list-group-item-action">Deactivate Account</a>
+                </div>
+                <br>
+            </div>
+            <div class="col-md-9">
+                <div class="list-group">
+                    <h5 class="list-group-item list-group-item-dark">About</h5>
+                    <h6 class="list-group-item">Name: {{ request.user.name }}</h5>
+                    <h6 class="list-group-item">Phone: {{ request.user.phone }}</h5>
+                    <h6 class="list-group-item">Email: {{ request.user.email }}</h5>
+                    <h6 class="list-group-item">Gender: {{ request.user.gender }}</h5>
+                </div>
+                <br>
+                <h5 class="list-group-item list-group-item-dark">Activity</h5>
+                <table class="table table-bordered table-secondary">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>john@example.com</td>
+                      </tr>
+                      <tr>
+                        <td>Mary</td>
+                        <td>Moe</td>
+                        <td>mary@example.com</td>
+                      </tr>
+                      <tr>
+                        <td>July</td>
+                        <td>Dooley</td>
+                        <td>july@example.com</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_script %}
+
+{% endblock %}

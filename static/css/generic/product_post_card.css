@@ -1,0 +1,25 @@
+#product-card {
+	width: 260px;
+}
+#product-card a{
+	text-align: center;
+}
+#product-card .card-body {
+	padding: 5px;
+}
+#product-card img {
+	height: 200px; width: auto; max-width: 250px; margin: auto;
+}
+#product-card img:hover {
+	height: 205px;
+}
+
+#product-card button {
+	margin: 0px 2px 0px 2px;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}

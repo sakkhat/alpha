@@ -1,0 +1,36 @@
+$('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:0,
+    nav:false,
+    dots:false,
+    center:true,
+    items:1,
+    autoplay:true,
+    responsive:{
+
+        0:{
+            items:1
+        },
+        600:{
+            items:2
+        },
+        900:{
+            items:3
+        },
+        1200:{
+            items:4
+        },
+        1500:{
+            items:5
+        },
+        1800:{
+            items:6
+        },
+        2100:{
+            items:7
+        },
+        2400:{
+            items:8
+        }
+    }
+});

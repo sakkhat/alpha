@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Sign Up</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/auth/signup.css' %}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="sign-up-form" method="POST">
+                	{% csrf_token %}
+                    {{ form.name }}
+                    {{ form.phone }}
+                    {{ form.email }}
+                    {{ form.gender }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
+                    <input type="submit" value="Sign Up" class="btn btn-success btn-block">
+                </form>
+
+            </div>
+            
+            <div class="col-md-6"></div>
+            
+        </div>
+        
+    </div>
+{% endblock %}
+
+
+{% block extra_script %}
+	
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Space Name</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+   
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-9">
+
+                <div id="banner-slider" class="carousel slide" data-ride="carousel">
+                    
+                    <ul class="carousel-indicators">
+                        <li data-target="#banner-slider" data-slide-to="0"></li>
+                        <li data-target="#banner-slider" data-slide-to="1"></li>
+                        <li data-target="#banner-slider" data-slide-to="2"></li>
+                    </ul>
+
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="banner-slider-item">
+                                <img src="{% static 'res/bing (1).jpg' %}" height="350px">
+                            </div>
+                            
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="banner-slider-item">
+                                <img src="{% static 'res/bing (2).jpg' %}" height="350px">
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="banner-slider-item">
+                                <img src="{% static 'res/bing (3).jpg' %}" height="350px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <a class="carousel-control-prev" href="#banner-slider" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#banner-slider" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+
+                <div class="list-group-item">
+                    <h3>{{space.name}}</h3>
+                    <p>{{space.description}}</p>    
+                </div>
+
+                <div class="list-group-item">
+                    <div class="category-tags">
+                        <a class="btn btn-outline-dark disable" href="#">Men Fashion</a>
+                        <a class="btn btn-outline-dark disable" href="#">Gadgets</a>
+                        <a class="btn btn-outline-dark disable" href="#">Women Fashion</a>
+                        <a class="btn btn-outline-dark disable" href="#">Accessories</a>
+                    </div><br>
+
+                    <div class="progress">
+                        <div class="progress-bar bg-success" style="width: 70%">Good React</div>
+                    </div><br>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" style="width: 20%">Bad React</div>
+                    </div><br>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" style="width: 10%">Fake React</div>
+                    </div>
+                </div>
+
+                <div class="list-group-item bg-light">
+                    <h6>Supply from: Sylhet, Dhaka</h6>
+                    <h6>Supply to: Sylhet, Dhaka, Chittagong via SA Poribahan</h6>
+                </div>
+                <br>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="list-group">
+                    <h4 class="list-group-item disable bg-info">Trending</h4>
+                    <a class="list-group-item" href="">Apex</a>
+                    <a class="list-group-item" href="">Easy</a>
+                    <a class="list-group-item" href="">Lotto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="container-fluid">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+
+            <div class="card bg-light" id="product-card">
+                <a href="/space/product/">
+                    <img src="{% static 'res/polo_tshirt.jpg' %}">
+                </a>
+                <div class="card-body">
+                    <center>
+                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
+                       <h6 class="d-inline-block">250 TK</h6>            
+                    </center>
+                    <center>
+                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                            <i class="em em---1"></i><span class="badge badge-light">8</span>
+                        </button>
+                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                            <i class="em em--1"></i><span class="badge badge-light">3</span>
+                        </button>
+                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
+                        </button>
+                    </center>
+                </div>
+            </div>         
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_script %}
+	<script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
+{% endblock %}

@@ -7,7 +7,7 @@ from account.models import Account
 from generic.variables import LOGIN_URL
 
 
-@login_required(login_url=LOGIN_URL)
+#@login_required(login_url=LOGIN_URL)
 def info(request):
 	context = {}
 	return render(request, 'account/manage/info.html', context)

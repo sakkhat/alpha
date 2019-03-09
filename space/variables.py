@@ -6,8 +6,6 @@ Static variables:
 
 """
 
-LOGIN_URL = '/account/login/'
-
 loc = (
 	
 )

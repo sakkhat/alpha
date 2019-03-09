@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib.admin import site
 from django.urls import path
-from home import views as index
+from django.conf import settings
+from django.conf.urls.static import static
 
+from home import views as index
 
 # from rest_framework import routers
 # from space.views import PostViewSet
@@ -27,9 +29,12 @@ from home import views as index
 urlpatterns = [
 	
 	# managed all index functionality in home
-    # path('api/', PostViewSet.as_view()),
+    # path('api/', PostViewSet.as_view()), 
     path('', include('home.urls')),
-    path('admin/', site.urls),
+    # path('admin/', site.urls),
     path('account/', include('account.urls')),
     path('space/', include('space.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

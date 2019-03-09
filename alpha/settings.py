@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Custom authentication model
-# AUTH_USER_MODEL = 'space.Account'
+AUTH_USER_MODEL = 'account.Account'
 
 
 # Internationalization

@@ -11,7 +11,6 @@ urlpatterns = [
 
 	path('update/', manage.update, name='account_update'),
 	path('delete/', manage.delete, name='account_delete'),
-	path('activate/', manage.activate, name='account_activate'),
 	path('deactivate/', manage.decactive, name='account_deactivate'),
 
 	path('password/', password.manager, name='account_password'),

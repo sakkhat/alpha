@@ -79,3 +79,6 @@ class Account(AbstractBaseUser):
 		if self.is_admin:
 			return True
 		return False
+
+	def has_module_perms(self, perms, obj=None):
+		return all(self.has_perm(perm, obj) for perm in perms)

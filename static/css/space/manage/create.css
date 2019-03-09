@@ -1,0 +1,7 @@
+.space-create-form input, select, textarea {
+	margin: 5px 0px 10px 0px;
+}
+
+.space-create-form textarea {
+	height: 200px;
+}
