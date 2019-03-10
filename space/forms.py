@@ -24,7 +24,7 @@ class SpaceCreateForm(forms.ModelForm):
 			'description' : forms.Textarea(attrs=
 				{'placeholder':'Description', 'class':'form-control'}),
 			'category' : forms.Select(attrs=
-				{'class' : 'custom-select'})
+				{'class' : 'form-control'})
 		}
 
 
@@ -130,3 +130,5 @@ class ProductPostForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop('request', None)
 		super(ProductPostForm, self).__init__(*args, **kwargs)
+
+

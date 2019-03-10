@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'res/icon.png' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css'%}">
-
 	{% block extra_head %}
 
 	{% endblock %}
@@ -56,7 +56,7 @@
                         </div>
                         <div class="dropdown-menu dropdown-menu-right" role="menu">
                             <a class="list-group-item list-group-item-action" href="/account/">{{ request.user.name }}</a>
-                            <a class="list-group-item list-group-item-action" href="/space/">Stark Foundation</a>
+                            <a class="list-group-item list-group-item-action" href="/space/easy/">Easy</a>
                             <a class="list-group-item list-group-item-action" href="/account/signout/">Signout</a>
                         </div>
                     </div>

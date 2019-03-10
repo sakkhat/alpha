@@ -52,8 +52,8 @@ def signin(request):
 	return render(request, 'account/auth/signin.html', context)
 
 
-#@login_required(login_url=LOGIN_URL)
+@login_required(login_url=LOGIN_URL)
 def signout(request):
-	# logout(request)
+	logout(request)
 	return views.response(request,'account/auth/signout.html')
 	

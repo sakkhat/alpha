@@ -60,28 +60,9 @@
                 <div class="list-group-item">
                     <p>{{ product.description | linebreaks }}</p>
                 </div>
-                <!-- <p class="list-group-item">
-                    {{ product.description }}
-                    100% Polyester<br>
-                    * Imported<br>
-                    * Machine Wash<br>
-                    A slim fit makes this golf polo a go-to on or off the links - if you enjoy Greg Norman or IZOD golf polos, we invite you to try Amazon Essentials<br>
-                    Lightweight performance quick-dry fabric wicks moisture to help keep you dry and provides UPF sun protection ranging from UPF 20 – UPF 40 depending on color selected*<br>
-                    Unbanded cuffs for full range of motion<br>
-                    Sport made better: we listen to customer feedback and fine-tune every detail to ensure quality, fit, and comfort<br>
-                    Model is 6'2" and wearing size Medium<br>
-                </p> -->
                 <br>
-                <div class="list-group-item">
-                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                        <i class="em em---1"></i><span class="badge badge-light">8</span>
-                    </button>
-                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                        <i class="em em--1"></i><span class="badge badge-light">3</span>
-                    </button>
-                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                    </button>
+                <div class="list-group-item" id="product-react">
+                                                    
                 </div>
                 <br>
                 <a href="#" class="btn btn-success btn-block">Request Order</a>
@@ -93,88 +74,41 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h4 class="list-group-item bg-primary"><a href="#" style="text-decoration: none; color: white;">Products you may like</a></h4>
+                <a class="list-group-item bg-primary" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Related Products</h4></a>
                 <br>
                 <div class="owl-carousel owl-theme">
-                    <div class="item">
-                        <div class="card bg-light" id="product-card">
-                            <a href="#">
-                                <img src="{% static 'res/polo_tshirt.jpg' %}">
-                            </a>
-                            <div class="card-body">
-                                <center>
-                                   <a href="#"><h5>Polo T-Shirt</h5></a>
-                                   <h6 class="d-inline-block">250 TK</h6>            
-                                </center>
-                                <center>
-                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
-                                    </button>
-                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
-                                    </button>
-                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                                    </button>
-                                </center>
+                    {% for post in related_products %}
+                        <div class="item">
+                            <div class="card bg-light" id="product-card">
+                                <a href="/space/product/{{ post.uid }}/">
+                                    <img src="{{ post.logo_url }}">
+                                </a>
+                                <div class="card-body">
+                                    <center>
+                                       <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
+                                       <h6 class="d-inline-block">{{ post.price }} TK</h6>            
+                                    </center>
+                                    <center>
+                                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                            <span class="badge badge-light">{{ post.react_good }}</span>
+                                        </button>
+                                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                            <span class="badge badge-light">{{ post.react_bad }}</span>
+                                        </button>
+                                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                            <span class="badge badge-light">{{ post.react_fake}}</span>
+                                        </button>
+                                    </center>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="item">
-                        <div class="card bg-light" id="product-card">
-                            <a href="#">
-                                <img src="{% static 'res/polo_tshirt_1.jpg' %}">
-                            </a>
-                            <div class="card-body">
-                                <center>
-                                   <a href="#"><h5>Polo T-Shirt</h5></a>
-                                   <h6 class="d-inline-block">250 TK</h6>            
-                                </center>
-                                <center>
-                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
-                                    </button>
-                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
-                                    </button>
-                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                                    </button>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="card bg-light" id="product-card">
-                            <a href="#">
-                                <img src="{% static 'res/polo_tshirt_2.jpg' %}">
-                            </a>
-                            <div class="card-body">
-                                <center>
-                                   <a href="#"><h5>Polo T-Shirt</h5></a>
-                                   <h6 class="d-inline-block">250 TK</h6>            
-                                </center>
-                                <center>
-                                    <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                        <i class="em em---1"></i><span class="badge badge-light">8</span>
-                                    </button>
-                                    <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                        <i class="em em--1"></i><span class="badge badge-light">3</span>
-                                    </button>
-                                    <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                        <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                                    </button>
-                                </center>
-                            </div>
-                        </div>
-                    </div>    
+                    {% endfor %}  
                 </div>
                 <br><br>
             </div>
         </div>
-    </div> 
+    </div>
 {% endblock %}
 
 
@@ -183,4 +117,208 @@
 
     <script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
 	<script type="text/javascript" src="{% static 'js/generic/product_slider.js'%}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js'%}"></script>
+
+
+    <script type="text/babel">
+        class ProductReact extends React.Component {
+
+            constructor(props){
+                super(props);
+
+                this.state = {
+                    'good' : {{product.react_good}},
+                    'bad' : {{product.react_bad}},
+                    'fake' : {{product.react_fake}},
+
+                    'goodClass' : 'btn btn-outline-success',
+                    'badClass' : 'btn btn-outline-warning',
+                    'fakeClass' : 'btn btn-outline-danger',
+
+                    'current_react' : 'N',
+                    'url' : 'react/?what=',
+                    'auth' : true
+
+                };
+
+                this.handleGood = this.handleGood.bind(this);
+                this.handleBad = this.handleBad.bind(this);
+                this.handleFake = this.handleFake.bind(this);
+            }
+
+            componentDidMount(){
+
+                {% if not request.user.is_authenticated %}
+                    this.setState({
+                        goodClass : this.state.goodClass+' disabled',
+                        badClass : this.state.badClass+' disabled',
+                        fakeClass : this.state.fakeClass+' disabled',
+                        auth : false
+                    });
+
+
+                {% else %}
+
+                    {% if has_react %}
+                        const _current_react = "{{current_react}}";
+                            this.setState({
+                            current_react : _current_react
+
+                        });
+
+                        if (_current_react == 'G'){
+                            console.log('Good');
+                            this.setState({
+                                goodClass : 'btn btn-success'
+                            });
+                        }
+                        else if (_current_react == 'B'){
+                            console.log('Bad');
+                            this.setState({
+                                badClass : 'btn btn-warning'
+                            });
+                        }
+                        else if (_current_react == 'F'){
+                            console.log('Fake');
+                            this.setState({
+                                fakeClass : 'btn btn-danger'
+                            });
+                        }
+                    {% endif %}
+
+                {% endif %}
+            
+            }
+
+            handleGood(){
+                if(this.state.current_react == 'G' || !this.state.auth){
+                    return;
+                }
+
+                this.managePrevious();
+                const url =  this.state.url + "G"+this.state.current_react;
+
+                this.setState({
+                    goodClass : 'btn btn-success',
+                    badClass : 'btn btn-outline-warning',
+                    fakeClass : 'btn btn-outline-danger',
+
+                    good : this.state.good + 1,
+                    current_react : 'G'
+
+                });
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            }
+
+            handleBad(){
+                if(this.state.current_react == 'B' || !this.state.auth){
+                    return;
+                }
+
+                this.managePrevious();
+                const url =  this.state.url + "B"+this.state.current_react;
+
+                this.setState({
+                    goodClass : 'btn btn-outline-success',
+                    badClass : 'btn btn-warning',
+                    fakeClass : 'btn btn-outline-danger',
+
+                    bad : this.state.bad + 1,
+                    current_react : 'B'
+                });
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+
+            }
+
+            handleFake(){
+                if(this.state.current_react == 'F' || !this.state.auth){
+                    return;
+                }
+
+                this.managePrevious();
+                const url =  this.state.url + "F"+this.state.current_react;
+
+                this.setState({
+                    goodClass : 'btn btn-outline-success',
+                    badClass : 'btn btn-outline-warning',
+                    fakeClass : 'btn btn-danger',
+
+                    fake : this.state.fake + 1,
+                    current_react : 'F'
+                });
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            }
+            
+
+            managePrevious(){
+
+                console.log(this.state.current_react);
+
+                if (this.state.current_react == 'G'){
+                    this.setState({
+                        good : this.state.good - 1
+                    });
+                }
+                else if (this.state.current_react == 'B'){
+                    this.setState({
+                        bad : this.state.bad - 1
+                    });
+                }
+
+                else if (this.state.current_react == 'F'){
+                    this.setState({
+                        fake : this.state.fake - 1
+                    });
+                }
+
+
+                return;
+            }
+
+            render(){
+                return (
+                                
+                    <div>
+                        <button className={this.state.goodClass} onClick={this.handleGood}>
+                            <i className="em em---1"></i><span className="badge badge-light">{this.state.good} Good</span>
+                        </button>
+                        <button className={this.state.badClass} onClick={this.handleBad}>
+                            <i className="em em--1"></i><span className="badge badge-light">{this.state.bad} Bad</span>
+                        </button>
+                        <button className={this.state.fakeClass} onClick={this.handleFake}>
+                            <i className="em em-face_with_symbols_on_mouth"></i><span className="badge badge-light">{this.state.fake} Fake</span>
+                        </button>
+                    </div>
+                );
+            }
+        }
+
+
+        const element = (
+            
+                <ProductReact/>
+        );
+
+
+
+        ReactDOM.render(element, document.getElementById('product-react'));
+    </script>
 {% endblock %}

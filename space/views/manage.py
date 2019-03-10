@@ -12,7 +12,7 @@ from generic.views import invalid_request
 def index(request, name):
 	context = {}
 	try:
-		space = Space.objects.get(name=name)
+		space = Space.objects.get(name__iexact=name)
 		context['space'] = space
 		return render(request, 'space/manage/index.html', context)
 	except ObjectDoesNotExist as e:
@@ -28,8 +28,8 @@ def create(request):
 		form = SpaceCreateForm(request.POST, request=request)
 		if form.is_valid():
 			form.save()
-
-			return redirect('/space/')
+			name = form.cleaned_data['name']
+			return redirect('/space/'+name+'/')
 
 	else:
 		form = SpaceCreateForm(request=request)

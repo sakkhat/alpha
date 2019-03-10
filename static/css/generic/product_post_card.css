@@ -11,7 +11,8 @@
 	height: 200px; width: auto; max-width: 250px; margin: auto;
 }
 #product-card img:hover {
-	height: 205px;
+	/*height: 205px;*/
+	transform: scale(1.02);
 }
 
 #product-card button {

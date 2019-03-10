@@ -67,6 +67,7 @@ class ProductReact(models.Model):
 	"""
 	Doc here
 	"""
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)

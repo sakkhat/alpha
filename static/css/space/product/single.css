@@ -10,3 +10,11 @@
 .product-avatar img {
 	width: 100%; height: auto;
 }
+
+.product-avatar img:hover {
+	cursor: pointer;
+}
+
+#product-react button {
+	margin: 0px 5px 0px 2px;
+}
