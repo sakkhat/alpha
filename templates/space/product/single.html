@@ -61,8 +61,8 @@
                     <p>{{ product.description | linebreaks }}</p>
                 </div>
                 <br>
-                <div class="list-group-item" id="product-react">
-                                                    
+                <div class="list-group-item" id="product-react-pin">
+
                 </div>
                 <br>
                 <a href="#" class="btn btn-success btn-block">Request Order</a>
@@ -134,12 +134,12 @@
                     'bad' : {{product.react_bad}},
                     'fake' : {{product.react_fake}},
 
-                    'goodClass' : 'btn btn-outline-success',
-                    'badClass' : 'btn btn-outline-warning',
-                    'fakeClass' : 'btn btn-outline-danger',
+                    'goodClass' : 'btn btn-sm btn-outline-success',
+                    'badClass' : 'btn btn-sm btn-outline-warning',
+                    'fakeClass' : 'btn btn-sm btn-outline-danger',
 
                     'current_react' : 'N',
-                    'url' : 'react/?what=',
+                    'url' : '?react=',
                     'auth' : true
 
                 };
@@ -172,19 +172,19 @@
                         if (_current_react == 'G'){
                             console.log('Good');
                             this.setState({
-                                goodClass : 'btn btn-success'
+                                goodClass : 'btn btn-sm btn-success'
                             });
                         }
                         else if (_current_react == 'B'){
                             console.log('Bad');
                             this.setState({
-                                badClass : 'btn btn-warning'
+                                badClass : 'btn btn-sm btn-warning'
                             });
                         }
                         else if (_current_react == 'F'){
                             console.log('Fake');
                             this.setState({
-                                fakeClass : 'btn btn-danger'
+                                fakeClass : 'btn btn-sm btn-danger'
                             });
                         }
                     {% endif %}
@@ -202,10 +202,7 @@
                 const url =  this.state.url + "G"+this.state.current_react;
 
                 this.setState({
-                    goodClass : 'btn btn-success',
-                    badClass : 'btn btn-outline-warning',
-                    fakeClass : 'btn btn-outline-danger',
-
+                    goodClass : 'btn btn-sm btn-success',
                     good : this.state.good + 1,
                     current_react : 'G'
 
@@ -227,10 +224,7 @@
                 const url =  this.state.url + "B"+this.state.current_react;
 
                 this.setState({
-                    goodClass : 'btn btn-outline-success',
-                    badClass : 'btn btn-warning',
-                    fakeClass : 'btn btn-outline-danger',
-
+                    badClass : 'btn btn-sm btn-warning',
                     bad : this.state.bad + 1,
                     current_react : 'B'
                 });
@@ -252,10 +246,7 @@
                 const url =  this.state.url + "F"+this.state.current_react;
 
                 this.setState({
-                    goodClass : 'btn btn-outline-success',
-                    badClass : 'btn btn-outline-warning',
-                    fakeClass : 'btn btn-danger',
-
+                    fakeClass : 'btn btn-sm btn-danger',
                     fake : this.state.fake + 1,
                     current_react : 'F'
                 });
@@ -274,21 +265,23 @@
 
                 if (this.state.current_react == 'G'){
                     this.setState({
-                        good : this.state.good - 1
+                        good : this.state.good - 1,
+                        goodClass : 'btn btn-sm btn-outline-success'
                     });
                 }
                 else if (this.state.current_react == 'B'){
                     this.setState({
-                        bad : this.state.bad - 1
+                        bad : this.state.bad - 1,
+                        badClass : 'btn btn-sm btn-outline-warning'
                     });
                 }
 
                 else if (this.state.current_react == 'F'){
                     this.setState({
-                        fake : this.state.fake - 1
+                        fake : this.state.fake - 1,
+                        fakeClass : 'btn btn-sm btn-outline-danger'
                     });
                 }
-
 
                 return;
             }
@@ -296,7 +289,7 @@
             render(){
                 return (
                                 
-                    <div>
+                    <div className="bt-config">
                         <button className={this.state.goodClass} onClick={this.handleGood}>
                             <i className="em em---1"></i><span className="badge badge-light">{this.state.good} Good</span>
                         </button>
@@ -311,14 +304,78 @@
             }
         }
 
+        class ProductPin extends React.Component{
+            constructor(props){
+                super(props);
+                
+                {% if has_pin %}
+                    this.state = {
+                        'btClassName' : 'btn btn-sm btn-dark',
+                        'pinned' : true,
+                        'text' : 'remove'
+                    };
+                {% else %}
+                    this.state = {
+                        'btClassName' : 'btn btn-sm btn-outline-dark',
+                        'pinned' : false,
+                        'text' : 'add'
+                    };
+                {% endif %}
+
+                this.handlePin = this.handlePin.bind(this);
+            }
+
+            handlePin(){
+                if(this.state.pinned){
+                    this.setState({
+                        btClassName : 'btn btn-sm btn-outline-dark',
+                        pinned : false,
+                        text : 'add'
+                    });
+                    fetch('?pin=remove')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.data);
+                    });
+                }
+                else{
+                    this.setState({
+                        btClassName : 'btn btn-sm btn-dark',
+                        pinned : true,
+                        text : 'remove'
+                    });
+                    fetch('?pin=add')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.data);
+                    });
+                }
+                return;
+            }
+
+            render(){
+                return(
+                    <button className={this.state.btClassName} onClick={this.handlePin}>
+                        <i className="em em-pushpin"></i><span className="badge badge-light">{this.state.text}</span>
+                    </button>
+                )
+            }
+        }
 
         const element = (
-            
-                <ProductReact/>
+            <div className="row">
+                <div className="col-sm-9">
+                    <ProductReact/>
+                </div>
+                <div className="col-sm-3 bt-config">
+                    <ProductPin/>    
+                </div>
+            </div>
+                
         );
 
 
 
-        ReactDOM.render(element, document.getElementById('product-react'));
+        ReactDOM.render(element, document.getElementById('product-react-pin'));
     </script>
 {% endblock %}

@@ -3,7 +3,8 @@ from .views import auth, manage,password
 
 urlpatterns = [
 	
-	path('', manage.info, name='account_info'),
+	path('', manage.profile, name='account_profile'),
+	path('activity/', manage.activity_manager, name='activity_manager'),
 
 	path('signup/', auth.signup, name='account_signup'),
 	path('signin/', auth.signin, name='account_signin'),

@@ -14,7 +14,7 @@
 
 
 from rest_framework import serializers
-from space.models import Product
+from space.models import Product, ProductReact
 
 class ProductAPI(serializers.ModelSerializer):
 	class Meta:
@@ -25,6 +25,6 @@ class ProductAPI(serializers.ModelSerializer):
 
 class ProductListAPI(serializers.ModelSerializer):
 	class Meta:
-		model = Product
+		model = ProductReact
 		fields = ('__all__')
 		

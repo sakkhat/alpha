@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 
 from home import views as index
 
+from space.api.views import ProductListView
+
 # from rest_framework import routers
 # from space.views import PostViewSet
 
@@ -29,7 +31,7 @@ from home import views as index
 urlpatterns = [
 	
 	# managed all index functionality in home
-    # path('api/', PostViewSet.as_view()), 
+    path('api/', include('generic.api_urls')), 
     path('', include('home.urls')),
     # path('admin/', site.urls),
     path('account/', include('account.urls')),

@@ -31,7 +31,6 @@ class Space(models.Model):
 	owner = models.OneToOneField(Account, on_delete=models.CASCADE)
 	name = models.CharField(max_length=30, unique=True, primary_key=True)
 	description = models.TextField()
-	rating = models.PositiveSmallIntegerField(default=0)
 	category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
 	def __str__(self):
@@ -67,7 +66,7 @@ class ProductReact(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	uid = models.CharField(max_length=13, unique=True, primary_key=True)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)
@@ -85,6 +84,16 @@ class ProductMedia(models.Model):
 	def __str__(self):
 		return self.location
 
+
+class Status(models.Model):
+	"""
+	Doc here
+	"""
+	space = models.OneToOneField(Space, primary_key=True, on_delete=models.CASCADE)
+	total_good_react = models.PositiveIntegerField(default=0)
+	total_bad_react = models.PositiveIntegerField(default=0)
+	total_fake_react = models.PositiveIntegerField(default=0)
+	rating = models.PositiveIntegerField(default=0)
 
 
 class Sell(models.Model):

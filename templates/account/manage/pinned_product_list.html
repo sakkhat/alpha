@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>{{ request.user.name }} | Pinned products</title>
+{% endblock %}
+
+
+{% block extra_content %}
+    
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-6">
+            <table class="table table-bordered table-secondary">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="table-row-block">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+{% endblock %}
+
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel">
+        
+        class PinProductRow extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    'ac_id' : "{{ request.user.phone }}",
+                    'data_list' : null,
+                    'loaded' : false,
+
+                }
+            }
+
+            handleTimestamp(uid){
+                const date = new Date(parseInt(uid));
+                return date.toLocaleString();
+            }
+
+            getSpaceLink(product){
+                return '/space/product/'+product;
+            }
+
+            componentDidMount(){
+                const url = '/api/user/'+this.state.ac_id+'/pinned_product_list/?format=json'
+                fetch(url)
+                .then(response => response.json())
+                .then(data =>{
+                    const results = data.results;
+                    const data_list = results.map((item) =>      
+                            <tr>
+                                <td><a href={this.getSpaceLink(item.product)}>{item.product}</a></td>
+                                <td>{this.handleTimestamp(item.uid)}</td>
+                            </tr>
+                        );
+                    this.setState({
+                        data_list : data_list,
+                        loaded : true
+                    });
+                })
+            }
+
+            render(){
+                if(this.state.loaded ){
+                    const data_list = this.state.data_list;
+                    return data_list;
+                }
+                return (
+                    <tr><td>Loading...</td><td>Loading...</td></tr>
+                );
+                
+            }
+        }
+
+        const element = ( <PinProductRow/> );
+        ReactDOM.render(element, document.getElementById('table-row-block'));
+    </script>
+
+{% endblock %}

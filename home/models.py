@@ -15,11 +15,9 @@ class PinnedProduct(models.Model):
 	"""
 	Doc here
 	"""
+	uid = models.CharField(max_length=13, unique=True, primary_key=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
-
-	class Meta:
-		unique_together = ('product', 'user')
 
 
 
@@ -27,8 +25,6 @@ class Favorite(models.Model):
 	"""
 	Doc here
 	"""
+	uid = models.CharField(max_length=13, unique=True, primary_key=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
-
-	class Meta:
-		unique_together = ('space','user')

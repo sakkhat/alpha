@@ -59,10 +59,10 @@
 
                 <div class="list-group-item">
                     <div class="category-tags">
-                        <a class="btn btn-outline-dark disable" href="#">Men Fashion</a>
-                        <a class="btn btn-outline-dark disable" href="#">Gadgets</a>
-                        <a class="btn btn-outline-dark disable" href="#">Women Fashion</a>
-                        <a class="btn btn-outline-dark disable" href="#">Accessories</a>
+                        <a class="btn btn-sm btn-outline-dark disabled" href="#">{{space.category}}</a>
+                        <div style="float: right;" id="pin-block">
+                            
+                        </div>
                     </div><br>
 
                     <div class="progress">
@@ -75,20 +75,24 @@
                         <div class="progress-bar bg-danger" style="width: 10%">Fake React</div>
                     </div>
                 </div>
-
-                <div class="list-group-item bg-light">
-                    <h6>Supply from: Sylhet, Dhaka</h6>
-                    <h6>Supply to: Sylhet, Dhaka, Chittagong via SA Poribahan</h6>
-                </div>
                 <br>
             </div>
 
             <div class="col-lg-3">
                 <div class="list-group">
-                    <h4 class="list-group-item disable bg-info">Trending</h4>
+           
+                    <a class="list-group-item" href="">Settings</a>
+                    <a class="list-group-item" href="">Promotion</a>
+                    <a class="list-group-item" href="">Change Ownership</a>
+                </div>
+                <br><br>
+                <div class="list-group">
+                    <h4 class="list-group-item disable bg-danger" style="color: white;">Trending</h4>
                     <a class="list-group-item" href="">Apex</a>
                     <a class="list-group-item" href="">Easy</a>
                     <a class="list-group-item" href="">Lotto</a>
+                    <a class="list-group-item" href="">Easy</a>
+                    <a class="list-group-item" href="">Gear</a>
                 </div>
             </div>
         </div>
@@ -96,167 +100,32 @@
 
     <br>
     <div class="container-fluid">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
+        <div class="row d-flex">
+            {% for product in products %}
+                <div class="card bg-light" id="product-card" style="margin: 15px;">
+                    <a href="/space/product/{{product.uid}}">
+                        <img src="{{ product.logo_url }}">
+                    </a>
+                    <div class="card-body">
+                        <center>
+                           <a href="/space/product/{{product.uid}}"><h5>{{product.title}}</h5></a>
+                           <h6 class="d-inline-block">{{product.price}}</h6>            
+                        </center>
+                        <center>
+                            <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                <span class="badge badge-light">{{product.react_good}}</span>
+                            </button>
+                            <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                <span class="badge badge-light">{{ product.react_bad}}</span>
+                            </button>
+                            <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                <span class="badge badge-light">{{product.react_fake}}</span>
+                            </button>
+                        </center>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>
-
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>
-
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>
-
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>
-
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>
-
-            <div class="card bg-light" id="product-card">
-                <a href="/space/product/">
-                    <img src="{% static 'res/polo_tshirt.jpg' %}">
-                </a>
-                <div class="card-body">
-                    <center>
-                       <a href="/space/product/"><h5>Polo T-Shirt</h5></a>
-                       <h6 class="d-inline-block">250 TK</h6>            
-                    </center>
-                    <center>
-                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                            <i class="em em---1"></i><span class="badge badge-light">8</span>
-                        </button>
-                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                            <i class="em em--1"></i><span class="badge badge-light">3</span>
-                        </button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                            <i class="em em-face_with_symbols_on_mouth"></i><span class="badge badge-light">1</span>
-                        </button>
-                    </center>
-                </div>
-            </div>         
+            {% endfor %}           
         </div>
     </div>
 
@@ -265,4 +134,78 @@
 
 {% block extra_script %}
 	<script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    {% if request.user.is_authenticated %}
+        <script type="text/babel">
+        
+            class Pin extends React.Component {
+
+                constructor(props){
+                    super(props);
+
+                    {% if has_favorite %}
+                        this.state = {
+                            pinClassName : 'btn btn-sm btn-dark',
+                            pinned : true,
+                            text : 'Remove Favorite'
+                        };
+
+                    {% else %}
+                        this.state = {
+                            pinClassName : 'btn btn-sm btn-outline-dark',
+                            pinned : false,
+                            text : 'Add Favorite'
+                        };
+                    {% endif %}
+
+                    this.handleClick = this.handleClick.bind(this);
+                }
+
+                handleClick(){
+
+                    if(this.state.pinned){
+                        this.setState({
+                            pinClassName : 'btn btn-sm btn-outline-dark',
+                            pinned : false,
+                            text : 'Add Favorite'
+                        });
+
+                        fetch('?favorite=remove')
+                        .then(response => {
+                            response.json();
+                            console.log(response);
+                        });
+                    }
+                    else{
+                        this.setState({
+                            pinClassName : 'btn btn-sm btn-dark',
+                            pinned : true,
+                            text : 'Remove Favorite'
+                        });
+                        fetch('?favorite=add')
+                        .then(response => {
+                            response.json();
+                            console.log(response);
+                        });
+                    }
+
+                }
+
+                render(){
+                    return(
+                        <button class={this.state.pinClassName} onClick={this.handleClick}>
+                            {this.state.text} <i class="em em-heart"></i>
+                        </button>
+                    );
+                }
+            }
+
+            const element = (<Pin/>);
+            ReactDOM.render(element, document.getElementById('pin-block'));
+        </script>
+    {% endif %}
 {% endblock %}

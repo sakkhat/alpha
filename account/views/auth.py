@@ -9,6 +9,9 @@ from generic.variables import LOGIN_URL
 from generic import views
 
 def signup(request):
+	if request.user.is_authenticated:
+		return redirect('/')
+
 	context = {}
 	if request.method == 'POST':
 		form = SignupForm(request.POST)
@@ -27,6 +30,9 @@ def signup(request):
 
 
 def signin(request):
+	if request.user.is_authenticated:
+		return redirect('/')
+		
 	context = {}
 	if request.method == 'POST':
 		form = SigninForm(request.POST)
