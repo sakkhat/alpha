@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_head %}
-    <title>Product View</title>
+    <title>{{ product.title }} | {{ product.space.name }}</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.carousel.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
@@ -51,11 +51,18 @@
             </div>
             <div class="col-md-6">
                 <h4 class="list-group-item bg-light">{{ product.title }}</h4>
-                <h5 class="list-group-item bg-light">{{ product.price }} TK</h5>
+                <h5 class="list-group-item bg-light">
+                    {{ product.price }} TK
+                    {% if product.in_stock %}
+                      (in stock)
+                    {% else %}
+                      (out of stock)
+                    {% endif %}
+                </h5>
                 <a class="list-group-item bg-light" href="/space/{{product.space.name}}/">@{{ product.space.name }}</a>
                 <br>
                 <div class="list-group-item">
-                    <button class="btn btn-outline-dark">Men Fashion</button>
+                    <button class="btn btn-outline-dark">{{ product.category }}</button>
                 </div>
                 <div class="list-group-item">
                     <p>{{ product.description | linebreaks }}</p>
@@ -65,7 +72,9 @@
 
                 </div>
                 <br>
-                <a href="#" class="btn btn-success btn-block">Request Order</a>
+                <div id="request-block">
+                    
+                </div>
                 <br>
             </div>
         </div>
@@ -377,5 +386,45 @@
 
 
         ReactDOM.render(element, document.getElementById('product-react-pin'));
+    </script>
+
+    <script type="text/babel">
+        class Request extends React.Component {
+            constructor(props){
+                super(props);
+
+                this.state = {'clicked' : false};
+
+                this.handleClick = this.handleClick.bind(this);
+            }
+
+            handleClick(){
+                if(this.state.clicked){
+                    this.setState({clicked : false});
+                    return;
+                }
+
+                this.setState({clicked : true});
+                return;
+            }
+
+            render(){
+                if(this.state.clicked){
+                    return (
+                        <button className="btn btn-outline-success btn-block" onClick={this.handleClick}>
+                            Contact: {{ product.space.owner.phone }}
+                        </button>
+                    );
+                }
+                return(
+                    <button className="btn btn-success btn-block" onClick={this.handleClick}>
+                        Make Request
+                    </button>
+                );
+            }
+        }
+
+        const element = (<Request/>)
+        ReactDOM.render(element, document.getElementById('request-block'))
     </script>
 {% endblock %}

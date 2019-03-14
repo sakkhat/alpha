@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div id="user-avatar">
-                        <img src="{% static 'res/tony.jpg' %}">
+                        <img src="{% static 'res/tony.jpg' %}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
                     </div>
                 <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action">Update Info</a>
@@ -36,8 +36,25 @@
                         <h6 class="list-group-item">Gender: Other</h5>
                     {% endif %}
                 </div>
-                <br>
-                
+                <br><br>
+                <a class="list-group-item list-group-item-action list-group-item-dark" 
+                    style="text-align: center;" href="#">
+                    <h5 style="font-weight: bold;">Space Name</h5>
+                </a>
+                <table class="table table-bordered table-secondary">
+                    <thead>
+                        <tr>
+                            <th>Rating</th><th>Total React</th><th>Total Favorite</th>
+                        </tr>
+                        <tr>
+                            <td>1545</td><td>5994</td><td>485</td>
+                        </tr>
+                    </thead>
+                </table>
+                <a href="/space/easy/" class="list-group-item bg-primary">
+                    <h5 style="margin: 0px; color:white; text-align: center;">Dashboard</h5>
+                </a>
+                <br><br>
             </div>
             <div class="col-md-3">
                 <div class="list-group">

@@ -24,3 +24,13 @@ a {
 a:hover {
 	text-decoration: none;
 }
+
+.card-config {
+	margin: 15px;
+}
+
+.load-config {
+	display: block;
+	text-align: center;
+	font-size: 100px;
+}

@@ -16,7 +16,7 @@ class UserFavoriteSpace(rest_serializer.ModelSerializer):
 		model = Favorite
 		fields = ('uid', 'space')
 
-class UserPinnedProduct(rest_serializer.ModelSerializer):
+class UserPinnedProductInfo(rest_serializer.ModelSerializer):
 	class Meta:
 		model = PinnedProduct
 		fields = ('uid', 'product') 

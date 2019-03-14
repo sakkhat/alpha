@@ -1,3 +1,7 @@
+html, body {
+	margin: 0px; min-height: 100%;
+}
+
 #site-nav-bar {
 	height: 60px;
 }

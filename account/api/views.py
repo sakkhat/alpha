@@ -1,5 +1,5 @@
 from account.api.serializers import (UserProductReact, UserFavoriteSpace,
-	UserPinnedProduct)
+	UserPinnedProductInfo)
 
 from home.models import Favorite,PinnedProduct
 
@@ -48,7 +48,7 @@ class UserFavoriteSpaceList(ListAPIView):
 
 class UserPinnedProductList(ListAPIView):
 	permission_classes = (IsAuthenticated,)
-	serializer_class = UserPinnedProduct
+	serializer_class = UserPinnedProductInfo
 
 	def get_queryset(self):
 		request = self.request

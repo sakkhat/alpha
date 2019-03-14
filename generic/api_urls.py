@@ -5,6 +5,8 @@ from account.api.views import (UserProductReactList, UserFavoriteSpaceList,
 
 from space.api.views import ProductListView,ProductView
 
+from home.api.views import PinnedProductsViewList
+
 urlpatterns = [
 	path('', ProductListView.as_view(), name='aasdasdas'),
 	path('<pk>/', ProductView.as_view(), name='aedwqwe'),
@@ -17,4 +19,7 @@ urlpatterns = [
 
 	path('user/<ac_id>/pinned_product_list/', UserPinnedProductList.as_view(), 
 		name='api_user_pinned_prodcut_list'),
+
+	path('user/<ac_id>/pinned_product_view/', PinnedProductsViewList.as_view(),
+		name='api_pinned_product_list_view'),
 ]

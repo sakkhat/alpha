@@ -104,56 +104,57 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="list-group">
-                    <a class="list-group-item bg-success" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Favourite Spaces</h4></a>
-                    <a class="list-group-item" href="#">Apple</a>
-                    <a class="list-group-item" href="#">Uniliver</a>
-                    <a class="list-group-item" href="#">Pran</a>
-                    <a class="list-group-item" href="#">Apex</a>
-                    <a class="list-group-item" href="#">Apple</a>
-                    <a class="list-group-item" href="#">Uniliver</a>
-                    <a class="list-group-item" href="#">Pran</a>
+    {% if request.user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="list-group">
+                        <a class="list-group-item bg-success" href="/account/activity/?what=favorite-space-list"    style="text-decoration: none; color: white;">
+                            <h4 style="margin: 0px">Favourite Spaces</h4>
+                        </a>
+                        {% for item in favorite %}
+                            <a class="list-group-item" href="/space/{{item.space.name}}">{{item.space.name}}</a>
+                        {% endfor %}
+
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-9">
-                <a class="list-group-item bg-success" href="" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Pinned Products</h4></a>
-                <br>
-                <div class="owl-carousel owl-theme float-carousel">
-                    {% for post in pinned_products %}
-                        <div class="item">
-                            <div class="card bg-light" id="product-card">
-                                <a href="/space/product/{{ post.uid }}/">
-                                    <img src="{{ post.logo_url }}">
-                                </a>
-                                <div class="card-body">
-                                    <center>
-                                       <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
-                                       <h6 class="d-inline-block">{{ post.price }} TK</h6>            
-                                    </center>
-                                    <center>
-                                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                            <span class="badge badge-light">{{ post.react_good }}</span>
-                                        </button>
-                                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                            <span class="badge badge-light">{{ post.react_bad }}</span>
-                                        </button>
-                                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                            <span class="badge badge-light">{{ post.react_fake}}</span>
-                                        </button>
-                                    </center>
+                <div class="col-md-9">
+                    <a class="list-group-item bg-success" href="/?filter=pinned-products" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Pinned Products</h4></a>
+                    <br>
+                    <div class="owl-carousel owl-theme float-carousel">
+                        {% for post in pinned_products %}
+                            <div class="item">
+                                <div class="card bg-light" id="product-card">
+                                    <a href="/space/product/{{ post.uid }}/">
+                                        <img src="{{ post.logo_url }}">
+                                    </a>
+                                    <div class="card-body">
+                                        <center>
+                                           <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
+                                           <h6 class="d-inline-block">{{ post.price }} TK</h6>            
+                                        </center>
+                                        <center>
+                                            <button class="btn btn-success" data-toggle="tooltip" title="Good">
+                                                <span class="badge badge-light">{{ post.react_good }}</span>
+                                            </button>
+                                            <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
+                                                <span class="badge badge-light">{{ post.react_bad }}</span>
+                                            </button>
+                                            <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
+                                                <span class="badge badge-light">{{ post.react_fake}}</span>
+                                            </button>
+                                        </center>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    {% endfor %}  
+                        {% endfor %}  
+                    </div>
+                    <br><br>
                 </div>
-                <br><br>
             </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="container-fluid">
         <div class="row">

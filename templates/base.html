@@ -36,39 +36,56 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/#trending">Trending</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/account/signin/">Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/account/signup/">Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/space/create/">Space Create</a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 10px;">
-                        <a class="nav-link" href="/space/product/create/">Product Create</a>
-                    </li>
-
-                    <div class="nav-link btn-group">
-                        <div class="dropdown-toggle" data-toggle="dropdown" 
-                            style="cursor: pointer; color: white;"> 
-                            <img  src="{% static 'res/tony.jpg' %}" style="width: 25px; border-radius: 5px;">
+                    {% if not request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/signin/">Sign In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/signup/">Sign Up</a>
+                        </li>
+                    {% else %}
+                        {% if request.user.has_space %}
+                            <li class="nav-item" style="margin-right: 10px;">
+                                <a class="nav-link" href="/space/product/create/">Product Create</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/space/create/">Space Create</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <div class="nav-link btn-group">
+                            <div class="dropdown-toggle" data-toggle="dropdown" 
+                                style="cursor: pointer; color: white;"> 
+                                <img  src="{% static 'res/tony.jpg' %}"  
+                                onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'" style="width: 25px; border-radius: 5px;">
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a class="list-group-item list-group-item-action" href="/account/">
+                                    {{ request.user.name }}
+                                </a>
+                                {% if request.user.has_space %}
+                                    <a class="list-group-item list-group-item-action" href="/space/easy/">Easy</a>
+                                {% endif %}
+                                
+                                <a class="list-group-item list-group-item-action" href="/account/signout/">Signout</a>
+                            </div>
                         </div>
-                        <div class="dropdown-menu dropdown-menu-right" role="menu">
-                            <a class="list-group-item list-group-item-action" href="/account/">{{ request.user.name }}</a>
-                            <a class="list-group-item list-group-item-action" href="/space/easy/">Easy</a>
-                            <a class="list-group-item list-group-item-action" href="/account/signout/">Signout</a>
-                        </div>
-                    </div>
+                    {% endif %}
                 </ul>
             </div>    
         </nav>
     </div>
+    <div class="extra_contents">
+        {% block extra_content %}
 
-	{% block extra_content %}
+
+        {% endblock %}
+    </div>
 
 
-	{% endblock %}
+    <!-- footer -->
 
 	<!-- JQuery , Popper and Bootstrap Library -->
 	<script type="text/javascript" src="{% static 'lib/js/jquery.min.js' %}"></script>

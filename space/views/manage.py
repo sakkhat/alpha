@@ -22,9 +22,9 @@ def index(request, name):
 			if favorite is not None:
 				favorite = favorite.lower()
 				if favorite == 'add':
-					handlePin(request, space, True)
+					handle_favorite(request, space, True)
 				elif favorite == 'remove':
-					handlePin(request, space, False)
+					handle_favorite(request, space, False)
 
 		products = Product.objects.filter(space = space)
 		context['space'] = space
@@ -64,7 +64,7 @@ def create(request):
 
 
 
-def handlePin(request, space, add):
+def handle_favorite(request, space, add):
 	try:
 		row = Favorite.objects.get(user=request.user, space = space)
 	except ObjectDoesNotExist as e:

@@ -16,7 +16,7 @@ def view(request, uid):
 	try:
 		product = Product.objects.get(uid = uid)
 		media = ProductMedia.objects.filter(product=product)
-		related_products = Product.objects.all()
+		related_products = Product.objects.filter(category=product.category).order_by('-uid')[:10]
 
 		if request.user.is_authenticated:
 	
@@ -119,7 +119,7 @@ def handle_react(request, uid, what):
 
 
 		if react_obj is None:
-			react_obj = roductReact(user=user, product=product, react=at)
+			react_obj = ProductReact(user=user, product=product, react=at)
 			react_obj.uid = now_str(mul=3)
 			react_obj.save()
 

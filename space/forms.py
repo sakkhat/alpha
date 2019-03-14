@@ -9,28 +9,26 @@ from space.models import Space,Product, ProductMedia
 
 class SpaceCreateForm(forms.ModelForm):
 	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',\
-		'url', 'http', 'https',]
+		'url', 'http', 'https','product','account','user']
 
 	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
 
 	class Meta:
 		model = Space
-		fields = ['name', 'description', 'category']
+		fields = ['name', 'description',]
 
 		widgets = {
 			'name' : forms.TextInput(attrs=
 				{'placeholder':'Space Name', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'}),
-			'category' : forms.Select(attrs=
-				{'class' : 'form-control'})
+				{'placeholder':'Description', 'class':'form-control'})
 		}
 
 
 	def clean_name(self):
 		name = self.cleaned_data['name']
-
+		
 		for i in self._UNUSABLE_SYMBOLS:
 			if i in name:
 				raise forms.ValidationError(i+ "is invalid")
@@ -79,7 +77,7 @@ class ProductPostForm(forms.ModelForm):
 
 	class Meta:
 		model = Product
-		fields = ['title', 'description', 'price']
+		fields = ['title', 'description', 'category', 'price']
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
@@ -88,7 +86,9 @@ class ProductPostForm(forms.ModelForm):
 				{'placeholder':'Description', 'class':'form-control'}),
 
 			'price' : forms.NumberInput(attrs=
-				{'placeholder':'Price (TK)', 'class':'form-control'})
+				{'placeholder':'Price (TK)', 'class':'form-control'}),
+			'category' : forms.Select(attrs=
+				{'class':'form-control'})
 		}
 
 
