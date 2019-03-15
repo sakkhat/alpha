@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 
 from home import views as index
 
-from space.api.views import ProductListView
 
 # from rest_framework import routers
 # from space.views import PostViewSet

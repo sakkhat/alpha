@@ -64,26 +64,21 @@
                         </div>
                     </div><br>
 
-                    <div class="progress">
-                        <div class="progress-bar bg-success" style="width: 70%">Good React</div>
-                    </div><br>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" style="width: 20%">Bad React</div>
-                    </div><br>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" style="width: 10%">Fake React</div>
+                    <div id="react-progress-block">
+                        
                     </div>
+                    
                 </div>
                 <br>
             </div>
 
             <div class="col-lg-3">
                 <div class="list-group" style="color: white">
-                    <h4 class="list-group-item disable bg-dark">Activity</h4>
-                    <h6 class="list-group-item bg-danger">Rating: 396</h6>
-                    <h6 class="list-group-item bg-info">Reacts: 6580</h6>
-                    <h6 class="list-group-item bg-success">Favorite: 485</h6>
-                    <h6 class="list-group-item bg-primary">Posts: 35</h6>
+                    <h4 class="list-group-item disable bg-dark">Status</h4>
+                    <h6 class="list-group-item text-dark">Rating : {{status.rating}}</h6>
+                    <h6 class="list-group-item text-dark">Reacts : {{total_react}}</h6>
+                    <h6 class="list-group-item text-dark">Favorites : {{ status.total_favorite }}</h6>
+                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
                 </div>
                 <br><br>
                 <div class="list-group">
@@ -206,4 +201,59 @@
             ReactDOM.render(element, document.getElementById('pin-block'));
         </script>
     {% endif %}
+
+    <script type="text/babel">
+        
+        class ReactProgress extends React.Component {
+
+            constructor(props){
+                super(props);
+
+                const good=(parseFloat( {{status.total_good_react}}/{{total_react}})*100).toFixed(2);
+                const bad=(parseFloat( {{status.total_bad_react}}/{{total_react}})*100).toFixed(2);
+                const fake=(parseFloat({{status.total_fake_react}}/{{total_react}})*100).toFixed(2);
+
+                console.log(good);
+                console.log(bad);
+                console.log(fake);
+
+                this.state = {
+                    'good' : good,
+                    'bad' : bad,
+                    'fake' : fake
+                };
+            }
+
+            render(){
+
+                const good = { width : this.state.good.toString()+'%' };
+                const bad = { width : this.state.bad.toString()+'%'  };
+                const fake = { width : this.state.fake.toString()+'%' };
+
+                return(
+                    <div>
+                        <div className="progress">
+                            <div className="progress-bar bg-success text-dark font-weight-bold" style={good}>
+                                Good React {this.state.good} %
+                            </div>
+                        </div><br/>
+                        <div className="progress">
+                            <div className="progress-bar bg-warning text-dark font-weight-bold" style={bad}>
+                                Bad React {this.state.bad} %
+                            </div>
+                        </div><br/>
+                        <div className="progress">
+                            <div className="progress-bar bg-danger text-dark font-weight-bold" style={fake}>
+                                Fake React {this.state.fake} %
+                            </div>
+                        </div>
+                    </div>
+                );
+                
+            }
+        }
+
+        const element = (<ReactProgress/>);
+        ReactDOM.render(element, document.getElementById('react-progress-block'));
+    </script>
 {% endblock %}

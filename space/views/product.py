@@ -8,7 +8,7 @@ from generic.views import json_response, invalid_request
 from home.models import PinnedProduct
 
 from space.forms import ProductPostForm
-from space.models import Product, ProductMedia, ProductReact
+from space.models import Product, ProductMedia, ProductReact,Status
 
 
 def view(request, uid):
@@ -50,21 +50,31 @@ def view(request, uid):
 def handle_pin(request, uid, add):
 	try:
 		product = Product.objects.get(uid = uid)
+		status = Status.objects.get(space = product.space)
 
 		if add:
 			try:
 				pin = PinnedProduct.objects.get(user=request.user, product=product)
-				return json_response(request, {}, 'invalid')
+				return json_response(request, {}, 'already pinned')
 			except ObjectDoesNotExist as e:
 				pin = PinnedProduct(user=request.user, product=product)
 				pin.uid = now_str(3)
 				pin.save()
-				return json_response(request, {}, 'done')
+
+				status.total_pinned = status.total_pinned + 1
+				status.save()
+
+				return json_response(request, {}, 'product pinned')
 		else:
 			try:
 				pin = PinnedProduct.objects.get(user = request.user, product=product)
 				pin.delete()
-				return json_response(request, {}, 'done')
+
+				status.total_pinned = status.total_pinned - 1
+				status.save()
+
+				return json_response(request, {}, 'pin removed')
+
 			except ObjectDoesNotExist as e:
 				return json_response(request, {}, 'invalid')
 
@@ -85,7 +95,8 @@ def handle_react(request, uid, what):
 	try:
 		product = Product.objects.get(uid=uid)
 		user = request.user
-		
+		status = Status.objects.get(space=product.space)
+
 		react_obj = None
 		try:
 			react_obj = ProductReact.objects.get(user = user, product=product)
@@ -95,27 +106,49 @@ def handle_react(request, uid, what):
 
 		if at == 'G':
 			product.react_good = product.react_good + 1
+			status.total_good_react = status.total_good_react + 1
+
 			if has == 'F':
 				product.react_fake = product.react_fake - 1
+				status.total_fake_react = status.total_fake_react -1
+
 			elif has == 'B':
 				product.react_bad = product.react_bad -1
+				status.total_bad_react = status.total_bad_react -1
+
 			product.save()
+			status.save()
 
 		elif at == 'B':
 			product.react_bad = product.react_bad + 1
+			status.total_bad_react = status.total_bad_react +1
+
 			if has == 'G':
 				product.react_good = product.react_good - 1
+				status.total_good_react = status.total_good_react - 1
+
 			elif has == 'F':
 				product.react_fake = product.react_fake - 1
+				status.total_fake_react = status.total_fake_react -1
+
 			product.save()
+			status.save()
+
 
 		elif at == 'F':
 			product.react_fake = product.react_fake + 1
+			status.total_fake_react = status.total_fake_react +1
+
 			if has == 'G':
 				product.react_good = product.react_good - 1
+				status.total_good_react = status.total_good_react - 1
+
 			elif has == 'B':
 				product.react_bad = product.react_bad - 1
+				status.total_bad_react = status.total_bad_react -1
+
 			product.save()
+			status.save()
 
 
 		if react_obj is None:
@@ -168,6 +201,10 @@ def create(request):
 		if form.is_valid():
 			form.load_images()
 			post = form.save()
+
+			space = post.space
+			Status.objects.create(space=space)
+
 			return redirect('/space/product/'+post.uid+'/')
 
 	else:

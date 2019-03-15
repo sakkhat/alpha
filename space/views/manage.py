@@ -2,20 +2,20 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 
-from home.models import Favorite
+from home.models import Favorite,PinnedProduct
 
 from space.forms import SpaceCreateForm
-from space.models import Space,Product
+from space.models import Space,Product,Status
 
 from generic.variables import LOGIN_URL, now_str
 from generic.views import invalid_request, json_response
 
-from space.api.views import ProductListView
 def index(request, name):
 
 	context = {}
 	try:
 		space = Space.objects.get(name__iexact=name)
+		status = Status.objects.get(space=space)
 
 		if request.user.is_authenticated and request.method == 'GET':
 			favorite = request.GET.get('favorite', None)
@@ -27,7 +27,10 @@ def index(request, name):
 					handle_favorite(request, space, False)
 
 		products = Product.objects.filter(space = space)
+
 		context['space'] = space
+		context['status'] = status
+		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
 		context['products'] = products
 		context['has_favorite'] = False
 
@@ -50,9 +53,9 @@ def create(request):
 	if request.method == 'POST':
 		form = SpaceCreateForm(request.POST, request=request)
 		if form.is_valid():
-			form.save()
-			name = form.cleaned_data['name']
-			return redirect('/space/'+name+'/')
+			space = form.save()
+			status = Status.objects.create(space=space)
+			return redirect('/space/'+space.name+'/')
 
 	else:
 		form = SpaceCreateForm(request=request)
@@ -70,14 +73,27 @@ def handle_favorite(request, space, add):
 	except ObjectDoesNotExist as e:
 		row = None
 
+	status = Status.objects.get(space=space)
+
 	if add:
 		if row is None:
 			row = Favorite(user=request.user, space=space)
 			row.uid = now_str(3)
 			row.save()
+
+			status.total_favorite = status.total_favorite + 1
+			status.save()
+
+			return json_response(request, {}, 'done')
 		
 	else:
 		if row is not None:
 			row.delete()
+
+			status.total_favorite = status.total_favorite -1
+			status.save()
+
+			return json_response(request, {}, 'done')
+
 			
-	return json_response(request, {}, 'done')
+	return json_response(request, {}, 'invalid')

@@ -3,13 +3,9 @@ from django.urls import path
 from account.api.views import (UserProductReactList, UserFavoriteSpaceList,
 	UserPinnedProductList)
 
-from space.api.views import ProductListView,ProductView
-
 from home.api.views import PinnedProductsViewList
 
 urlpatterns = [
-	path('', ProductListView.as_view(), name='aasdasdas'),
-	path('<pk>/', ProductView.as_view(), name='aedwqwe'),
 
 	path('user/<ac_id>/product_react_list/', UserProductReactList.as_view(), 
 		name='api_user_product_react_list'),

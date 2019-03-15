@@ -102,11 +102,16 @@ class Status(models.Model):
 	Doc here
 	"""
 	space = models.OneToOneField(Space, primary_key=True, on_delete=models.CASCADE)
+
 	total_good_react = models.PositiveIntegerField(default=0)
 	total_bad_react = models.PositiveIntegerField(default=0)
 	total_fake_react = models.PositiveIntegerField(default=0)
-	rating = models.PositiveIntegerField(default=0)
+
 	total_favorite = models.PositiveIntegerField(default=0)
+	total_pinned = models.PositiveIntegerField(default=0)
+	total_post = models.PositiveIntegerField(default=0)
+
+	rating = models.PositiveIntegerField(default=0)
 
 
 class Sell(models.Model):
