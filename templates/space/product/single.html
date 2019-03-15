@@ -204,6 +204,20 @@
 
             handleGood(){
                 if(this.state.current_react == 'G' || !this.state.auth){
+
+                    this.setState({
+                        goodeClass : 'btn btn-sm btn-outline-success',
+                        good : this.state.good - 1,
+                        current_react : 'N'
+                    });
+
+                    const url =  this.state.url + "GG";
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    });
+
                     return;
                 }
 
@@ -226,6 +240,20 @@
 
             handleBad(){
                 if(this.state.current_react == 'B' || !this.state.auth){
+
+                    this.setState({
+                        badClass : 'btn btn-sm btn-outline-warning',
+                        bad : this.state.bad - 1,
+                        current_react : 'N'
+                    });
+
+                    const url =  this.state.url + "BB";
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    });
+
                     return;
                 }
 
@@ -248,6 +276,19 @@
 
             handleFake(){
                 if(this.state.current_react == 'F' || !this.state.auth){
+
+                    this.setState({
+                        fakeClass : 'btn btn-sm btn-outline-danger',
+                        fake : this.state.fake - 1,
+                        current_react : 'N'
+                    });
+
+                    const url =  this.state.url + "FF";
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    });
                     return;
                 }
 

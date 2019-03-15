@@ -90,6 +90,32 @@ def handle_react(request, uid, what):
 	at = what[0]
 	has = what[1]
 	if at == has:
+		if at == 'G' or at == 'B' or at == 'F':
+			try:
+				product = Product.objects.get(uid=uid)
+				user = request.user
+				react_obj = ProductReact.objects.get(user = user, product=product)
+				status = Status.objects.get(space=product.space)
+
+				if at == 'G':
+					product.react_good = product.react_good -1
+					status.total_good_react = status.total_good_react -1
+				elif at == 'B':
+					product.react_bad = product.react_bad -1
+					status.total_bad_react = status.total_bad_react -1
+				else:
+					product.react_fake = product.react_fake -1
+					status.total_fake_react = status.total_fake_react -1
+
+				product.save()
+				status.save()
+				react_obj.delete()
+
+				return json_response(request=request, json_data='react removed')
+
+			except ObjectDoesNotExist as e:
+				pass
+
 		return json_response(request=request, json_data='invalid request')
 
 	try:
