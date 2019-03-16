@@ -55,6 +55,8 @@ def create(request):
 		if form.is_valid():
 			space = form.save()
 			status = Status.objects.create(space=space)
+			request.user.update(has_space=True)
+
 			return redirect('/space/'+space.name+'/')
 
 	else:

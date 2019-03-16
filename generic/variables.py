@@ -1,6 +1,7 @@
 LOGIN_URL = '/account/signin/'
 FILE_CHUNK_SIZE = 2500000
 PRODUCTS_FILE_PATH = 'data/product'
+USER_THUMBNAIL_PATH = 'data/user'
 
 
 from time import time

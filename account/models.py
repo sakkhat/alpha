@@ -49,7 +49,7 @@ class Account(AbstractBaseUser):
 	phone = models.CharField(max_length=12, unique=True, primary_key=True)
 	name = models.CharField(max_length=80)
 	gender = models.CharField(max_length=1, choices=_GENDER)
-	email = models.EmailField(max_length=45,blank=True, null=True)
+	email = models.EmailField(max_length=45)
 	thumbnail = models.TextField(blank=True,null=True)
 
 	has_space = models.BooleanField(default=False)

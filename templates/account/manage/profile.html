@@ -13,10 +13,11 @@
         <div class="row">
             <div class="col-md-3">
                 <div id="user-avatar">
-                        <img src="{% static 'res/tony.jpg' %}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
-                    </div>
+                        <img src="{{request.user.thumbnail}}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
+                </div>
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action">Update Info</a>
+                    <a href="update/" class="list-group-item list-group-item-action">Update Info</a>
+                    <a href="#" class="list-group-item list-group-item-action">Change Phone Number</a>
                     <a href="#" class="list-group-item list-group-item-action">Change Password</a>
                     <a href="#" class="list-group-item list-group-item-action">Deactivate Account</a>
                 </div>
@@ -37,28 +38,39 @@
                     {% endif %}
                 </div>
                 <br><br>
-                <a class="list-group-item list-group-item-action list-group-item-dark" 
-                    style="text-align: center;" href="#">
-                    <h5 style="font-weight: bold;">Space Name</h5>
-                </a>
-                <table class="table table-bordered table-secondary">
-                    <thead>
-                        <tr>
-                            <th>Rating</th><th>Total React</th><th>Total Favorite</th>
-                        </tr>
-                        <tr>
-                            <td>1545</td><td>5994</td><td>485</td>
-                        </tr>
-                    </thead>
-                </table>
-                <a href="/space/easy/" class="list-group-item bg-primary">
-                    <h5 style="margin: 0px; color:white; text-align: center;">Dashboard</h5>
-                </a>
-                <br><br>
+
+                {% if request.user.has_space %}
+                    <div>
+                        <a class="list-group-item list-group-item-action list-group-item-dark" 
+                                style="text-align: center;" href="/space/{{space.name}}">
+                            <h5 style="font-weight: bold;">{{space.name}}</h5>
+                        </a>
+                        <table class="table table-bordered table-secondary">
+                            <thead>
+                                <tr>
+                                    <th>Rating</th>
+                                    <th>Total Post</th>
+                                    <th>Total Favorite</th>
+                                    <th>Total Pinned</th>
+                                </tr>
+                                <tr>
+                                    <td>{{status.rating}}</td>
+                                    <td>{{status.total_post}}</td>
+                                    <td>{{status.total_favorite}}</td>
+                                    <td>{{status.total_pinned}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                        <a href="/space/easy/" class="list-group-item bg-primary">
+                            <h5 style="margin: 0px; color:white; text-align: center;">Dashboard</h5>
+                        </a>
+                        <br><br>
+                    </div>
+                {% endif %}
             </div>
             <div class="col-md-3">
                 <div class="list-group">
-                    <h5 class="list-group-item list-group-item-dark">Activity</h5>
+                    <h5 class="list-group-item list-group-item-dark">Your Activity</h5>
                     <a class="list-group-item list-group-item-action" 
                         href="activity/?what=product-react-list">Product React List</a>
 

@@ -1,9 +1,10 @@
 from django.urls import path
 
 from account.api.views import (UserProductReactList, UserFavoriteSpaceList,
-	UserPinnedProductList)
+	UserPinnedProductList, user_thumbnail_update)
 
 from home.api.views import PinnedProductsViewList
+
 
 urlpatterns = [
 
@@ -18,4 +19,7 @@ urlpatterns = [
 
 	path('user/<ac_id>/pinned_product_view/', PinnedProductsViewList.as_view(),
 		name='api_pinned_product_list_view'),
+
+
+	path('user/<ac_id>/thumbnail/', user_thumbnail_update, name='user-thumbnail-name'),
 ]

@@ -13,7 +13,7 @@ class Image():
 
 	THUMBNAIL_SIZE = (50,50)
 
-	def load(file_stream=None, path=None):
+	def load(file_stream=None, path=None, raw=None):
 		img_file = None
 		if file_stream is not None:
 			if file_stream.multiple_chunks(FILE_CHUNK_SIZE):
@@ -23,6 +23,9 @@ class Image():
 
 		elif path is not None:
 			img_file = _Image.open(path)
+
+		elif raw is not None:
+			img_file = _Image.open(BytesIO(raw))
 
 		return img_file
 
@@ -44,6 +47,11 @@ class Image():
 			remove(loc)
 			return True
 		except Exception as e:
+			try:
+				remove(loc[1:])
+				return True
+			except Exception as e:
+				pass
 			return False
 
 

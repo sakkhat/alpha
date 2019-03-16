@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Update | {{ request.user.name }}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/manage/update.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4" id="account-image-block">
+                
+            </div>
+            <div class="col-md-8">
+                <div class="list-group">
+                    <h5 class="list-group-item list-group-item-dark">About</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="list-group-item">
+                            {{ form.name.label}}
+                            {{ form.name }}
+                        </div>
+
+                        <div class="list-group-item">
+                            {{ form.email.label}}
+                            {{ form.email }}
+                        </div>
+                        <div class="list-group-item">
+                            {{ form.gender.label}}
+                            {{ form.gender }}
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel">
+        
+        class ImageUpdater extends React.Component {
+
+            constructor(props){
+                super(props);
+
+                this.state = {
+                    'thumbnail' : '{{request.user.thumbnail}}',
+                    'uploading' : false,
+                }
+
+                this.handleSelect = this.handleSelect.bind(this);
+                
+            }
+
+            handleSelect(e){
+                console.log('Button status Changed');
+                console.log(this.state.data);
+                
+                if (e.target.files && e.target.files[0]){
+
+                    const file = e.target.files[0];
+                    
+                    if(file.size > 1048576){
+                        alert('MAX upload size 1MB');
+                        return;
+                    }
+
+                    var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                    var ac_id = '{{request.user.phone}}'
+                    const url = '/api/user/01775998872/thumbnail/';
+                    fetch(url, {
+                        method: 'PUT',
+                        body : file,
+                        headers: {
+                        "X-CSRFToken": $crf_token,
+                        "Content-Type" : "multipart/form-data",
+                        "enctype" : "multipart/form-data",
+                        Accept: 'application/json, text/plain, */*',},
+
+                    })
+                    .then(response => response.json())
+                    .then(data =>{
+                        console.log(data.thumbnail);
+                        this.setState({
+                            thumbnail : data.thumbnail,
+                            uploading : false
+                        });
+
+                    });
+
+                    this.setState({
+                        uploading : true,
+                    });
+
+                }
+            }
+
+            render(){
+                const inputStyle = {display : 'none'};
+                if(this.state.uploading){
+                    return(
+                        <div>
+                            <div className="user-avatar-container">
+                                <img className="user-avatar" src={this.state.thumbnail} ref={img => this.img = img} onError={ () => this.img.src = 'https://i.postimg.cc/0N8mRzvP/user.png'} /><br/>
+                            </div>
+                            <div className="d-flex justify-content-center align-items-center">
+                                <button className="btn btn-primary disabled">
+                                    <span className="spinner-border spinner-border-sm"></span>Uploading...
+                                </button>
+                            </div>
+                            
+                        </div>
+                    );
+                }
+                return(
+                    <div>
+                        <div className="user-avatar-container">
+                            <img class="user-avatar" src={this.state.thumbnail} ref={img => this.img = img} onError={ () => this.img.src = 'https://i.postimg.cc/0N8mRzvP/user.png'} /><br/>
+                        </div>
+                        <div className="d-flex justify-content-center align-items-center">
+                            <label for="account-image" className="btn btn-primary">Update Image</label>
+                            <input type="file" accept=".png, .jpg, .jpeg"  name="account-image" style={inputStyle} id="account-image" onChange={this.handleSelect}/>
+                        </div>
+                        
+                    </div>
+                    
+                );
+            }
+        }
+
+        const element = (<ImageUpdater/>);
+        ReactDOM.render(element, document.getElementById('account-image-block'));
+    </script>
+{% endblock %}

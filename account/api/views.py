@@ -1,11 +1,20 @@
 from account.api.serializers import (UserProductReact, UserFavoriteSpace,
-	UserPinnedProductInfo)
+	UserPinnedProductInfo, UserAccountSerializer)
+from account.models import Account
+
+from django.core.exceptions import ObjectDoesNotExist
+
+from generic.media import Image
+from generic.variables import USER_THUMBNAIL_PATH
+from generic.views import json_response
 
 from home.models import Favorite,PinnedProduct
 
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import PermissionDenied,NotFound
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied,NotFound
+from rest_framework.response import Response
 
 from space.models import ProductReact
 
@@ -60,3 +69,41 @@ class UserPinnedProductList(ListAPIView):
 		else:
 			queryset = PinnedProduct.objects.filter(user=request.user).order_by('-uid')
 			return queryset
+
+
+
+
+@api_view(['GET', 'POST', 'PUT'])
+def user_thumbnail_update(request, ac_id):
+
+	if not request.user.is_authenticated:
+		return json_response(request, {}, 'invalid request')
+
+	if request.user.phone != ac_id:
+		return json_response(request, {}, 'invalid request')
+
+	if request.method == 'PUT':
+		try:
+			file = request.body
+			img_src = Image.load(raw=file)
+
+			try:
+				user = Account.objects.get(phone=ac_id)
+				img_path = Image.save(USER_THUMBNAIL_PATH, img_src)
+
+				Image.delete(user.thumbnail)
+				
+				user.thumbnail = img_path
+				user.save()
+
+				serializer = UserAccountSerializer(user)
+				return Response(serializer.data)
+
+
+			except ObjectDoesNotExist as e:
+				pass
+
+		except Exception as e:
+			pass
+	
+	return json_response(request, {}, 'invalid request')
