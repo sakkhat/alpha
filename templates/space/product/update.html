@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Product Update</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+    
+    <div class="d-flex justify-content-center align-items-center">
+    	<div class="col-md-8">
+    		<div class="media-block list-group-item">
+	            <ul class="nav nav-tabs" role="tablist">
+	                <li class="nav-item">
+	                    <a class="nav-link active" data-toggle="pill" href="#img1">
+	                        <img class="product-avatar-select" src="{{ media.0.location }}">
+	                    </a>
+	                </li>
+	                 <li class="nav-item">
+	                    <a class="nav-link" data-toggle="pill" href="#img2">
+	                        <img class="product-avatar-select" src="{{ media.1.location }}">
+	                    </a>
+	                </li>
+	                 <li class="nav-item">
+	                    <a class="nav-link" data-toggle="pill" href="#img3">
+	                        <img class="product-avatar-select" src="{{ media.2.location }}">
+	                    </a>
+	                </li>
+	            </ul>
+
+	          <!-- Tab panes -->
+	            <div class="tab-content">
+	                <div id="img1" class="container tab-pane active product-avatar">
+	                    <img src="{{ media.0.location }}">
+	                    <form method="POST" enctype="multipart/form-data" action="{{media.0.uid}}/">
+	                    	{% csrf_token %}
+	                    	<label class="image-text-block" for="image0">
+	                            <h6>Select Image 2</h6>
+	                        </label>
+	                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image0" class="d-none">
+	                        <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
+	                    </form>
+	                </div>
+	                <div id="img2" class="container tab-pane product-avatar">
+	                    <img src="{{ media.1.location }}">
+	                    <form method="POST" enctype="multipart/form-data" action="{{media.1.uid}}/">
+	                    	{% csrf_token %}
+	                    	<label class="image-text-block" for="image1">
+	                            <h6>Select Image 2</h6>
+	                        </label>
+	                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image1" class="d-none">
+	                        <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
+	                    </form>
+	                    
+	                </div>
+	                <div id="img3" class="container tab-pane product-avatar">
+	                    <img src="{{ media.2.location }}">
+	                    <form method="POST" enctype="multipart/form-data" action="{{media.2.uid}}/">
+	                    	{% csrf_token %}
+	                    	<label class="image-text-block" for="image2">
+	                            <h6>Select Image 2</h6>
+	                        </label>
+	                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image2" class="d-none">
+	                        <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	        <br>
+    		<form method="POST">
+    			{% csrf_token %}<br>
+    			{{ form.title }}<br>
+    			{{ form.description}}<br>
+    			{{ form.category }}<br>
+    			{{ form.price }}<br>
+    			<div class="custom-control custom-checkbox">
+    				{{ form.in_stock}}
+    				<label class="custom-control-label" for="id_in_stock">In Stock</label>
+    			</div><br>
+    			<button class="btn btn-success btn-block">Update</button>
+    		</form>
+    		<br>
+    	</div>
+    </div>
+
+{% endblock %}
+
+	
+
+{% block extra_script %}
+{% endblock %}

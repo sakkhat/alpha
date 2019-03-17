@@ -14,5 +14,7 @@ urlpatterns = [
 
 	path('product/create/', product.create, name='product_create'),
 	path('product/<uid>/', product.manager, name='product_view'),
+	path('product/<uid>/update/', product.update, name='product_update'),
+	path('product/<uid>/update/<media_id>/', product.update_product_media, name='product_media_update'),
 	
 ]

@@ -151,6 +151,12 @@ class ProfileUpdateForm(forms.ModelForm):
 
 		return email
 
+	def clean_gender(self):
+		gender = self.cleaned_data['gender']
+		if gender is None:
+			raise forms.ValidationError('set a gender')
+
+		return gender
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)

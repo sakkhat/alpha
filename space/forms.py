@@ -149,3 +149,45 @@ class SpaceUpdateForm(forms.ModelForm):
 		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
 		
 		self.fields['description'].initial = self.space.description
+
+
+
+
+class ProductUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Product
+		fields = ['title', 'description', 'price', 'category', 'in_stock']
+
+		widgets = {
+			'title' : forms.TextInput(attrs=
+				{'placeholder':'Title', 'class':'form-control'}),
+			'description' : forms.Textarea(attrs=
+				{'placeholder':'Description', 'class':'form-control'}),
+
+			'price' : forms.NumberInput(attrs=
+				{'placeholder':'Price (TK)', 'class':'form-control'}),
+			'category' : forms.Select(attrs=
+				{'class':'form-control'}),
+			'in_stock' : forms.CheckboxInput(attrs=
+				{'class' : 'custom-control-input'})
+		}
+
+
+	def clean_category(self):
+		category = self.cleaned_data['category']
+		if category is None:
+			raise forms.ValidationError('product must have a category')
+		else:
+			return category
+
+
+	def __init__(self, *args, **kwargs):
+		self.product = kwargs.pop('product', None)
+
+		super(ProductUpdateForm, self).__init__(*args, **kwargs)
+		
+		self.fields['title'].initial = self.product.title
+		self.fields['description'].initial = self.product.description
+		self.fields['price'].initial = self.product.price
+		self.fields['category'].initial = self.product.category
+		self.fields['in_stock'].initial = self.product.in_stock

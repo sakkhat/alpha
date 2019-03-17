@@ -72,9 +72,13 @@
 
                 </div>
                 <br>
-                <div id="request-block">
-                    
-                </div>
+                {% if product.space.owner == request.user %}
+                    <a href="update/" class="list-group-item list-group-item-action" style="text-align: center;">Update</a>
+                {% else %}
+                    <div id="request-block">
+                        
+                    </div>
+                {% endif %}
                 <br>
             </div>
         </div>
@@ -429,43 +433,45 @@
         ReactDOM.render(element, document.getElementById('product-react-pin'));
     </script>
 
-    <script type="text/babel">
-        class Request extends React.Component {
-            constructor(props){
-                super(props);
+    {% if not product.space.owner == request.user %}
+        <script type="text/babel">
+            class Request extends React.Component {
+                constructor(props){
+                    super(props);
 
-                this.state = {'clicked' : false};
+                    this.state = {'clicked' : false};
 
-                this.handleClick = this.handleClick.bind(this);
-            }
+                    this.handleClick = this.handleClick.bind(this);
+                }
 
-            handleClick(){
-                if(this.state.clicked){
-                    this.setState({clicked : false});
+                handleClick(){
+                    if(this.state.clicked){
+                        this.setState({clicked : false});
+                        return;
+                    }
+
+                    this.setState({clicked : true});
                     return;
                 }
 
-                this.setState({clicked : true});
-                return;
-            }
-
-            render(){
-                if(this.state.clicked){
-                    return (
-                        <button className="btn btn-outline-success btn-block" onClick={this.handleClick}>
-                            Contact: {{ product.space.owner.phone }}
+                render(){
+                    if(this.state.clicked){
+                        return (
+                            <button className="btn btn-outline-success btn-block" onClick={this.handleClick}>
+                                Contact: {{ product.space.owner.phone }}
+                            </button>
+                        );
+                    }
+                    return(
+                        <button className="btn btn-success btn-block" onClick={this.handleClick}>
+                            Make Request
                         </button>
                     );
                 }
-                return(
-                    <button className="btn btn-success btn-block" onClick={this.handleClick}>
-                        Make Request
-                    </button>
-                );
             }
-        }
 
-        const element = (<Request/>)
-        ReactDOM.render(element, document.getElementById('request-block'))
-    </script>
+            const element = (<Request/>)
+            ReactDOM.render(element, document.getElementById('request-block'))
+        </script>
+    {% endif %}
 {% endblock %}

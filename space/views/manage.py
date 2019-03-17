@@ -116,7 +116,6 @@ def update_space_banner(request, name , uid):
 				try:
 					banner = Banner.objects.get(uid=uid)
 					if banner.space == space:
-						pass
 						file = request.FILES.get('banner', None)
 						if file is not None:
 							img_src = Image.load(file_stream=file)

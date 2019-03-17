@@ -90,6 +90,7 @@ class ProductMedia(models.Model):
 	"""
 	Doc here
 	"""
+	uid = models.CharField(max_length=13, default='NULL')
 	location = models.TextField(unique=True,primary_key=True)
 	is_image = models.BooleanField(default=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -2,12 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from generic.variables import LOGIN_URL, now_str
+from generic.media import Image
+from generic.variables import LOGIN_URL, now_str, PRODUCTS_FILE_PATH
 from generic.views import json_response, invalid_request
 
 from home.models import PinnedProduct
 
-from space.forms import ProductPostForm
+from space.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status
 
 
@@ -239,4 +240,71 @@ def create(request):
 	context['form'] = form
 
 	return render(request, 'space/product/create.html',context)
+
+
+@login_required(login_url=LOGIN_URL)
+def update(request, uid):
+	try:
+		product = Product.objects.get(uid=uid)
+		if product.space.owner == request.user:
+			context = {}
+
+			if request.method == 'POST':
+				form = ProductUpdateForm(request.POST, product=product)
+				if form.is_valid():
+					product.title = form.cleaned_data['title']
+					product.description = form.cleaned_data['description']
+					product.price = form.cleaned_data['price']
+					product.category = form.cleaned_data['category']
+					product.in_stock = form.cleaned_data['in_stock']
+
+					product.save()
+
+					return redirect('/space/product/'+uid+'/')
+
+
+			form = ProductUpdateForm(product=product)
+			media = ProductMedia.objects.filter(product=product)
+
+			context['form'] = form
+			context['media'] = media
+
+			return render(request, 'space/product/update.html', context) 
+
+
+	except ObjectDoesNotExist as e:
+		pass
+
+	return invalid_request(request)
+
+
+@login_required(login_url=LOGIN_URL)
+def update_product_media(request, uid, media_id):
+	if request.method == 'POST':
+		try:
+			product = Product.objects.get(uid=uid)
+			media = ProductMedia.objects.get(uid=media_id)
+
+			if media.product == product:
+				file = request.FILES.get('image', None)
+
+				if file is not None:
+					img_src = Image.load(file_stream=file)
+
+					if img_src is not None:
+						img_path = Image.save(PRODUCTS_FILE_PATH, img_src)
+
+						Image.delete(media.location)
+						media.delete()
+
+						new_media = ProductMedia(location = img_path, product=product)
+						new_media.uid = now_str(3)
+						new_media.save()
+
+
+		except ObjectDoesNotExist as e:
+			pass
+
+
+	return redirect('/space/product/'+uid+'/update/')
 

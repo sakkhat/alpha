@@ -8,9 +8,9 @@
 
 
 {% block extra_content %}
-	<div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
+        <div class="d-flex justify-content-center align-items-center" style="margin: 20px;">
+            <div class="col-lg-5 list-group-item">
+                <h6 align="center">Sign In</h6>
                 <form class="sign-in-form" method="POST">
                     {% csrf_token %}
                 	{{ form.phone }}
@@ -18,11 +18,8 @@
                     <input type="submit" value="Sign In" class="btn btn-success btn-block">
                 </form>
                 <a href="/account/password-reset/" class="list-group-item list-group-item-action">Forget Password?</a>
-            </div>
-            <div class="col-md-6"></div>
-            
+            </div>  
         </div>
-    </div>
 {% endblock %}
 
 
