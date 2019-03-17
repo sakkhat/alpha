@@ -24,24 +24,18 @@
                     </ul>
 
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="banner-slider-item">
-                                <img src="{% static 'res/bing (1).jpg' %}" height="350px">
-                            </div>
+                        {% for banner in banners %}
+                            {% if forloop.first %}
+                            <div class="carousel-item active">
+                            {% else %}
+                            <div class="carousel-item">
+                            {% endif %}
                             
-                        </div>
-
-                        <div class="carousel-item">
-                            <div class="banner-slider-item">
-                                <img src="{% static 'res/bing (2).jpg' %}" height="350px">
+                                <div class="banner-slider-item">
+                                    <img src="{{banner.location}}" onerror="{this.src='https://images.unsplash.com/photo-1469827160215-9d29e96e72f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}" height="350px">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="carousel-item">
-                            <div class="banner-slider-item">
-                                <img src="{% static 'res/bing (3).jpg' %}" height="350px">
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
                     <a class="carousel-control-prev" href="#banner-slider" data-slide="prev">
@@ -54,7 +48,7 @@
 
                 <div class="list-group-item">
                     <h3>{{space.name}}</h3>
-                    <p>{{space.description}}</p>    
+                    <p>{{space.description | urlize | linebreaks }}</p>    
                 </div>
 
                 <div class="list-group-item">
@@ -83,7 +77,7 @@
                 <br><br>
                 <div class="list-group">
            
-                    <a class="list-group-item" href="">Settings</a>
+                    <a class="list-group-item" href="update/">Update</a>
                     <a class="list-group-item" href="">Promotion</a>
                     <a class="list-group-item" href="">Change Ownership</a>
                 </div>

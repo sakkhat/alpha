@@ -1,1 +1,1 @@
-__all__ = ['view']
+all = ['filter', 'manage']

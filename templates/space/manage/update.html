@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Update | {{ space.name }}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/update.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="list-group-item">
+                        {{ form}}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Update</button>
+                </form>
+                <br>
+            </div>
+            <div class="col-md-5">
+               <div id="banner-block">
+                    <div class="col-md-12">
+
+                        {% for banner in banners %}
+                            <div class="list-group-item">
+                                <form method="POST" enctype="multipart/form-data" action="{{banner.uid}}/">
+                                    {%csrf_token%}
+                                    <label class="banner-container" for="banner1">
+                                        <img src="{{banner.location}}">
+                                        <div class="image-text-block">
+                                            <h6>Select Image</h6>
+                                        </div>
+                                    </label>
+                                    <input type="file" name="banner" id="banner1" class="d-none">
+                                    <button class="btn btn-primary btn-block" type="submit">Update this banner</button>
+                                </form>
+                            </div><br>
+                        {% endfor %}
+
+                    </div>
+               </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extra_script %}
+{% endblock %}

@@ -132,3 +132,20 @@ class ProductPostForm(forms.ModelForm):
 		super(ProductPostForm, self).__init__(*args, **kwargs)
 
 
+
+class SpaceUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Space
+		fields = ['description',]
+
+		widgets = {
+			'description' : forms.Textarea(attrs=
+				{'placeholder':'Description', 'class':'form-control'})
+		}
+
+	def __init__(self, *args, **kwargs):
+		self.space = kwargs.pop('space', None)
+
+		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
+		
+		self.fields['description'].initial = self.space.description

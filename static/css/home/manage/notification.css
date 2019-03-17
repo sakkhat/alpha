@@ -1,0 +1,7 @@
+.notification-header {
+	cursor: pointer;
+}
+
+.notification-time{
+	float: right;
+}

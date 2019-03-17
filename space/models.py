@@ -50,8 +50,9 @@ class Space(models.Model):
 
 
 class Banner(models.Model):
+	uid = models.CharField(max_length=13, unique=True, primary_key=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
-	location = models.TextField(unique=True, primary_key=True)
+	location = models.TextField()
 
 
 
