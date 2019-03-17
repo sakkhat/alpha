@@ -25,7 +25,7 @@ class SignupForm(forms.ModelForm):
 				}),
 
 			'email' : forms.EmailInput(attrs={
-				'placeholder' : 'Email (optional)', 'class' : 'form-control'
+				'placeholder' : 'Email', 'class' : 'form-control'
 				}),
 
 			'gender' : forms.Select(attrs={
@@ -85,11 +85,11 @@ class SigninForm(forms.Form):
 class PasswordChangeForm(forms.Form):
 
 	current_password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Current Password'}))
+		{'placeholder' : 'Current Password', 'class' : 'form-control'}))
 	new_password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'New Password'}))
+		{'placeholder' : 'New Password', 'class' : 'form-control', 'minLength':'6'}))
 	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Confirm Password'}))
+		{'placeholder' : 'Confirm Password', 'class' : 'form-control'}))
 
 	def clean_current_password(self):
 		current_password = self.cleaned_data['current_password']
@@ -107,12 +107,12 @@ class PasswordChangeForm(forms.Form):
 		return confirm_password
 
 
-class PasswordResetForm(forms.Form):
-	password1 = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'New Password'}))
 
-	password2 = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Confirm Password'}))
+	def __init__(self, *args, **kwargs):
+		self.user = kwargs.pop('user', None)
+
+		super(PasswordChangeForm, self).__init__(*args, **kwargs)
+
 
 
 class ProfileUpdateForm(forms.ModelForm):

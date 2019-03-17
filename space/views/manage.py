@@ -54,6 +54,9 @@ def index(request, name):
 	
 @login_required(login_url=LOGIN_URL)
 def create(request):
+	if request.user.has_space:
+		return invalid_request(request)
+		
 	context = {}
 
 	if request.method == 'POST':

@@ -94,13 +94,13 @@
                                 </button>
                                 <h6 className="notification-time">{this.getTime(item.uid)}</h6>
                             </div>
-                            <h6 className="list-group-item notification-header" data-toggle="collapse" 
-                                data-target="#notification-body" onClick={this.onItemClickHandler.bind(this, item)}>
+                            <h6 className="list-group-item bg-success text-white">
                                 {item.title} <i className={this.getSeenClass(item.seen)} ></i>
                             </h6>
-                            <div className="collapse" id="notification-body">
-                                <a href={item.action} class="list-group-item list-group-item-action">{item.message}</a>
-                            </div>
+                            <a href={item.action} class="list-group-item list-group-item-action" 
+                                    onClick={this.onItemClickHandler.bind(this, item)}>
+                                {item.message}
+                            </a>
                         </div>
                     );
 

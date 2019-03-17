@@ -32,7 +32,7 @@ urlpatterns = [
 	# managed all index functionality in home
     path('api/', include('generic.api_urls')), 
     path('', include('home.urls')),
-    # path('admin/', site.urls),
+    path('admin/', site.urls),
     path('account/', include('account.urls')),
     path('space/', include('space.urls')),
 ]

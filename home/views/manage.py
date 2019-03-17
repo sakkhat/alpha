@@ -57,7 +57,7 @@ def notification_status_changle(request, uid):
 
 		if notification.user.phone == request.user.phone:
 			seen = request.GET.get('seen', None)
-			print(seen)
+
 			if seen is not None:
 				seen = seen.lower()
 				if seen == 'false':
