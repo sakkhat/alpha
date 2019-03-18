@@ -65,8 +65,12 @@
                 return 'em em-new';
             }
 
-            getTime(uid){
-                return new Date(parseInt(uid)).toLocaleString();
+            handleTimestamp(unix_time){
+                try{
+                    return new Date(parseInt(unixtime)).toLocaleString()
+                }catch(err){
+                    return new Date().toLocaleString()
+                }
             }
 
             getLabel(label){
@@ -92,7 +96,7 @@
                                 <button className="btn btn-warning btn-sm disabled notification-label">
                                     {this.getLabel(item.label)}
                                 </button>
-                                <h6 className="notification-time">{this.getTime(item.uid)}</h6>
+                                <h6 className="notification-time">{this.handleTimestamp(item.unix_time)}</h6>
                             </div>
                             <h6 className="list-group-item bg-success text-white">
                                 {item.title} <i className={this.getSeenClass(item.seen)} ></i>

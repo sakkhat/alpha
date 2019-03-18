@@ -15,12 +15,12 @@ def index(request):
 
 	products = Product.objects.all()
 	trending_products = products
-	recent_products = Product.objects.all().order_by('-uid')[:10]
+	recent_products = Product.objects.all().order_by('-time_date')[:10]
 	pinned_products = products
 	related_products = products
 
 	if request.user.is_authenticated:
-		favorite = Favorite.objects.filter(user=request.user).order_by('-uid')[:7]
+		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:7]
 		context['favorite'] = favorite
 		
 		pinned_products = pinned_product_objects(request.user, 10)

@@ -75,10 +75,12 @@
                     <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
                 </div>
                 <br><br>
+                {% if request.user.is_authenticated and request.user == space.owner %}
                 <div class="list-group">
                     <a class="list-group-item" href="update/">Update</a>
                     <a class="list-group-item" href="#">Delete</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -124,74 +126,76 @@
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
 
-    {% if request.user.is_authenticated %}
-        <script type="text/babel">
-        
-            class Pin extends React.Component {
+    {% if request.user.is_authenticated  %}
+        {% if not request.user == space.owner %}
+            <script type="text/babel">
+            
+                class Pin extends React.Component {
 
-                constructor(props){
-                    super(props);
+                    constructor(props){
+                        super(props);
 
-                    {% if has_favorite %}
-                        this.state = {
-                            pinClassName : 'btn btn-sm btn-dark',
-                            pinned : true,
-                            text : 'Remove Favorite'
-                        };
+                        {% if has_favorite %}
+                            this.state = {
+                                pinClassName : 'btn btn-sm btn-dark',
+                                pinned : true,
+                                text : 'Remove Favorite'
+                            };
 
-                    {% else %}
-                        this.state = {
-                            pinClassName : 'btn btn-sm btn-outline-dark',
-                            pinned : false,
-                            text : 'Add Favorite'
-                        };
-                    {% endif %}
+                        {% else %}
+                            this.state = {
+                                pinClassName : 'btn btn-sm btn-outline-dark',
+                                pinned : false,
+                                text : 'Add Favorite'
+                            };
+                        {% endif %}
 
-                    this.handleClick = this.handleClick.bind(this);
-                }
-
-                handleClick(){
-
-                    if(this.state.pinned){
-                        this.setState({
-                            pinClassName : 'btn btn-sm btn-outline-dark',
-                            pinned : false,
-                            text : 'Add Favorite'
-                        });
-
-                        fetch('?favorite=remove')
-                        .then(response => {
-                            response.json();
-                            console.log(response);
-                        });
-                    }
-                    else{
-                        this.setState({
-                            pinClassName : 'btn btn-sm btn-dark',
-                            pinned : true,
-                            text : 'Remove Favorite'
-                        });
-                        fetch('?favorite=add')
-                        .then(response => {
-                            response.json();
-                            console.log(response);
-                        });
+                        this.handleClick = this.handleClick.bind(this);
                     }
 
+                    handleClick(){
+
+                        if(this.state.pinned){
+                            this.setState({
+                                pinClassName : 'btn btn-sm btn-outline-dark',
+                                pinned : false,
+                                text : 'Add Favorite'
+                            });
+
+                            fetch('?favorite=remove')
+                            .then(response => {
+                                response.json();
+                                console.log(response);
+                            });
+                        }
+                        else{
+                            this.setState({
+                                pinClassName : 'btn btn-sm btn-dark',
+                                pinned : true,
+                                text : 'Remove Favorite'
+                            });
+                            fetch('?favorite=add')
+                            .then(response => {
+                                response.json();
+                                console.log(response);
+                            });
+                        }
+
+                    }
+
+                    render(){
+                        return(
+                            <button class={this.state.pinClassName} onClick={this.handleClick}>
+                                {this.state.text} <i class="em em-heart"></i>
+                            </button>
+                        );
+                    }
                 }
 
-                render(){
-                    return(
-                        <button class={this.state.pinClassName} onClick={this.handleClick}>
-                            {this.state.text} <i class="em em-heart"></i>
-                        </button>
-                    );
-                }
-            }
-
-            const element = (<Pin/>);
-            ReactDOM.render(element, document.getElementById('pin-block'));
-        </script>
+                const element = (<Pin/>);
+                ReactDOM.render(element, document.getElementById('pin-block'));
+            </script>
+        {% endif %}
     {% endif %}
 
     <script type="text/babel">
@@ -201,13 +205,19 @@
             constructor(props){
                 super(props);
 
-                const good=(parseFloat( {{status.total_good_react}}/{{total_react}})*100).toFixed(2);
-                const bad=(parseFloat( {{status.total_bad_react}}/{{total_react}})*100).toFixed(2);
-                const fake=(parseFloat({{status.total_fake_react}}/{{total_react}})*100).toFixed(2);
+                var good=(parseFloat( {{status.total_good_react}}/{{total_react}})*100).toFixed(2);
+                var bad=(parseFloat( {{status.total_bad_react}}/{{total_react}})*100).toFixed(2);
+                var fake=(parseFloat({{status.total_fake_react}}/{{total_react}})*100).toFixed(2);
 
-                console.log(good);
-                console.log(bad);
-                console.log(fake);
+                if (good == 'NaN'){
+                    good = 0;
+                }
+                if (bad == 'NaN'){
+                    bad = 0;
+                }
+                if (fake == 'NaN'){
+                    fake = 0;
+                }
 
                 this.state = {
                     'good' : good,

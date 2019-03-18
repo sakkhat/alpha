@@ -19,7 +19,8 @@ _NOTIFICATION_LABEL_DIC = {
 }
 
 class Notification(models.Model):
-	uid = models.CharField(max_length=13, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	unix_time = models.CharField(max_length=13)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.TextField()
@@ -40,7 +41,8 @@ class PinnedProduct(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=13, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	unix_time = models.CharField(max_length=13)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
@@ -50,6 +52,7 @@ class Favorite(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=13, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	unix_time = models.CharField(max_length=13)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)

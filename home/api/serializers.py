@@ -16,4 +16,4 @@ class ProductSerializer(ModelSerializer):
 class NotificationSerializer(ModelSerializer):
 	class Meta:
 		model = Notification
-		fields = ('uid', 'label', 'title', 'message', 'seen', 'action')
+		fields = ('uid', 'unix_time', 'label', 'title', 'message', 'seen', 'action')

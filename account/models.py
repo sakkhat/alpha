@@ -50,7 +50,7 @@ class Account(AbstractBaseUser):
 	name = models.CharField(max_length=80)
 	gender = models.CharField(max_length=1, choices=_GENDER)
 	email = models.EmailField(max_length=45)
-	thumbnail = models.TextField(blank=True,null=True)
+	thumbnail = models.TextField(default='https://i.postimg.cc/0N8mRzvP/user.png')
 
 	has_space = models.BooleanField(default=False)
 	has_notification = models.BooleanField(default=False)

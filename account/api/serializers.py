@@ -15,13 +15,13 @@ class UserProductReact(rest_serializer.ModelSerializer):
 class UserFavoriteSpace(rest_serializer.ModelSerializer):
 	class Meta:
 		model = Favorite
-		fields = ('uid', 'space')
+		fields = ('uid', 'unix_time', 'space')
 
 
 class UserPinnedProductInfo(rest_serializer.ModelSerializer):
 	class Meta:
 		model = PinnedProduct
-		fields = ('uid', 'product') 
+		fields = ('uid', 'unix_time', 'product') 
 
 
 class UserAccountSerializer(rest_serializer.ModelSerializer):

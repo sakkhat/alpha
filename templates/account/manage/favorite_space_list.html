@@ -9,7 +9,7 @@
 {% block extra_content %}
     
     <div class="d-flex justify-content-center align-items-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
                 Your favorite space list
             </h5>
@@ -48,9 +48,12 @@
                 }
             }
 
-            handleTimestamp(uid){
-                const date = new Date(parseInt(uid));
-                return date.toLocaleString();
+            handleTimestamp(unix_time){
+                try{
+                    return new Date(parseInt(unixtime)).toLocaleString()
+                }catch(err){
+                    return new Date().toLocaleString()
+                }
             }
 
             getSpaceLink(space){
@@ -66,7 +69,7 @@
                     const data_list = results.map((item) =>      
                             <tr>
                                 <td><a href={this.getSpaceLink(item.space)}>{item.space}</a></td>
-                                <td>{this.handleTimestamp(item.uid)}</td>
+                                <td>{this.handleTimestamp(item.unix_time)}</td>
                             </tr>
                         );
                     this.setState({

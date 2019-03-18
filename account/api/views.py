@@ -33,7 +33,7 @@ class UserProductReactList(ListAPIView):
 		if request.user.phone != ac_id:
 			raise PermissionDenied('invalid request for this user')
 		else:
-			queryset = ProductReact.objects.filter(user=request.user).order_by('-uid')
+			queryset = ProductReact.objects.filter(user=request.user).order_by('-unix_time')
 			return queryset
 
 
@@ -50,7 +50,7 @@ class UserFavoriteSpaceList(ListAPIView):
 		if request.user.phone != ac_id:
 			raise PermissionDenied('invalid request for this user')
 		else:
-			queryset = Favorite.objects.filter(user=request.user).order_by('-uid')
+			queryset = Favorite.objects.filter(user=request.user).order_by('-unix_time')
 			return queryset
 
 
@@ -67,7 +67,7 @@ class UserPinnedProductList(ListAPIView):
 		if request.user.phone != ac_id:
 			raise PermissionDenied('invalid request for this user')
 		else:
-			queryset = PinnedProduct.objects.filter(user=request.user).order_by('-uid')
+			queryset = PinnedProduct.objects.filter(user=request.user).order_by('-unix_time')
 			return queryset
 
 
@@ -93,6 +93,8 @@ def user_thumbnail_update(request, ac_id):
 
 				Image.delete(user.thumbnail)
 				
+				print(img_path)
+
 				user.thumbnail = img_path
 				user.save()
 
@@ -101,9 +103,9 @@ def user_thumbnail_update(request, ac_id):
 
 
 			except ObjectDoesNotExist as e:
-				pass
+				print(e)
 
 		except Exception as e:
-			pass
+			print(e)
 	
 	return json_response(request, {}, 'invalid request')

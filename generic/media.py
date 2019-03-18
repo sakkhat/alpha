@@ -1,6 +1,6 @@
 from django.core.files.storage import FileSystemStorage as FSS
 
-from generic.variables import now_md5_hashed, FILE_CHUNK_SIZE
+from generic.variables import random, FILE_CHUNK_SIZE
 
 from io import BytesIO
 from PIL import Image as _Image
@@ -32,7 +32,7 @@ class Image():
 
 	def save(loc, file):
 		storage = FSS(location = loc)
-		filename = now_md5_hashed(8)+'.'+file.format
+		filename = random()+'.'+file.format
 
 		if isdir(storage.location) == False:
 			makedirs(storage.location)

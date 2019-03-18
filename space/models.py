@@ -50,9 +50,9 @@ class Space(models.Model):
 
 
 class Banner(models.Model):
-	uid = models.CharField(max_length=13, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
-	location = models.TextField()
+	location = models.TextField(default='https://i.postimg.cc/GmzSz9Nq/banner.png')
 
 
 
@@ -61,11 +61,11 @@ class Product(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=18, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
 	title = models.CharField(max_length=30)
 	price = models.FloatField()
 	description = models.TextField()
-	logo_url = models.TextField(default='Null')
+	logo_url = models.TextField()
 	time_date = models.DateTimeField(auto_now=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
@@ -79,7 +79,8 @@ class ProductReact(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=13, unique=True, primary_key=True)
+	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	unix_time = models.CharField(max_length=13)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)
@@ -90,7 +91,7 @@ class ProductMedia(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=13, default='NULL')
+	uid = models.CharField(max_length=32)
 	location = models.TextField(unique=True,primary_key=True)
 	is_image = models.BooleanField(default=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)

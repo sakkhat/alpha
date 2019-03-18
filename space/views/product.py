@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str, PRODUCTS_FILE_PATH
+from generic.variables import LOGIN_URL, now_str,random, PRODUCTS_FILE_PATH
 from generic.views import json_response, invalid_request
 
 from home.models import PinnedProduct
@@ -17,7 +17,7 @@ def view(request, uid):
 	try:
 		product = Product.objects.get(uid = uid)
 		media = ProductMedia.objects.filter(product=product)
-		related_products = Product.objects.filter(category=product.category).order_by('-uid')[:10]
+		related_products = Product.objects.filter(category=product.category).order_by('-time_date')[:10]
 
 		if request.user.is_authenticated:
 	
@@ -38,6 +38,7 @@ def view(request, uid):
 
 		context['product'] = product
 		context['media'] = media
+		
 		context['related_products'] = related_products
 
 		return render(request, 'space/product/single.html', context)
@@ -59,7 +60,8 @@ def handle_pin(request, uid, add):
 				return json_response(request, {}, 'already pinned')
 			except ObjectDoesNotExist as e:
 				pin = PinnedProduct(user=request.user, product=product)
-				pin.uid = now_str(3)
+				pin.uid = random()
+				pin.unix_time = now_str(3)
 				pin.save()
 
 				status.total_pinned = status.total_pinned + 1
@@ -180,7 +182,8 @@ def handle_react(request, uid, what):
 
 		if react_obj is None:
 			react_obj = ProductReact(user=user, product=product, react=at)
-			react_obj.uid = now_str(mul=3)
+			react_obj.uid = random()
+			react_obj.unix_time = now_str(3)
 			react_obj.save()
 
 		else:
@@ -188,7 +191,8 @@ def handle_react(request, uid, what):
 				react_obj.delete()
 
 				new_react_obj = ProductReact(user=user, product=product, react=at)
-				new_react_obj.uid = now_str(3)
+				new_react_obj.uid = random()
+				new_react_obj.unix_time = now_str(3)
 				new_react_obj.save()
 
 
@@ -229,8 +233,9 @@ def create(request):
 			form.load_images()
 			post = form.save()
 
-			space = post.space
-			Status.objects.create(space=space)
+			status = Status.objects.get(space=post.space)
+			status.total_post = status.total_post + 1
+			status.save()
 
 			return redirect('/space/product/'+post.uid+'/')
 
@@ -298,8 +303,11 @@ def update_product_media(request, uid, media_id):
 						media.delete()
 
 						new_media = ProductMedia(location = img_path, product=product)
-						new_media.uid = now_str(3)
+						new_media.uid = random()
 						new_media.save()
+
+						product.logo_url = new_media.location
+						product.save()
 
 
 		except ObjectDoesNotExist as e:

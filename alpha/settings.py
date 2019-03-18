@@ -120,7 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Custom authentication model
-AUTH_USER_MODEL = 'account.Account'
+if env.bool('LOAD_AUTH_USER_MODEL'):
+    AUTH_USER_MODEL = env.str('AUTH_USER_MODEL')
 
 
 # Internationalization

@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str,SPACE_BANNER_PATH
+from generic.variables import LOGIN_URL, now_str, random, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
 
 from home.models import Favorite,PinnedProduct
@@ -64,7 +64,8 @@ def create(request):
 		if form.is_valid():
 			space = form.save()
 			status = Status.objects.create(space=space)
-			request.user.update(has_space=True)
+			request.user.has_space=True
+			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
 
@@ -125,7 +126,7 @@ def update_space_banner(request, name , uid):
 							banner.delete()
 
 							new_banner = Banner(space=space, location=img_path)
-							new_banner.uid = now_str(3)
+							new_banner.uid = random()
 							new_banner.save()
 
 							return redirect('/space/'+space.name+'/update/')
@@ -150,7 +151,8 @@ def handle_favorite(request, space, add):
 	if add:
 		if row is None:
 			row = Favorite(user=request.user, space=space)
-			row.uid = now_str(3)
+			row.uid = random()
+			row.unix_time = now_str(3)
 			row.save()
 
 			status.total_favorite = status.total_favorite + 1

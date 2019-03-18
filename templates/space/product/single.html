@@ -17,35 +17,33 @@
 	<div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="pill" href="#img1">
-                            <img class="product-avatar-select" src="{{ media.0.location }}">
-                        </a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#img2">
-                            <img class="product-avatar-select" src="{{ media.1.location }}">
-                        </a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#img3">
-                            <img class="product-avatar-select" src="{{ media.2.location }}">
-                        </a>
-                    </li>
+               <ul class="nav nav-tabs" role="tablist">
+
+                    {% for item in media %}
+                        <li class="nav-item">
+                            {% if forloop.first %}
+                            <a class="nav-link active" data-toggle="pill" href="#img{{forloop.counter}}">
+                            {% else %}
+                            <a class="nav-link" data-toggle="pill" href="#img{{forloop.counter}}">
+                            {% endif %}
+                                <img class="product-avatar-select" src="{{ item.location }}">
+                            </a>
+                        </li>
+                    {% endfor %}
                 </ul>
 
               <!-- Tab panes -->
                 <div class="tab-content">
-                    <div id="img1" class="container tab-pane active product-avatar">
-                        <img src="{{ media.0.location }}">
-                    </div>
-                    <div id="img2" class="container tab-pane product-avatar">
-                        <img src="{{ media.1.location }}">
-                    </div>
-                    <div id="img3" class="container tab-pane product-avatar">
-                        <img src="{{ media.2.location }}">
-                    </div>
+
+                    {% for item in media %}
+                        {% if forloop.first %}
+                        <div class="container tab-pane active product-avatar" id="img{{forloop.counter}}">
+                        {% else %}
+                        <div class="container tab-pane product-avatar" id="img{{forloop.counter}}">
+                        {% endif %}
+                            <img src="{{item.location}}">
+                        </div>
+                    {% endfor %}
 
                 </div>
             </div>
@@ -153,7 +151,7 @@
 
                     'current_react' : 'N',
                     'url' : '?react=',
-                    'auth' : true
+                    'auth' : true,
 
                 };
 
@@ -207,6 +205,15 @@
             }
 
             handleGood(){
+
+                {% if request.user == product.space.owner%}
+                return;
+                {% endif %}
+
+                if(this.state.auth == false){
+                    return;
+                }
+
                 if(this.state.current_react == 'G' || !this.state.auth){
 
                     this.setState({
@@ -243,6 +250,14 @@
             }
 
             handleBad(){
+                {% if request.user == product.space.owner%}
+                return;
+                {% endif %}
+
+                if(this.state.auth == false){
+                    return;
+                }
+
                 if(this.state.current_react == 'B' || !this.state.auth){
 
                     this.setState({
@@ -279,6 +294,14 @@
             }
 
             handleFake(){
+                {% if request.user == product.space.owner%}
+                return;
+                {% endif %}
+                
+                if(this.state.auth == false){
+                    return;
+                }
+
                 if(this.state.current_react == 'F' || !this.state.auth){
 
                     this.setState({
@@ -421,9 +444,13 @@
                 <div className="col-sm-9">
                     <ProductReact/>
                 </div>
-                <div className="col-sm-3 bt-config">
-                    <ProductPin/>    
-                </div>
+                {% if request.user.is_authenticated %}
+                    {% if not product.space.owner == request.user %}
+                        <div className="col-sm-3 bt-config">
+                            <ProductPin/>    
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
                 
         );
