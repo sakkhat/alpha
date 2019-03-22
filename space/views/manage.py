@@ -6,7 +6,7 @@ from generic.media import Image
 from generic.variables import LOGIN_URL, now_str, random, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
 
-from home.models import Favorite,PinnedProduct
+from home.models import Favorite,PinnedProduct,TrendingSpaceStatus
 
 from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
@@ -39,6 +39,12 @@ def index(request, name):
 		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
 		context['products'] = products
 		context['has_favorite'] = False
+
+		in_trending = TrendingSpaceStatus.objects.filter(status=status)
+		if in_trending is not None:
+			context['in_trending'] = True
+		else:
+			context['in_trending'] = False
 
 		if request.user.is_authenticated:
 			try:
@@ -138,36 +144,3 @@ def update_space_banner(request, name , uid):
 			pass
 
 	return invalid_request(request)
-
-
-def handle_favorite(request, space, add):
-	try:
-		row = Favorite.objects.get(user=request.user, space = space)
-	except ObjectDoesNotExist as e:
-		row = None
-
-	status = Status.objects.get(space=space)
-
-	if add:
-		if row is None:
-			row = Favorite(user=request.user, space=space)
-			row.uid = random()
-			row.unix_time = now_str(3)
-			row.save()
-
-			status.total_favorite = status.total_favorite + 1
-			status.save()
-
-			return json_response(request, {}, 'done')
-		
-	else:
-		if row is not None:
-			row.delete()
-
-			status.total_favorite = status.total_favorite -1
-			status.save()
-
-			return json_response(request, {}, 'done')
-
-			
-	return json_response(request, {}, 'invalid')

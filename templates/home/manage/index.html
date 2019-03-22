@@ -53,13 +53,11 @@
             <div class="col-md-3">
                 <div class="list-group">
                     <a class="list-group-item bg-danger" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Trending Spaces</h4></a>
-                    <a class="list-group-item" href="#">Apple</a>
-                    <a class="list-group-item" href="#">Uniliver</a>
-                    <a class="list-group-item" href="#">Pran</a>
-                    <a class="list-group-item" href="#">Apex</a>
-                    <a class="list-group-item" href="#">Apple</a>
-                    <a class="list-group-item" href="#">Uniliver</a>
-                    <a class="list-group-item" href="#">Pran</a>
+                    {% for item in trending_spaces %}
+                        <a class="list-group-item list-group-item-action" href="/space/{{item.status.space.name}}/">
+                            {{item.status.space.name}}
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>

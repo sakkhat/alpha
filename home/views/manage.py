@@ -6,7 +6,7 @@ from generic.query import pinned_product_objects
 from generic.variables import LOGIN_URL
 from generic.views import json_response
 
-from home.models import Favorite, PinnedProduct,Notification
+from home.models import Favorite, PinnedProduct,Notification,TrendingSpaceStatus
 from space.models import Product
 
 def index(request):
@@ -16,9 +16,9 @@ def index(request):
 	products = Product.objects.all()
 	trending_products = products
 	recent_products = Product.objects.all().order_by('-time_date')[:10]
-	pinned_products = products
 	related_products = products
 
+	trending_spaces = TrendingSpaceStatus.objects.all().order_by('-status__rating')[:7]
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:7]
 		context['favorite'] = favorite
@@ -29,6 +29,7 @@ def index(request):
 	context['trending_products'] = trending_products
 	context['recent_products'] = recent_products
 	context['related_products'] = related_products
+	context['trending_spaces'] = trending_spaces
 
 	return render(request, 'home/manage/index.html', context)
 

@@ -140,20 +140,42 @@
             constructor(props){
                 super(props);
 
-                this.state = {
-                    'good' : {{product.react_good}},
-                    'bad' : {{product.react_bad}},
-                    'fake' : {{product.react_fake}},
+                {% if request.user.is_authenticated %}
+                    var reactCodeDic = {'None':'N', 'Good':'G', 'Bad':'B', 'Fake':'F'};
+                    var reactStateDic ={'N':true, 'G':false,'B':false,'F':false};
 
-                    'goodClass' : 'btn btn-sm btn-outline-success',
-                    'badClass' : 'btn btn-sm btn-outline-warning',
-                    'fakeClass' : 'btn btn-sm btn-outline-danger',
+                    this.state = {
+                        'good' : 0,
+                        'bad' : 0,
+                        'fake' : 0,
 
-                    'current_react' : 'N',
-                    'url' : '?react=',
-                    'auth' : true,
+                        'goodClass' : 'btn btn-sm btn-outline-success',
+                        'badClass' : 'btn btn-sm btn-outline-warning',
+                        'fakeClass' : 'btn btn-sm btn-outline-danger',
 
-                };
+                        'currentReact' : 'N',
+                        'url' : '/api/product/{{product.uid}}/activity/react/',
+                        'auth' : true,
+
+                        'reactCodeDic' : reactCodeDic,
+                        'reactStateDic' : reactStateDic
+                    };
+                {% else %}
+                    this.state = {
+                        'good' : 0,
+                        'bad' : 0,
+                        'fake' : 0,
+
+                        'goodClass' :'btn btn-sm btn-outline-success disabled',
+                        'badClass' : 'btn btn-sm btn-outline-warning disabled',
+                        'fakeClass' : 'btn btn-sm btn-outline-danger disabled',
+                        'auth' : false,
+
+                        'currentReact' : 'N',
+                        'url' : '/api/product/{{product.uid}}/activity/react/',
+                    };
+                {% endif %}
+                
 
                 this.handleGood = this.handleGood.bind(this);
                 this.handleBad = this.handleBad.bind(this);
@@ -162,47 +184,105 @@
 
             componentDidMount(){
 
-                {% if not request.user.is_authenticated %}
+                {% if has_react %}
+                    const _currentReact = "{{current_react}}";
+                    var reactStateDic = this.state.reactStateDic;
+                    reactStateDic[_currentReact] = true;
+                    reactStateDic[this.state.reactCodeDic['None']] = false;
+
                     this.setState({
-                        goodClass : this.state.goodClass+' disabled',
-                        badClass : this.state.badClass+' disabled',
-                        fakeClass : this.state.fakeClass+' disabled',
-                        auth : false
+                        currentReact : _currentReact,
+                        reactStateDic : reactStateDic
                     });
-
-
-                {% else %}
-
-                    {% if has_react %}
-                        const _current_react = "{{current_react}}";
-                            this.setState({
-                            current_react : _current_react
-
-                        });
-
-                        if (_current_react == 'G'){
-                            console.log('Good');
-                            this.setState({
-                                goodClass : 'btn btn-sm btn-success'
-                            });
-                        }
-                        else if (_current_react == 'B'){
-                            console.log('Bad');
-                            this.setState({
-                                badClass : 'btn btn-sm btn-warning'
-                            });
-                        }
-                        else if (_current_react == 'F'){
-                            console.log('Fake');
-                            this.setState({
-                                fakeClass : 'btn btn-sm btn-danger'
-                            });
-                        }
-                    {% endif %}
+                    this.updateColor(reactStateDic);
 
                 {% endif %}
-            
+
+                this.updateReacts();
             }
+
+            getGoodColor(state){
+                return (state ? 'btn btn-sm btn-success' : 'btn btn-sm btn-outline-success');
+            }
+
+            getBadColor(state){
+                return (state ? 'btn btn-sm btn-warning' : 'btn btn-sm btn-outline-warning');
+            }
+
+            getFakeColor(state){
+                return (state ? 'btn btn-sm btn-danger' : 'btn btn-sm btn-outline-danger');
+            }
+
+            updateColor(reactStateDic){
+
+                this.setState({
+                    goodClass : this.getGoodColor(reactStateDic[this.state.reactCodeDic['Good']]),
+                    badClass : this.getBadColor(reactStateDic[this.state.reactCodeDic['Bad']]),
+                    fakeClass : this.getFakeColor(reactStateDic[this.state.reactCodeDic['Fake']])
+                });
+            }
+
+            updateReacts(){
+                fetch(this.state.url+'?format=json')
+                .then(response => response.json())
+                .then(data => {
+
+                    const obj = data;
+                    this.setState({
+                        good : data.react_good,
+                        bad : data.react_bad,
+                        fake : data.react_fake
+                    });
+                });
+            }
+
+            {% if request.user.is_authenticated %}
+                handle(name){
+
+                    var reactCodeDic = this.state.reactCodeDic;
+                    var reactStateDic = this.state.reactStateDic;
+
+                    var keys = Object.keys(reactCodeDic);
+
+
+                    if(reactStateDic[reactCodeDic[name]]){
+                        for(var item=0; item<keys.length; item++){
+                            reactStateDic[reactCodeDic[keys[item]]] = false;
+                        }
+
+                        fetch(this.state.url+'?react=None&format=json')
+                        .then(response => response.json())
+                        .then(date =>{
+                            this.setState({
+                                currentReact : reactCodeDic['None'],
+                                reactStateDic : reactStateDic,
+                                reactCodeDic : reactCodeDic,
+                            });
+                            this.updateReacts();
+                            this.updateColor(reactStateDic);
+                        });
+                    }
+                    else{
+                        for(var item=0; item<keys.length; item++){
+                            reactStateDic[reactCodeDic[keys[item]]] = false;
+                        }
+                        reactStateDic[reactCodeDic[name]] = true
+
+
+                        fetch(this.state.url+'?react='+name+'&format=json')
+                        .then(response => response.json())
+                        .then(date =>{
+                            this.setState({
+                                currentReact : reactCodeDic[name],
+                                reactStateDic : reactStateDic,
+                                reactCodeDic : reactCodeDic
+                            });
+                            this.updateReacts();
+                            this.updateColor(reactStateDic);
+                        });
+                    }
+                }
+            {% endif %}
 
             handleGood(){
 
@@ -213,43 +293,11 @@
                 if(this.state.auth == false){
                     return;
                 }
-
-                if(this.state.current_react == 'G' || !this.state.auth){
-
-                    this.setState({
-                        goodeClass : 'btn btn-sm btn-outline-success',
-                        good : this.state.good - 1,
-                        current_react : 'N'
-                    });
-
-                    const url =  this.state.url + "GG";
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    });
-
-                    return;
-                }
-
-                this.managePrevious();
-                const url =  this.state.url + "G"+this.state.current_react;
-
-                this.setState({
-                    goodClass : 'btn btn-sm btn-success',
-                    good : this.state.good + 1,
-                    current_react : 'G'
-
-                });
-
-                fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                });
+                this.handle('Good');
             }
 
             handleBad(){
+
                 {% if request.user == product.space.owner%}
                 return;
                 {% endif %}
@@ -257,110 +305,18 @@
                 if(this.state.auth == false){
                     return;
                 }
-
-                if(this.state.current_react == 'B' || !this.state.auth){
-
-                    this.setState({
-                        badClass : 'btn btn-sm btn-outline-warning',
-                        bad : this.state.bad - 1,
-                        current_react : 'N'
-                    });
-
-                    const url =  this.state.url + "BB";
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    });
-
-                    return;
-                }
-
-                this.managePrevious();
-                const url =  this.state.url + "B"+this.state.current_react;
-
-                this.setState({
-                    badClass : 'btn btn-sm btn-warning',
-                    bad : this.state.bad + 1,
-                    current_react : 'B'
-                });
-
-                fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                });
-
+                this.handle('Bad');
             }
 
             handleFake(){
                 {% if request.user == product.space.owner%}
                 return;
                 {% endif %}
-                
+
                 if(this.state.auth == false){
                     return;
                 }
-
-                if(this.state.current_react == 'F' || !this.state.auth){
-
-                    this.setState({
-                        fakeClass : 'btn btn-sm btn-outline-danger',
-                        fake : this.state.fake - 1,
-                        current_react : 'N'
-                    });
-
-                    const url =  this.state.url + "FF";
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    });
-                    return;
-                }
-
-                this.managePrevious();
-                const url =  this.state.url + "F"+this.state.current_react;
-
-                this.setState({
-                    fakeClass : 'btn btn-sm btn-danger',
-                    fake : this.state.fake + 1,
-                    current_react : 'F'
-                });
-
-                fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                });
-            }
-            
-
-            managePrevious(){
-
-                console.log(this.state.current_react);
-
-                if (this.state.current_react == 'G'){
-                    this.setState({
-                        good : this.state.good - 1,
-                        goodClass : 'btn btn-sm btn-outline-success'
-                    });
-                }
-                else if (this.state.current_react == 'B'){
-                    this.setState({
-                        bad : this.state.bad - 1,
-                        badClass : 'btn btn-sm btn-outline-warning'
-                    });
-                }
-
-                else if (this.state.current_react == 'F'){
-                    this.setState({
-                        fake : this.state.fake - 1,
-                        fakeClass : 'btn btn-sm btn-outline-danger'
-                    });
-                }
-
-                return;
+                this.handle('Fake');
             }
 
             render(){
@@ -389,13 +345,15 @@
                     this.state = {
                         'btClassName' : 'btn btn-sm btn-dark',
                         'pinned' : true,
-                        'text' : 'remove'
+                        'text' : 'remove',
+                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
                     };
                 {% else %}
                     this.state = {
                         'btClassName' : 'btn btn-sm btn-outline-dark',
                         'pinned' : false,
-                        'text' : 'add'
+                        'text' : 'add',
+                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
                     };
                 {% endif %}
 
@@ -409,10 +367,9 @@
                         pinned : false,
                         text : 'add'
                     });
-                    fetch('?pin=remove')
+                    fetch(this.state.url+'?req=remove&format=json')
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data.data);
                     });
                 }
                 else{
@@ -421,10 +378,9 @@
                         pinned : true,
                         text : 'remove'
                     });
-                    fetch('?pin=add')
+                    fetch(this.state.url+'?req=add&format=json')
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data.data);
                     });
                 }
                 return;

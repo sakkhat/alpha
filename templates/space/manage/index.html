@@ -47,7 +47,14 @@
                 </div>
 
                 <div class="list-group-item">
-                    <h3>{{space.name}}</h3>
+                    <h3>
+                        {{space.name}}
+                        {% if in_trending %}
+                         <i class="fa fa-line-chart" style="color:#F93B24;">
+                            <sup>trending</sup>
+                        </i>
+                        {% endif %}
+                    </h3>
                     <p>{{space.description | urlize | linebreaks }}</p>    
                 </div>
 
@@ -139,14 +146,16 @@
                             this.state = {
                                 pinClassName : 'btn btn-sm btn-dark',
                                 pinned : true,
-                                text : 'Remove Favorite'
+                                text : 'Remove Favorite',
+                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
                             };
 
                         {% else %}
                             this.state = {
                                 pinClassName : 'btn btn-sm btn-outline-dark',
                                 pinned : false,
-                                text : 'Add Favorite'
+                                text : 'Add Favorite',
+                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
                             };
                         {% endif %}
 
@@ -162,7 +171,7 @@
                                 text : 'Add Favorite'
                             });
 
-                            fetch('?favorite=remove')
+                            fetch(this.state.url+'?req=remove&format=json')
                             .then(response => {
                                 response.json();
                                 console.log(response);
@@ -174,7 +183,7 @@
                                 pinned : true,
                                 text : 'Remove Favorite'
                             });
-                            fetch('?favorite=add')
+                            fetch(this.state.url+'?req=add&remove')
                             .then(response => {
                                 response.json();
                                 console.log(response);

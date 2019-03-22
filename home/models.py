@@ -1,7 +1,7 @@
 from django.db import models
 
 from account.models import Account
-from space.models import Space,Product
+from space.models import Status,Product,Space
 
 
 _NOTIFICATION_LABEL = (
@@ -29,12 +29,9 @@ class Notification(models.Model):
 	seen = models.BooleanField(default=False)
 
 
-class TrendingSpace(models.Model):
-	space = models.OneToOneField(Space, on_delete=models.CASCADE, primary_key=True)
+class TrendingSpaceStatus(models.Model):
+	status = models.OneToOneField(Status, on_delete=models.CASCADE, primary_key=True)
 
-
-class TrendingProduct(models.Model):
-	product = models.OneToOneField(Product, on_delete=models.CASCADE, primary_key=True)
 
 
 class PinnedProduct(models.Model):
