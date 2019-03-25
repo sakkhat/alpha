@@ -5,7 +5,7 @@
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/dashboard-card.css' %}">
    
 {% endblock %}
 
@@ -91,35 +91,34 @@
             </div>
         </div>
     </div>
-
-    <br>
-    <div class="container-fluid">
-        <div class="row d-flex">
+    <div class="container fluid">
+        <div class="row">
             {% for product in products %}
-                <div class="card bg-light" id="product-card" style="margin: 15px;">
-                    <a href="/space/product/{{product.uid}}">
+                <div class="col-md-4 grid-item">
+                    <figure class="card-container">
                         <img src="{{ product.logo_url }}">
-                    </a>
-                    <div class="card-body">
-                        <center>
-                           <a href="/space/product/{{product.uid}}"><h5>{{product.title}}</h5></a>
-                           <h6 class="d-inline-block">{{product.price}}</h6>            
-                        </center>
-                        <center>
-                            <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                <span class="badge badge-light">{{product.react_good}}</span>
-                            </button>
-                            <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                <span class="badge badge-light">{{ product.react_bad}}</span>
-                            </button>
-                            <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                <span class="badge badge-light">{{product.react_fake}}</span>
-                            </button>
-                        </center>
-                    </div>
+                        <figcaption>
+                            <h5 class="title">{{ product.title }}</h5>
+                            <h6>{{ product.price }}</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{product.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{product.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{product.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{product.uid}}/"></a>
+                    </figure>
                 </div>
-
-            {% endfor %}           
+            {% endfor %}
         </div>
     </div>
 
@@ -127,8 +126,6 @@
 
 
 {% block extra_script %}
-	<script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
-
     <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>

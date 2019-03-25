@@ -3,11 +3,11 @@
 
 {% block extra_head %}
 	<title>Sakkhat</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.carousel.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/owl.theme.default.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slider-card.css' %}">
 {% endblock %}
 
 
@@ -18,33 +18,30 @@
             <div class="col-md-9">
                 <a class="list-group-item bg-danger" href="#trending" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Trending Products</h4></a>
                 <br>
-                <div class="owl-carousel owl-theme float-carousel">
-                    {% for post in trending_products %}
-                        <div class="item">
-                            <div class="card bg-light" id="product-card">
-                                <a href="/space/product/{{ post.uid }}/">
-                                    <img src="{{ post.logo_url }}">
-                                </a>
-                                <div class="card-body">
-                                    <center>
-                                       <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
-                                       <h6 class="d-inline-block">{{ post.price }} TK</h6>            
-                                    </center>
-                                    <center>
-                                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                            <span class="badge badge-light">{{ post.react_good }}</span>
-                                        </button>
-                                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                            <span class="badge badge-light">{{ post.react_bad }}</span>
-                                        </button>
-                                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                            <span class="badge badge-light">{{ post.react_fake}}</span>
-                                        </button>
-                                    </center>
+                <div class="product-slick-container">
+                    {% for product in trending_products %}
+                        <figure class="card-container">
+                            <img src="{{product.logo_url}}">
+                            <figcaption>
+                                <h5 class="title">{{product.title}}</h5>
+                                <h6>{{product.title}}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
-
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
                     {% endfor %}
                 </div>
                 <br><br>
@@ -68,34 +65,31 @@
             <div class="col-md-12">
                 <a class="list-group-item bg-info" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Recent Products</h4></a>
                 <br>
-                <div class="owl-carousel owl-theme">
-                    {% for post in recent_products %}
-                        <div class="item">
-                            <div class="card bg-light" id="product-card">
-                                <a href="/space/product/{{ post.uid }}/">
-                                    <img src="{{ post.logo_url }}">
-                                </a>
-                                <div class="card-body">
-                                    <center>
-                                       <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
-                                       <h6 class="d-inline-block">{{ post.price }} TK</h6>            
-                                    </center>
-                                    <center>
-                                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                            <span class="badge badge-light">{{ post.react_good }}</span>
-                                        </button>
-                                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                            <span class="badge badge-light">{{ post.react_bad }}</span>
-                                        </button>
-                                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                            <span class="badge badge-light">{{ post.react_fake}}</span>
-                                        </button>
-                                    </center>
+                <div class="product-slick-container">
+                    {% for product in recent_products %}
+                        <figure class="card-container">
+                            <img src="{{product.logo_url}}">
+                            <figcaption>
+                                <h5 class="title">{{product.title}}</h5>
+                                <h6>{{product.title}}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
-
-                    {% endfor %}  
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    {% endfor %}
                 </div>
                 <br><br>
             </div>
@@ -119,35 +113,32 @@
                 <div class="col-md-9">
                     <a class="list-group-item bg-success" href="/?filter=pinned-products" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Pinned Products</h4></a>
                     <br>
-                    <div class="owl-carousel owl-theme float-carousel">
-                        {% for post in pinned_products %}
-                            <div class="item">
-                                <div class="card bg-light" id="product-card">
-                                    <a href="/space/product/{{ post.uid }}/">
-                                        <img src="{{ post.logo_url }}">
-                                    </a>
-                                    <div class="card-body">
-                                        <center>
-                                           <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
-                                           <h6 class="d-inline-block">{{ post.price }} TK</h6>            
-                                        </center>
-                                        <center>
-                                            <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                                <span class="badge badge-light">{{ post.react_good }}</span>
-                                            </button>
-                                            <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                                <span class="badge badge-light">{{ post.react_bad }}</span>
-                                            </button>
-                                            <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                                <span class="badge badge-light">{{ post.react_fake}}</span>
-                                            </button>
-                                        </center>
-                                    </div>
+                    <div class="product-slick-container">
+                    {% for product in pinned_products %}
+                        <figure class="card-container">
+                            <img src="{{product.logo_url}}">
+                            <figcaption>
+                                <h5 class="title">{{product.title}}</h5>
+                                <h6>{{product.title}}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
                                 </div>
-                            </div>
-
-                        {% endfor %}  
-                    </div>
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    {% endfor %}
+                </div>
                     <br><br>
                 </div>
             </div>
@@ -159,34 +150,31 @@
             <div class="col-md-12">
                 <a class="list-group-item bg-primary" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Products you may like</h4></a>
                 <br>
-                <div class="owl-carousel owl-theme">
-                    {% for post in related_products %}
-                        <div class="item">
-                            <div class="card bg-light" id="product-card">
-                                <a href="/space/product/{{ post.uid }}/">
-                                    <img src="{{ post.logo_url }}">
-                                </a>
-                                <div class="card-body">
-                                    <center>
-                                       <a href="/space/product/{{ post.uid }}/"><h5>{{ post.title }}</h5></a>
-                                       <h6 class="d-inline-block">{{ post.price }} TK</h6>            
-                                    </center>
-                                    <center>
-                                        <button class="btn btn-success" data-toggle="tooltip" title="Good">
-                                            <span class="badge badge-light">{{ post.react_good }}</span>
-                                        </button>
-                                        <button class="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                            <span class="badge badge-light">{{ post.react_bad }}</span>
-                                        </button>
-                                        <button class="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                            <span class="badge badge-light">{{ post.react_fake}}</span>
-                                        </button>
-                                    </center>
+                <div class="product-slick-container">
+                    {% for product in related_products %}
+                        <figure class="card-container">
+                            <img src="{{product.logo_url}}">
+                            <figcaption>
+                                <h5 class="title">{{product.title}}</h5>
+                                <h6>{{product.title}}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
-
-                    {% endfor %}  
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    {% endfor %}
                 </div>
                 <br><br>
             </div>
@@ -196,9 +184,6 @@
 
 
 {% block extra_script %}
-	<script type="text/javascript" src="{% static 'lib/js/owl.carousel.min.js' %}"></script>
-
-	<script type="text/javascript" src="{% static 'js/home/index.js'%}"></script>
-    <script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
-    <script type="text/javascript" src="{% static 'js/generic/product_slider.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
 {% endblock %}
