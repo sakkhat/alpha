@@ -8,53 +8,25 @@
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slider-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home/manage/index.css'%}">
 {% endblock %}
 
 
 {% block extra_content %}
-
-    <div class="container-fluid" id="trending">
-        <div class="row">
-            <div class="col-md-9">
-                <a class="list-group-item bg-danger" href="#trending" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Trending Products</h4></a>
-                <br>
-                <div class="product-slick-container">
-                    {% for product in trending_products %}
-                        <figure class="card-container">
-                            <img src="{{product.logo_url}}">
-                            <figcaption>
-                                <h5 class="title">{{product.title}}</h5>
-                                <h6>{{product.title}}</h6>
-                                <div>
-                                    <button class="react-btn">
-                                        <i class="em em---1"></i>
-                                        <span class="badge badge-success">{{product.react_good}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em--1"></i>
-                                        <span class="badge badge-warning">{{product.react_bad}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em-rage"></i>
-                                        <span class="badge badge-danger">{{product.react_fake}}</span>
-                                    </button>
-                                </div>
-                            </figcaption>
-                            <a href="/space/product/{{product.uid}}/"></a>
-                        </figure>
-                    {% endfor %}
+    <div class="container-fluid">
+        <div class="col-md-12 col-config">
+            <div class="fade-slider">
+                <div class="site-banner-container">
+                    <img src="{% static 'res/sakkhat_board.png'%}" height="350px">
                 </div>
-                <br><br>
-            </div>
 
-            <div class="col-md-3">
-                <div class="list-group">
-                    <a class="list-group-item bg-danger" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Trending Spaces</h4></a>
-                    {% for item in trending_spaces %}
-                        <a class="list-group-item list-group-item-action" href="/space/{{item.status.space.name}}/">
-                            {{item.status.space.name}}
-                        </a>
-                    {% endfor %}
+                <div class="site-banner-container">
+                    <img src="{% static 'res/bing (1).jpg'%}" height="350px">
+                </div>
+
+                <div class="site-banner-container">
+                    <img src="{% static 'res/bing (2).jpg'%}" height="350px">
                 </div>
             </div>
         </div>
@@ -63,100 +35,196 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a class="list-group-item bg-info" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Recent Products</h4></a>
-                <br>
-                <div class="product-slick-container">
-                    {% for product in recent_products %}
-                        <figure class="card-container">
-                            <img src="{{product.logo_url}}">
-                            <figcaption>
-                                <h5 class="title">{{product.title}}</h5>
-                                <h6>{{product.title}}</h6>
-                                <div>
-                                    <button class="react-btn">
-                                        <i class="em em---1"></i>
-                                        <span class="badge badge-success">{{product.react_good}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em--1"></i>
-                                        <span class="badge badge-warning">{{product.react_bad}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em-rage"></i>
-                                        <span class="badge badge-danger">{{product.react_fake}}</span>
-                                    </button>
-                                </div>
-                            </figcaption>
-                            <a href="/space/product/{{product.uid}}/"></a>
-                        </figure>
-                    {% endfor %}
+                <div class="category-slider">
+                    <figure class="category-card-container">
+                        <img src="{% static 'res/vector/imac.svg' %}">
+                        <figcaption>
+                            <h5 class="title1">Computer Accessories</h5>
+                            <h5 class="title2">100 Products</h5>
+                        </figcaption>
+                        <a href="#"></a>
+                    </figure>
+
+                    <figure class="category-card-container">
+                        <img src="{% static 'res/vector/man.svg' %}">
+                        <figcaption>
+                            <h5 class="title1">Man Fashion</h5>
+                            <h5 class="title2">300 Products</h5>
+                        </figcaption>
+                        <a href="#"></a>
+                    </figure>
+
+                    <figure class="category-card-container">
+                        <img src="{% static 'res/vector/lady.svg' %}">
+                        <figcaption>
+                            <h5 class="title1">Woman Fashion</h5>
+                            <h5 class="title2">200 Products</h5>
+                        </figcaption>
+                        <a href="#"></a>
+                    </figure>
                 </div>
-                <br><br>
+            </div>
+        </div>
+    </div>
+    
+    <br><br>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action bg-danger text-white" href="#">
+                        Trending Spaces
+                    </a>
+                    {% for item in trending_status %}
+                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
+                            {{item.status.space.name}}
+                        </a>
+                    {% endfor%}
+                </div>
+                <br>
+            </div>
+            <div class="col-md-3">
+                <div class="list-group">
+                    <p class="list-group-item bg-success text-white">Most Good React</p>
+                    {% for item in trending_status %}
+                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
+                            {{item.status.space.name}}
+                        </a>
+                    {% endfor%}
+                </div>
+                <br>
+            </div>
+            <div class="col-md-3">
+                <div class="list-group">
+                    <p class="list-group-item bg-primary text-white">Most Favorite</p>
+                    {% for item in trending_status %}
+                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
+                            {{item.status.space.name}}
+                        </a>
+                    {% endfor%}
+                </div>
+                <br>
+            </div>
+            <div class="col-md-3">
+                <div class="list-group">
+                    <p class="list-group-item bg-info text-white">Recently Join</p>
+                    {% for item in trending_status %}
+                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
+                            {{item.status.space.name}}
+                        </a>
+                    {% endfor%}
+                </div>
             </div>
         </div>
     </div>
 
+    <br><br>
     {% if request.user.is_authenticated %}
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-3">
+                    <a class="list-group-item list-group-item-action text-white bg-success" href="/?filter=pinned-products">
+                        Pinned Products
+                    </a>
+                    <div class="product-slick-container">
+                        {% for product in pinned_products %}
+                            <figure class="slider-card-container">
+                                <img src="{{product.logo_url}}">
+                                <figcaption>
+                                    <h5 class="title">{{product.title}}</h5>
+                                    <h6>{{product.price}} TK</h6>
+                                    <div>
+                                        <button class="react-btn">
+                                            <i class="em em---1"></i>
+                                            <span class="badge badge-success">{{product.react_good}}</span>
+                                        </button>
+                                         <button class="react-btn">
+                                            <i class="em em--1"></i>
+                                            <span class="badge badge-warning">{{product.react_bad}}</span>
+                                        </button>
+                                         <button class="react-btn">
+                                            <i class="em em-rage"></i>
+                                            <span class="badge badge-danger">{{product.react_fake}}</span>
+                                        </button>
+                                    </div>
+                                </figcaption>
+                                <a href="/space/product/{{product.uid}}/"></a>
+                            </figure>
+
+                            {% empty %}
+                            <figure class="slider-card-container">
+                                <img src="{% static 'res/vector/logo_wb.svg' %}">
+                                <figcaption>
+                                    <h5 class="title">No Pinned Product</h5>
+                                </figcaption>
+                            </figure>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="list-group-item bg-primary text-white">Products you may like</p>
+                    <div class="product-slick-container">
+                        {% for product in related_products %}
+                            <figure class="slider-card-container">
+                                <img src="{{product.logo_url}}">
+                                <figcaption>
+                                    <h5 class="title">{{product.title}}</h5>
+                                    <h6>{{product.price}} TK</h6>
+                                    <div>
+                                        <button class="react-btn">
+                                            <i class="em em---1"></i>
+                                            <span class="badge badge-success">{{product.react_good}}</span>
+                                        </button>
+                                         <button class="react-btn">
+                                            <i class="em em--1"></i>
+                                            <span class="badge badge-warning">{{product.react_bad}}</span>
+                                        </button>
+                                         <button class="react-btn">
+                                            <i class="em em-rage"></i>
+                                            <span class="badge badge-danger">{{product.react_fake}}</span>
+                                        </button>
+                                    </div>
+                                </figcaption>
+                                <a href="/space/product/{{product.uid}}/"></a>
+                            </figure>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <div class="list-group">
-                        <a class="list-group-item bg-success" href="/account/activity/?what=favorite-space-list"    style="text-decoration: none; color: white;">
-                            <h4 style="margin: 0px">Favourite Spaces</h4>
+                        <a class="list-group-item list-group-item-action bg-success text-white" 
+                            href="/account/activity/?what=favorite-space-list">
+                           Favourite Spaces
                         </a>
                         {% for item in favorite %}
-                            <a class="list-group-item" href="/space/{{item.space.name}}">{{item.space.name}}</a>
+                            <a class="list-group-item list-group-item-action" href="/space/{{item.space.name}}">
+                                {{item.space.name}}
+                            </a>
+                        {% empty %}
+                            <p class="list-group-item disabled">No Favorite Space</p>
                         {% endfor %}
 
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <a class="list-group-item bg-success" href="/?filter=pinned-products" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Pinned Products</h4></a>
-                    <br>
-                    <div class="product-slick-container">
-                    {% for product in pinned_products %}
-                        <figure class="card-container">
-                            <img src="{{product.logo_url}}">
-                            <figcaption>
-                                <h5 class="title">{{product.title}}</h5>
-                                <h6>{{product.title}}</h6>
-                                <div>
-                                    <button class="react-btn">
-                                        <i class="em em---1"></i>
-                                        <span class="badge badge-success">{{product.react_good}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em--1"></i>
-                                        <span class="badge badge-warning">{{product.react_bad}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em-rage"></i>
-                                        <span class="badge badge-danger">{{product.react_fake}}</span>
-                                    </button>
-                                </div>
-                            </figcaption>
-                            <a href="/space/product/{{product.uid}}/"></a>
-                        </figure>
-                    {% endfor %}
-                </div>
-                    <br><br>
-                </div>
             </div>
+            <br>
         </div>
     {% endif %}
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a class="list-group-item bg-primary" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Products you may like</h4></a>
-                <br>
+                <a class="list-group-item list-group-item-action text-white bg-info" href="#">
+                    Most Recent Products
+                </a>
                 <div class="product-slick-container">
-                    {% for product in related_products %}
-                        <figure class="card-container">
+                    {% for product in recent_products %}
+                        <figure class="slider-card-container">
                             <img src="{{product.logo_url}}">
                             <figcaption>
                                 <h5 class="title">{{product.title}}</h5>
-                                <h6>{{product.title}}</h6>
+                                <h6>{{product.price}} TK</h6>
                                 <div>
                                     <button class="react-btn">
                                         <i class="em em---1"></i>
@@ -174,16 +242,151 @@
                             </figcaption>
                             <a href="/space/product/{{product.uid}}/"></a>
                         </figure>
+
+                        {% empty %}
+                        <figure class="slider-card-container">
+                            <img src="{% static 'res/vector/logo_wb.svg' %}">
+                            <figcaption>
+                                <h5 class="title">No Pinned Product</h5>
+                            </figcaption>
+                        </figure>
                     {% endfor %}
                 </div>
-                <br><br>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <p class="list-group-item ltext-white bg-success text-white">
+                    Most Good React
+                </p>
+                <div class="product-slick-container">
+                    <figure class="slider-card-container">
+                        <img src="{{recent_products.0.logo_url}}">
+                        <figcaption>
+                            <h5 class="title">{{recent_products.0.title}}</h5>
+                            <h6>{{recent_products.0.price}} TK</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{recent_products.0.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{recent_products.0.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{recent_products.0.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{recent_products.0.uid}}/"></a>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <p class="list-group-item text-white bg-warning">
+                    Most Bad React
+                </p>
+                <div class="product-slick-container">
+                    <figure class="slider-card-container">
+                        <img src="{{recent_products.0.logo_url}}">
+                        <figcaption>
+                            <h5 class="title">{{recent_products.0.title}}</h5>
+                            <h6>{{recent_products.0.price}} TK</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{recent_products.0.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{recent_products.0.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{recent_products.0.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{recent_products.0.uid}}/"></a>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <p class="list-group-item text-white bg-danger">
+                    Most Fake React
+                </p>
+                <div class="product-slick-container">
+                    <figure class="slider-card-container">
+                        <img src="{{recent_products.0.logo_url}}">
+                        <figcaption>
+                            <h5 class="title">{{recent_products.0.title}}</h5>
+                            <h6>{{recent_products.0.price}} TK</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{recent_products.0.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{recent_products.0.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{recent_products.0.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{recent_products.0.uid}}/"></a>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <p class="list-group-item text-white bg-primary">
+                    Most Pinned
+                </p>
+                <div class="product-slick-container">
+                    <figure class="slider-card-container">
+                        <img src="{{recent_products.0.logo_url}}">
+                        <figcaption>
+                            <h5 class="title">{{recent_products.0.title}}</h5>
+                            <h6>{{recent_products.0.price}} TK</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{recent_products.0.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{recent_products.0.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{recent_products.0.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{recent_products.0.uid}}/"></a>
+                    </figure>
+                </div>
             </div>
         </div>
     </div>
+
+    <br><br>
 {% endblock %}
 
 
 {% block extra_script %}
 	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/home/manage/index.js' %}"></script>
 {% endblock %}

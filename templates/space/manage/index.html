@@ -5,7 +5,6 @@
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/dashboard-card.css' %}">
    
 {% endblock %}
 
@@ -95,7 +94,7 @@
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 grid-item">
-                    <figure class="card-container">
+                    <figure class="dash-card-container">
                         <img src="{{ product.logo_url }}">
                         <figcaption>
                             <h5 class="title">{{ product.title }}</h5>
