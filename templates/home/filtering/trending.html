@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %} 
+    <title>Trending Spaces</title>
+{% endblock %}
+
+
+{% block extra_content %}
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
+                Trending Spaces
+            </h5>
+            <table class="table table-bordered table-secondary">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Space</th><th>Posts</th><th>Rating</th>
+                        {% for item in trending_status %}
+                            <tr>
+                                <td>
+                                    <a href="/space/{{ item.status.space.name }}/">
+                                        {{ item.status.space.name }}
+                                    </a>
+                                </td>
+                                <td>{{ item.status.total_post }}</td>
+                                <td>{{ item.status.rating }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody id="table-row-block">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+    
+
+{% block extra_script %}
+{% endblock %}

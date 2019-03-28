@@ -1,6 +1,6 @@
 from django.core.files.storage import FileSystemStorage as FSS
 
-from generic.variables import now_md5_hashed, FILE_CHUNK_SIZE
+from generic.variables import random, FILE_CHUNK_SIZE
 
 from io import BytesIO
 from PIL import Image as _Image
@@ -13,7 +13,7 @@ class Image():
 
 	THUMBNAIL_SIZE = (50,50)
 
-	def load(file_stream=None, path=None):
+	def load(file_stream=None, path=None, raw=None):
 		img_file = None
 		if file_stream is not None:
 			if file_stream.multiple_chunks(FILE_CHUNK_SIZE):
@@ -24,12 +24,15 @@ class Image():
 		elif path is not None:
 			img_file = _Image.open(path)
 
+		elif raw is not None:
+			img_file = _Image.open(BytesIO(raw))
+
 		return img_file
 
 
 	def save(loc, file):
 		storage = FSS(location = loc)
-		filename = now_md5_hashed(8)+'.'+file.format
+		filename = random()+'.'+file.format
 
 		if isdir(storage.location) == False:
 			makedirs(storage.location)
@@ -44,6 +47,11 @@ class Image():
 			remove(loc)
 			return True
 		except Exception as e:
+			try:
+				remove(loc[1:])
+				return True
+			except Exception as e:
+				pass
 			return False
 
 

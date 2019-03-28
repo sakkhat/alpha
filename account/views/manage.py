@@ -2,20 +2,49 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
+from account.forms import ProfileUpdateForm
 from account.models import Account
 
 from generic.variables import LOGIN_URL
+from generic.views import json_response
+
+from space.models import ProductReact,Space,Status
 
 
-#@login_required(login_url=LOGIN_URL)
-def info(request):
+@login_required(login_url=LOGIN_URL)
+def profile(request):
 	context = {}
-	return render(request, 'account/manage/info.html', context)
+
+	if request.user.has_space:
+		space = Space.objects.get(owner=request.user)
+		status = Status.objects.get(space=space)
+		context['space'] = space
+		context['status'] = status
+
+	return render(request, 'account/manage/profile.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
 def update(request):
-	pass
+	context = {}
+	if request.method == 'POST':
+
+		form = ProfileUpdateForm(request.POST, user=request.user)
+		if form.is_valid():
+			
+			request.user.name = form.cleaned_data['name']
+			request.user.email = form.cleaned_data['email']
+			request.user.gender = form.cleaned_data['gender']
+			request.user.save()
+
+			return redirect('/account/')
+
+
+	form = ProfileUpdateForm(user=request.user)
+
+	context['form'] = form
+
+	return render(request, 'account/manage/update.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -34,3 +63,33 @@ def decactive(request):
 	user.save()
 	logout(request)
 	return redirect('/')
+
+
+@login_required(login_url=LOGIN_URL)
+def activity_manager(request):
+	what = request.GET.get('what', None)
+	if what is not None:
+		what = what.lower()
+		if what == 'product-react-list':
+			return activity_product_react_list(request)
+		elif what == 'favorite-space-list':
+			return activity_favorite_space_list(request)
+		elif what == 'pinned-product-list':
+			return activity_pinned_product_list(request)
+
+	return redirect('/account/')
+
+
+@login_required(login_url=LOGIN_URL)
+def activity_product_react_list(request):
+	return render(request, 'account/manage/product_react_list.html', {})
+
+
+@login_required(login_url=LOGIN_URL)
+def activity_favorite_space_list(request):
+	return render(request, 'account/manage/favorite_space_list.html', {})
+
+
+@login_required(login_url=LOGIN_URL)
+def activity_pinned_product_list(request):
+	return render(request, 'account/manage/pinned_product_list.html', {})

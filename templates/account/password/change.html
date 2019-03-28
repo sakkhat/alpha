@@ -3,14 +3,27 @@
 
 {% block extra_head %}
 	<title>Password Change</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/auth/signin.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-	
+    
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-4 list-group-item" style="margin: 20px;">
+            <h6 align="center">Change Password</h6>
+            <form class="sign-in-form" method="POST">
+                {% csrf_token %}
+                {{ form.current_password }}
+                {{ form.new_password }}
+                {{ form.confirm_password }}
+                <input type="submit" value="Update Password" class="btn btn-success btn-block">
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 
 {% block extra_script %}
-	
+
 {% endblock %}

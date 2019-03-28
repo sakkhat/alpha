@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>{{ request.user.name }} | Reacts on products</title>
+{% endblock %}
+
+
+{% block extra_content %}
+    
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
+                Your favorite space list
+            </h5>
+            <table class="table table-bordered table-secondary">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Space</th><th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="table-row-block">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+{% endblock %}
+
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel">
+        
+        class ProductReactRow extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    'ac_id' : "{{ request.user.phone }}",
+                    'data_list' : null,
+                    'loaded' : false,
+
+                }
+            }
+
+            handleTimestamp(unix_time){
+                try{
+                    return new Date(parseInt(unixtime)).toLocaleString()
+                }catch(err){
+                    return new Date().toLocaleString()
+                }
+            }
+
+            getSpaceLink(space){
+                return '/space/'+space;
+            }
+
+            componentDidMount(){
+                const url = '/api/user/'+this.state.ac_id+'/favorite_space_list/?format=json'
+                fetch(url)
+                .then(response => response.json())
+                .then(data =>{
+                    const results = data.results;
+                    const data_list = results.map((item) =>      
+                            <tr>
+                                <td><a href={this.getSpaceLink(item.space)}>{item.space}</a></td>
+                                <td>{this.handleTimestamp(item.unix_time)}</td>
+                            </tr>
+                        );
+                    this.setState({
+                        data_list : data_list,
+                        loaded : true
+                    });
+                })
+            }
+
+            render(){
+                if(this.state.loaded ){
+                    const data_list = this.state.data_list;
+                    return data_list;
+                }
+                return (
+                    <tr><td>Loading...</td><td>Loading...</td></tr>
+                );
+                
+            }
+        }
+
+        const element = ( <ProductReactRow/> );
+        ReactDOM.render(element, document.getElementById('table-row-block'));
+    </script>
+
+{% endblock %}

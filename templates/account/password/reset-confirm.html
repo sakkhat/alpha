@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_head %}
+	<title>Reset Password</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/form-std.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	{% if not form %}
+		<h5 align="center">Link Expired</h5>
+	{% else %}
+		<div class="d-flex justify-content-center align-items-center">
+	        <div class="col-md-4 list-group-item" style="margin: 20px;">
+	            <h6 align="center">Reset Your Password</h6>
+	            <form class="sign-in-form" method="POST">
+	                {% csrf_token %}
+	                <div class="form-input-block">
+	                	{{ form.as_p }}
+	                </div>
+	                
+	                <input type="submit" value="Reset Password" class="btn btn-success btn-block">
+	            </form>
+	        </div>
+	    </div>
+	{% endif %}
+{% endblock %}

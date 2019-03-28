@@ -1,3 +1,8 @@
+html, body {
+	margin: 0px; height: 100%;
+	scroll-behavior: smooth;
+}
+
 #site-nav-bar {
 	height: 60px;
 }
@@ -18,4 +23,18 @@
 a {
   text-decoration: none;
   font-weight: bold;
+}
+
+.extra_contents {
+	min-height: 100%;
+	margin:0px;
+}
+
+.footer-block {
+	background-color: rgba(0,0,0,0.9);
+	color: white;
+	width: 100%; display: block;
+	text-align: center;
+	margin:0px;
+	height: 100px;
 }

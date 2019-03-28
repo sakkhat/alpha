@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>{{ request.user.name }}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/manage/info.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div id="user-avatar">
+                        <img src="{{request.user.thumbnail}}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
+                </div>
+                <div class="list-group">
+                    <a href="update/" class="list-group-item list-group-item-action">Update Info</a>
+                    <a href="change-password/" class="list-group-item list-group-item-action">Change Password</a>
+                </div>
+                <br>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group">
+                    <h5 class="list-group-item list-group-item-dark">About</h5>
+                    <h6 class="list-group-item">Name: {{ request.user.name }}</h5>
+                    <h6 class="list-group-item">Phone: {{ request.user.phone }}</h5>
+                    <h6 class="list-group-item">Email: {{ request.user.email }}</h5>
+                    {% if request.user.gender == 'M' %}
+                        <h6 class="list-group-item">Gender: Male</h5>
+                    {% elif request.user.gender == 'F' %}
+                        <h6 class="list-group-item">Gender: Female</h5>
+                    {% else %}
+                        <h6 class="list-group-item">Gender: Other</h5>
+                    {% endif %}
+                </div>
+                <br><br>
+
+                {% if request.user.has_space %}
+                    <div>
+                        <a class="list-group-item list-group-item-action list-group-item-dark" 
+                                style="text-align: center;" href="/space/{{space.name}}">
+                            <h5 style="font-weight: bold;">{{space.name}}</h5>
+                        </a>
+                        <table class="table table-bordered table-secondary">
+                            <thead>
+                                <tr>
+                                    <th>Rating</th>
+                                    <th>Total Post</th>
+                                    <th>Total Favorite</th>
+                                    <th>Total Pinned</th>
+                                </tr>
+                                <tr>
+                                    <td>{{status.rating}}</td>
+                                    <td>{{status.total_post}}</td>
+                                    <td>{{status.total_favorite}}</td>
+                                    <td>{{status.total_pinned}}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                        <a href="/space/{{space.name}}/" class="list-group-item bg-primary">
+                            <h5 style="margin: 0px; color:white; text-align: center;">Dashboard</h5>
+                        </a>
+                        <br><br>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <div class="list-group">
+                    <h5 class="list-group-item list-group-item-dark">Your Activity</h5>
+                    <a class="list-group-item list-group-item-action" 
+                        href="activity/?what=product-react-list">Product React List</a>
+
+                    <a class="list-group-item list-group-item-action" 
+                        href="activity/?what=favorite-space-list">Favorite Space List</a>
+                        
+                    <a class="list-group-item list-group-item-action" 
+                        href="activity/?what=pinned-product-list">Pinned Product List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_script %}
+
+{% endblock %}

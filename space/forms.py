@@ -1,36 +1,34 @@
 from django import forms
 
-from generic.variables import now_str, FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
+from generic.variables import random, FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
 from generic.media import Image
 
-from space.models import Space,Product, ProductMedia
+from space.models import Space,Product, ProductMedia,Banner
 
 
 
 class SpaceCreateForm(forms.ModelForm):
-	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',\
-		'url', 'http', 'https',]
+	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',
+		'url', 'http', 'https','product','account','user','all','notification']
 
 	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
 
 	class Meta:
 		model = Space
-		fields = ['name', 'description', 'category']
+		fields = ['name', 'description',]
 
 		widgets = {
 			'name' : forms.TextInput(attrs=
 				{'placeholder':'Space Name', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'}),
-			'category' : forms.Select(attrs=
-				{'class' : 'custom-select'})
+				{'placeholder':'Description', 'class':'form-control'})
 		}
 
 
 	def clean_name(self):
 		name = self.cleaned_data['name']
-
+		
 		for i in self._UNUSABLE_SYMBOLS:
 			if i in name:
 				raise forms.ValidationError(i+ "is invalid")
@@ -52,6 +50,20 @@ class SpaceCreateForm(forms.ModelForm):
 		space.owner = self.request.user
 		if commit:
 			space.save()
+
+			banner1 = Banner(space=space)
+			banner2 = Banner(space=space)
+			banner3 = Banner(space=space)
+
+			banner1.uid = random()
+			banner2.uid = random()
+			banner3.uid = random()
+
+			banner1.save()
+			banner2.save()
+			banner3.save()
+
+			
 		return space
 
 
@@ -79,7 +91,7 @@ class ProductPostForm(forms.ModelForm):
 
 	class Meta:
 		model = Product
-		fields = ['title', 'description', 'price']
+		fields = ['title', 'description', 'category', 'price']
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
@@ -88,7 +100,9 @@ class ProductPostForm(forms.ModelForm):
 				{'placeholder':'Description', 'class':'form-control'}),
 
 			'price' : forms.NumberInput(attrs=
-				{'placeholder':'Price (TK)', 'class':'form-control'})
+				{'placeholder':'Price (TK)', 'class':'form-control'}),
+			'category' : forms.Select(attrs=
+				{'class':'form-control'})
 		}
 
 
@@ -110,7 +124,7 @@ class ProductPostForm(forms.ModelForm):
 		post = super(ProductPostForm, self).save(commit=False)
 		space = Space.objects.get(owner = self.request.user)
 		post.space = space
-		post.uid = now_str(mul=6)
+		post.uid = random()
 		if commit:
 			post.logo_url = self.img1_path
 			post.save()
@@ -118,6 +132,10 @@ class ProductPostForm(forms.ModelForm):
 			media1 = ProductMedia(location=self.img1_path, product=post)
 			media2 = ProductMedia(location=self.img2_path, product=post)
 			media3 = ProductMedia(location=self.img3_path, product=post)
+
+			media1.uid = random()
+			media2.uid = random()
+			media3.uid = random()
 			
 			media1.save()
 			media2.save()
@@ -130,3 +148,64 @@ class ProductPostForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop('request', None)
 		super(ProductPostForm, self).__init__(*args, **kwargs)
+
+
+
+class SpaceUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Space
+		fields = ['description',]
+
+		widgets = {
+			'description' : forms.Textarea(attrs=
+				{'placeholder':'Description', 'class':'form-control'})
+		}
+
+	def __init__(self, *args, **kwargs):
+		self.space = kwargs.pop('space', None)
+
+		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
+		
+		self.fields['description'].initial = self.space.description
+
+
+
+
+class ProductUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Product
+		fields = ['title', 'description', 'price', 'category', 'in_stock']
+
+		widgets = {
+			'title' : forms.TextInput(attrs=
+				{'placeholder':'Title', 'class':'form-control'}),
+			'description' : forms.Textarea(attrs=
+				{'placeholder':'Description', 'class':'form-control'}),
+
+			'price' : forms.NumberInput(attrs=
+				{'placeholder':'Price (TK)', 'class':'form-control'}),
+			'category' : forms.Select(attrs=
+				{'class':'form-control'}),
+			'in_stock' : forms.CheckboxInput(attrs=
+				{'class' : 'custom-control-input'})
+		}
+
+
+	def clean_category(self):
+		category = self.cleaned_data['category']
+		if category is None:
+			raise forms.ValidationError('product must have a category')
+		else:
+			return category
+
+
+	def __init__(self, *args, **kwargs):
+		self.product = kwargs.pop('product', None)
+
+		super(ProductUpdateForm, self).__init__(*args, **kwargs)
+		
+		self.fields['title'].initial = self.product.title
+		self.fields['description'].initial = self.product.description
+		self.fields['price'].initial = self.product.price
+		self.fields['category'].initial = self.product.category
+		self.fields['in_stock'].initial = self.product.in_stock
