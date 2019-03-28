@@ -44,6 +44,8 @@ class Space(models.Model):
 	name = models.CharField(max_length=30, unique=True, primary_key=True)
 	description = models.TextField()
 
+	# join = models.DateTimeField(auto_now=True)
+	
 	def __str__(self):
 		return self.name + ' : '+self.owner.name
 

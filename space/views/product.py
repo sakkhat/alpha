@@ -47,8 +47,13 @@ def view(request, uid):
 		return invalid_request(request=request)
 
 
-def manager(request, uid):
-	return view(request, uid)
+def manager(request):
+	products = Product.objects.all()
+	context = {
+		'products' : products
+	}
+
+	return render(request, 'space/product/list.html', context)
 	
 
 

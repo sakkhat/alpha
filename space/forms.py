@@ -8,8 +8,8 @@ from space.models import Space,Product, ProductMedia,Banner
 
 
 class SpaceCreateForm(forms.ModelForm):
-	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',\
-		'url', 'http', 'https','product','account','user','all']
+	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',
+		'url', 'http', 'https','product','account','user','all','notification']
 
 	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']

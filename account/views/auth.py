@@ -85,4 +85,4 @@ def change_password(request):
 	form = PasswordChangeForm(user=request.user)
 	context['form'] = form
 
-	return render(request, 'account/auth/change_password.html', context)
+	return render(request, 'account/password/change.html', context)

@@ -7,4 +7,5 @@ urlpatterns = [
 	path('notification/', manage.notification, name='notification'),
 	path('notification/<uid>/', manage.notification_status_changle, name='notification-status-change'),
 	
+	path('trending/', filtering.trending, name='trending-spaces'),
 ]

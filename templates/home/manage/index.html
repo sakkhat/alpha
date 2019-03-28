@@ -73,7 +73,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="list-group">
-                    <a class="list-group-item list-group-item-action bg-danger text-white" href="#">
+                    <a class="list-group-item list-group-item-action bg-danger text-white" href="/trending/">
                         Trending Spaces
                     </a>
                     {% for item in trending_status %}
@@ -123,7 +123,7 @@
     {% if request.user.is_authenticated %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <a class="list-group-item list-group-item-action text-white bg-success" href="/?filter=pinned-products">
                         Pinned Products
                     </a>
@@ -162,7 +162,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <p class="list-group-item bg-primary text-white">Products you may like</p>
                     <div class="product-slick-container">
                         {% for product in related_products %}
@@ -191,7 +191,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <div class="list-group">
                         <a class="list-group-item list-group-item-action bg-success text-white" 
                             href="/account/activity/?what=favorite-space-list">
@@ -215,9 +215,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a class="list-group-item list-group-item-action text-white bg-info" href="#">
+                <p class="list-group-item list-group-item-action text-white bg-info">
                     Most Recent Products
-                </a>
+                </p>
                 <div class="product-slick-container">
                     {% for product in recent_products %}
                         <figure class="slider-card-container">

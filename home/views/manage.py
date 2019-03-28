@@ -75,8 +75,6 @@ def notification_status_changle(request, uid):
 	return json_response(request, {}, 'invalid')
 
 
-
-
 def _update_user_notification_status(request, notification):
 	notification.save()
 

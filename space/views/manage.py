@@ -13,6 +13,17 @@ from space.models import Space,Product,Status,Banner
 
 
 
+def manager(request):
+
+	space_list = Space.objects.all()
+	context = {
+		'space_list' : space_list
+	}
+
+	return render(request, 'space/manage/list.html', context)
+
+
+
 def index(request, name):
 
 	context = {}
@@ -111,7 +122,6 @@ def update(request, name):
 		pass
 
 	return invalid_request(request, context)
-
 
 
 @login_required(login_url=LOGIN_URL)

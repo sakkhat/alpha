@@ -1,8 +1,7 @@
 from django.urls import path
 from account.views import auth, manage
 
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import PasswordResetForm
+from django.contrib.auth import views as resetviews
 
 urlpatterns = [
 	
@@ -19,18 +18,15 @@ urlpatterns = [
 	path('deactivate/', manage.decactive, name='account_deactivate'),
 
 
-	path('password-reset/',
-         auth_views.PasswordResetView.as_view(),
-         name='password_reset'),
+	path('password-reset/', resetviews.PasswordResetView.as_view(
+        template_name='account/password/reset.html'),name='password_reset'),
 
-    path('password-reset/done/',
-         auth_views.PasswordResetDoneView.as_view(),
-         name='password_reset_done'),
+    path('password-reset/done/', resetviews.PasswordResetDoneView.as_view(
+        template_name='account/password/reset-done.html'),name='password_reset_done'),
 
-    path('password-reset-confirm/<uidb64>/<token>/',
-         auth_views.PasswordResetConfirmView.as_view(),
-         name='password_reset_confirm'),
-    path('password-reset-complete/',
-         auth_views.PasswordResetCompleteView.as_view(),
-         name='password_reset_complete'),
+    path('password-reset-confirm/<uidb64>/<token>/', resetviews.PasswordResetConfirmView.as_view(
+        template_name='account/password/reset-confirm.html'), name='password_reset_confirm'),
+
+    path('password-reset-complete/', resetviews.PasswordResetCompleteView.as_view(
+        template_name='account/password/reset-complete.html'), name='password_reset_complete'),
 ]

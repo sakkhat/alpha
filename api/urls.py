@@ -25,5 +25,4 @@ urlpatterns = [
 	path('product/<uid>/activity/pin/', product.PinnedProductRequestView.as_view(), name='pin-view'),
 	
 	path('space/<name>/activity/favorite/', space.FavoriteRequestView.as_view(), name='favorite-view'),
-
 ]

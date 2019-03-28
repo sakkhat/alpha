@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Explore Products</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/dash-card.css' %}">
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container fluid">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-4 grid-item">
+                    <figure class="dash-card-container">
+                        <img src="{{ product.logo_url }}">
+                        <figcaption>
+                            <h5 class="title">{{ product.title }}</h5>
+                            <h6>{{ product.price }}</h6>
+                            <div>
+                                <button class="react-btn">
+                                    <i class="em em---1"></i>
+                                    <span class="badge badge-success">{{product.react_good}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em--1"></i>
+                                    <span class="badge badge-warning">{{product.react_bad}}</span>
+                                </button>
+                                 <button class="react-btn">
+                                    <i class="em em-rage"></i>
+                                    <span class="badge badge-danger">{{product.react_fake}}</span>
+                                </button>
+                            </div>
+                        </figcaption>
+                        <a href="/space/product/{{product.uid}}/"></a>
+                    </figure>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+	
+
+{% block extra_script %}
+{% endblock %}

@@ -4,6 +4,7 @@
 {% block extra_head %}
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/dash-card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
    
 {% endblock %}
@@ -83,8 +84,9 @@
                 <br><br>
                 {% if request.user.is_authenticated and request.user == space.owner %}
                 <div class="list-group">
-                    <a class="list-group-item" href="update/">Update</a>
-                    <a class="list-group-item" href="#">Delete</a>
+                    <a class="list-group-item list-group-item-action" href="update/">Update</a>
+                    <a class="list-group-item list-group-item-action" href="/space/product/create/">Product Create</a>
+                    <a class="list-group-item list-group-item-action" href="#">Delete</a>
                 </div>
                 {% endif %}
             </div>

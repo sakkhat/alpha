@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Password Reset</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/form-std.css'%}">
+{% endblock %}
+
+
+{% block extra_content %}
+
+	<div class="d-flex justify-content-center align-items-center">
+        <div class="col-md-4 list-group-item" style="margin: 20px;">
+            <h6 align="center">Request for password reset</h6>
+            <form class="sign-in-form" method="POST">
+                {% csrf_token %}
+                <div class="form-input-block">
+                    <label>Account Email</label>
+                	{{ form.email }}
+                </div>
+                <input type="submit" value="Update Password" class="btn btn-success btn-block">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+	
+
+{% block extra_script %}
+{% endblock %}

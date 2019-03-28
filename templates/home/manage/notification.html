@@ -119,6 +119,9 @@
             render(){
 
                 if(this.state.loaded){
+                    if(this.state.data.length == 0){
+                        return <h6 align="center">Empty</h6>
+                    }
                     return this.state.data
                 }
                 return(

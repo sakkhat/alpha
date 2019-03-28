@@ -1,4 +1,6 @@
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
+from django.contrib.auth.models import (
+	AbstractBaseUser, BaseUserManager,PermissionsMixin, 
+	_user_has_module_perms, _user_has_perm, _user_get_all_permissions)
 from django.db import models
 
 
@@ -13,7 +15,7 @@ class UserManager(BaseUserManager):
 	"""
 	Doc here
 	"""
-	def create_user(self, phone, name, gender, password=None, is_staff=False, is_admin=False):
+	def create_user(self, phone, name, gender, password=None, is_staff=False, is_superuser=False):
 
 		if not phone or not name:
 			raise ValueError('name and phone number required')
@@ -25,7 +27,7 @@ class UserManager(BaseUserManager):
 
 		user = self.model(phone=phone, name=name, gender=gender)
 		user.is_staff = is_staff
-		user.is_admin = is_admin
+		user.is_superuser = is_superuser
 		user.set_password(password)
 		user.save()
 
@@ -42,7 +44,7 @@ class UserManager(BaseUserManager):
 
 
 
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser,PermissionsMixin):
 	"""
 	Doc here
 	"""
@@ -57,7 +59,7 @@ class Account(AbstractBaseUser):
 	
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
-	is_admin = models.BooleanField(default=False)
+	is_superuser = models.BooleanField(default=False)
 
 	USERNAME_FIELD = 'phone'
 	REQUIRED_FIELDS = ['name', 'gender']
@@ -72,13 +74,13 @@ class Account(AbstractBaseUser):
 
 
 	def has_perm(self, perm, obj=None):
-		if self.is_admin:
+		if self.is_superuser:
 			return True
 		return False
 
 
 	def has_module_perm(self, app_label):
-		if self.is_admin:
+		if self.is_superuser:
 			return True
 		return False
 
