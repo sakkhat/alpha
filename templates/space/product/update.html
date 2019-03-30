@@ -11,7 +11,7 @@
     
     <div class="d-flex justify-content-center align-items-center">
     	<div class="col-md-8">
-    		<div class="media-block list-group-item">
+    		<div class="list-group-item">
 	            <ul class="nav nav-tabs" role="tablist">
 	                {% for item in media %}
                         <li class="nav-item">
@@ -36,13 +36,13 @@
 	            		<div id="img{{forloop.counter}}" class="container tab-pane product-avatar">
 	            		{% endif %}
 
-		                    <img src="{{ item.location }}">
+		                    <img src="{{ item.location }}" id="img-view-{{forloop.counter}}">
 		                    <form method="POST" enctype="multipart/form-data" action="{{ item.uid }}/">
 		                    	{% csrf_token %}
 		                    	<label class="image-text-block" for="image{{forloop.counter}}">
 		                            <h6>Select Image</h6>
 		                        </label>
-		                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image{{forloop.counter}}" class="d-none">
+		                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image{{forloop.counter}}" class="d-none" onchange = 'openFile{{forloop.counter}}(event)'>
 		                        <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
 		                    </form>
 		                </div>
@@ -50,11 +50,18 @@
 	            </div>
 	        </div>
 	        <br>
-    		<form method="POST">
+    		<form method="POST" class="list-group-item">
     			{% csrf_token %}<br>
+    			{{ form.title.label}}
     			{{ form.title }}<br>
+
+    			{{ form.description.label}}
     			{{ form.description}}<br>
+
+    			{{ form.category.label}}
     			{{ form.category }}<br>
+
+    			{{ form.price.label }}
     			{{ form.price }}<br>
     			<div class="custom-control custom-checkbox">
     				{{ form.in_stock}}
@@ -63,6 +70,13 @@
     			<button class="btn btn-success btn-block">Update</button>
     		</form>
     		<br>
+    		<div class="list-group-item">
+    			<a href="#" class="list-group-item list-group-item-action bg-danger text-white">
+	    			Delete The Product Post
+	    		</a>
+    		</div>
+    		
+    		<br><br>
     	</div>
     </div>
 
@@ -71,4 +85,5 @@
 	
 
 {% block extra_script %}
+	<script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
 {% endblock %}

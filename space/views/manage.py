@@ -12,6 +12,9 @@ from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
+def route(request):
+	return redirect('/space/all/')
+
 
 def manager(request):
 

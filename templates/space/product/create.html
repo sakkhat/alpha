@@ -4,7 +4,7 @@
 
 {% block extra_head %}
     <title>Create Product Post</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/create.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/create.css' %}">
 {% endblock %}
 
 
@@ -12,23 +12,42 @@
 	<div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <form method="POST" class="space-create-form" enctype="multipart/form-data">
+                <form method="POST" class="form-block " enctype="multipart/form-data">
                 	{% csrf_token %}
                     {{ form.title }}
                     {{ form.description }}
                     {{ form.category }}
                     {{ form.price }}
-                    <div class="custom-file" style="margin-top: 5px; margin-bottom: 10px;">
-                        {{ form.img1 }}
-                        <label for="id_img1" class="custom-file-label">Select Image 1</label>
+
+                    <div class="list-group-item">
+                        <div class="list-group-item">
+                            <img src="{% static 'res/vector/logo_bw.svg' %}" class="image-preview" 
+                                id="img-view-1">
+                            <div class="custom-file">
+                                {{ form.img1 }}
+                                <label for="id_img1" class="custom-file-label">Select Image 1</label>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <img src="{% static 'res/vector/logo_bw.svg' %}" class="image-preview" 
+                                id="img-view-2">
+                            <div class="custom-file">
+                                {{ form.img2 }}
+                                <label for="id_img2" class="custom-file-label">Select Image 2</label>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <img src="{% static 'res/vector/logo_bw.svg' %}" class="image-preview" 
+                                id="img-view-3">
+                            <div class="custom-file">
+                                {{ form.img3 }}
+                                <label for="id_img3" class="custom-file-label">Select Image 3</label>
+                            </div>
+                        </div>  
                     </div>
-                    <div class="custom-file" style="margin-top: 5px; margin-bottom: 10px;">
-                        {{ form.img2 }}
-                        <label for="id_img2" class="custom-file-label">Select Image 2</label>
-                    </div>
-                    <div class="custom-file" style="margin-top: 5px; margin-bottom: 10px;">
-                        {{ form.img3 }}
-                        <label for="id_img3" class="custom-file-label">Select Image 3</label>
+                    <div class="list-group-item">
+                        <label for="id_preview_select">Select Your Preview Image</label>
+                        {{form.preview_select}}
                     </div>
                     <input type="submit" value="Create" class="btn btn-success btn-block">
                 </form>
@@ -42,5 +61,6 @@
 
 
 {% block extra_script %}
+    <script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
 
 {% endblock %}

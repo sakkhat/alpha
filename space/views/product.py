@@ -12,6 +12,10 @@ from space.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status
 
 
+def route(request):
+	return redirect('/space/product/all/')
+
+
 def view(request, uid):
 	context = {}
 	try:

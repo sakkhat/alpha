@@ -123,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 if env.bool('LOAD_AUTH_USER_MODEL'):
     AUTH_USER_MODEL = env.str('AUTH_USER_MODEL')
 
+MAX_UPLOAD_SITE = env.int('MAX_UPLOAD_SITE')
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

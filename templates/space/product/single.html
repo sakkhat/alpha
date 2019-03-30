@@ -69,6 +69,13 @@
                 <div class="list-group-item" id="product-react-pin">
 
                 </div>
+                <div class="list-group-item">
+                    <div class="fb-share-button" data-href="https://sakkhat.in/space/product/{{product.uid}}"
+                        data-layout="button" data-size="large"><a target="_blank" 
+                        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" 
+                        class="fb-xfbml-parse-ignore">Share</a>
+                    </div>
+                </div>
                 <br>
                 {% if product.space.owner == request.user %}
                     <a href="update/" class="list-group-item list-group-item-action" style="text-align: center;">Update</a>
@@ -117,6 +124,8 @@
             </div>
         </div>
     </div>
+    <div id="fb-root"></div>
+
 {% endblock %}
 
 
@@ -127,6 +136,10 @@
     <script type="text/javascript" src="{% static 'lib/js/react.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js'%}"></script>
+
+    <script async defer crossorigin="anonymous" 
+        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2"> 
+    </script>
 
 
     <script type="text/babel">

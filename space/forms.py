@@ -76,13 +76,17 @@ class SpaceCreateForm(forms.ModelForm):
 
 class ProductPostForm(forms.ModelForm):
 	img1 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input'}))
+		{'class':'custom-file-input','onchange':'openFile1(event)'}))
 
 	img2 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input'}))
+		{'class':'custom-file-input','onchange':'openFile2(event)'}))
 
 	img3 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input'}))
+		{'class':'custom-file-input','onchange':'openFile3(event)'}))
+
+	preview_select = forms.ChoiceField(
+		choices=((1, 'Image 1'), (2, 'Image 2'), (3, 'Image 3')),
+		widget=forms.Select({'class':'form-control'}))
 
 	img1_path = None
 	img2_path = None
@@ -126,7 +130,16 @@ class ProductPostForm(forms.ModelForm):
 		post.space = space
 		post.uid = random()
 		if commit:
-			post.logo_url = self.img1_path
+
+			preview_select = self.cleaned_data['preview_select']
+			if preview_select == 1:
+				post.logo_url = self.img1_path
+			elif preview_select == 2:
+				post.logo_url = self.img2_path
+			else:
+				post.logo_url = self.img3_path
+
+
 			post.save()
 
 			media1 = ProductMedia(location=self.img1_path, product=post)
