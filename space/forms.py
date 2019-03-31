@@ -55,10 +55,6 @@ class SpaceCreateForm(forms.ModelForm):
 			banner2 = Banner(space=space)
 			banner3 = Banner(space=space)
 
-			banner1.uid = random()
-			banner2.uid = random()
-			banner3.uid = random()
-
 			banner1.save()
 			banner2.save()
 			banner3.save()
@@ -128,16 +124,19 @@ class ProductPostForm(forms.ModelForm):
 		post = super(ProductPostForm, self).save(commit=False)
 		space = Space.objects.get(owner = self.request.user)
 		post.space = space
-		post.uid = random()
+
 		if commit:
 
 			preview_select = self.cleaned_data['preview_select']
-			if preview_select == 1:
+
+			if preview_select == '1':
 				post.logo_url = self.img1_path
-			elif preview_select == 2:
+			elif preview_select == '2':
 				post.logo_url = self.img2_path
 			else:
 				post.logo_url = self.img3_path
+
+
 
 
 			post.save()
@@ -145,10 +144,6 @@ class ProductPostForm(forms.ModelForm):
 			media1 = ProductMedia(location=self.img1_path, product=post)
 			media2 = ProductMedia(location=self.img2_path, product=post)
 			media3 = ProductMedia(location=self.img3_path, product=post)
-
-			media1.uid = random()
-			media2.uid = random()
-			media3.uid = random()
 			
 			media1.save()
 			media2.save()

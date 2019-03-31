@@ -77,9 +77,10 @@
                 <div class="list-group" style="color: white">
                     <h4 class="list-group-item disable bg-dark">Status</h4>
                     <h6 class="list-group-item text-dark">Rating : {{status.rating}}</h6>
+                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
                     <h6 class="list-group-item text-dark">Reacts : {{total_react}}</h6>
                     <h6 class="list-group-item text-dark">Favorites : {{ status.total_favorite }}</h6>
-                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
+                    <h6 class="list-group-item text-dark">Total Pinned : {{status.total_pinned}}</h6>
                 </div>
                 <br><br>
                 {% if request.user.is_authenticated and request.user == space.owner %}

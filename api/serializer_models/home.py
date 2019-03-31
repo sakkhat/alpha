@@ -1,12 +1,14 @@
 from home.models import Favorite, PinnedProduct,Notification
-
 from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ReadOnlyField
+
 
 
 class FavoriteSpaceSerializer(ModelSerializer):
+	space = ReadOnlyField(source='space.name')
 	class Meta:
 		model = Favorite
-		fields = ('uid', 'unix_time', 'space')
+		fields = ('unix_time', 'space')
 
 
 

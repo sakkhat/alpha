@@ -11,6 +11,7 @@ urlpatterns = [
 	path('product/create/', product.create, name='product_create'),
 	path('product/<uid>/', product.view, name='product_view'),
 	path('product/<uid>/update/', product.update, name='product_update'),
+	path('product/<uid>/update/delete/', product.delete, name='product_delete'),
 	path('product/<uid>/update/<media_id>/', product.update_product_media, name='product_media_update'),
 
 	path('create/', manage.create, name='space_create'),

@@ -11,7 +11,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 
-
+QUERY = 'SELECT home_favorite.uid, home_favorite.unix_time, space_space.name FROM home_favorite INNER JOIN space_space ON home_favorite.space_id=space_space.id WHERE home_favorite.user_id='
 
 class NotificationListView(ListAPIView):
 	serializer_class = NotificationSerializer
@@ -44,7 +44,8 @@ class FavoriteSpaceListView (ListAPIView):
 		if request.user.phone != ac_id:
 			raise PermissionDenied('invalid request for this user')
 		else:
-			queryset = Favorite.objects.filter(user=request.user).order_by('-unix_time')
+			# queryset = Favorite.objects.filter(user=request.user).order_by('-unix_time')
+			queryset = Favorite.objects.raw(QUERY+str(request.user.id))
 			return queryset
 
 

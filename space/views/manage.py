@@ -55,7 +55,7 @@ def index(request, name):
 		context['has_favorite'] = False
 
 		in_trending = TrendingSpaceStatus.objects.filter(status=status)
-		if in_trending is not None:
+		if in_trending.exists():
 			context['in_trending'] = True
 		else:
 			context['in_trending'] = False

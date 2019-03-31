@@ -63,7 +63,7 @@
                     <button class="btn btn-outline-dark">{{ product.category }}</button>
                 </div>
                 <div class="list-group-item">
-                    <p>{{ product.description | linebreaks }}</p>
+                    <p>{{ product.description | linebreaks | urlize}}</p>
                 </div>
                 <br>
                 <div class="list-group-item" id="product-react-pin">

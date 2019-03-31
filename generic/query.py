@@ -14,3 +14,7 @@ def pinned_product_objects(user, limit=-1):
 	pinned_products = Product.objects.filter(uid__in=uid_list).order_by('-uid')
 
 	return pinned_products
+
+
+
+

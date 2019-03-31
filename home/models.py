@@ -3,6 +3,8 @@ from django.db import models
 from account.models import Account
 from space.models import Status,Product,Space
 
+from uuid import uuid4
+
 
 _NOTIFICATION_LABEL = (
 	('Sc', 'Security'),
@@ -19,8 +21,8 @@ _NOTIFICATION_LABEL_DIC = {
 }
 
 class Notification(models.Model):
-	uid = models.CharField(max_length=32, unique=True, primary_key=True)
-	unix_time = models.CharField(max_length=13)
+	uid = models.UUIDField(primary_key=True, default=uuid4)
+	unix_time = models.CharField(max_length=13, db_index=True)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.TextField()
@@ -38,7 +40,7 @@ class PinnedProduct(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=32, unique=True, primary_key=True)
+	uid = models.UUIDField(primary_key=True, default=uuid4)
 	unix_time = models.CharField(max_length=13)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -49,7 +51,7 @@ class Favorite(models.Model):
 	"""
 	Doc here
 	"""
-	uid = models.CharField(max_length=32, unique=True, primary_key=True)
-	unix_time = models.CharField(max_length=13)
+	uid = models.UUIDField(primary_key=True, default=uuid4)
+	unix_time = models.CharField(max_length=13, db_index=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)

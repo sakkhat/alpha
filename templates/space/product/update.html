@@ -67,15 +67,18 @@
     				{{ form.in_stock}}
     				<label class="custom-control-label" for="id_in_stock">In Stock</label>
     			</div><br>
-    			<button class="btn btn-success btn-block">Update</button>
+    			<button class="btn btn-success">Update</button>
     		</form>
     		<br>
-    		<div class="list-group-item">
-    			<a href="#" class="list-group-item list-group-item-action bg-danger text-white">
-	    			Delete The Product Post
-	    		</a>
-    		</div>
-    		
+            <div class="list-group-item">
+                <a class="btn btn-primary" href="/space/product/{{product.uid}}/">Go to product view</a>
+                <button type="button" id="delete-button" class="btn btn-danger" data-toggle="dropdown">
+                    Delete  
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item btn-danger" href="#" onclick="deleteRequest()">Confirm</div>
+                </div>
+            </div>
     		<br><br>
     	</div>
     </div>
@@ -86,4 +89,17 @@
 
 {% block extra_script %}
 	<script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
+    <script type="text/javascript">
+        var deleteRequest = function(event) {
+           $("#delete-button").html('Deleting all records <span class="spinner-border spinner-border-sm"></span>').toggleClass(' disabled');
+           $('#delete-spinner').removeClass('d-none');
+           fetch('/space/product/{{product.uid}}/update/delete/')
+           .then(response => response.json())
+           .then(data =>{
+                console.log(data.data);
+                window.location = "/space/{{product.space.name}}";
+           });
+        };
+    </script>
+
 {% endblock %}

@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str,random, PRODUCTS_FILE_PATH
+from generic.variables import (LOGIN_URL, now_str,random, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
+	MIN_RATE_FOR_SPACE_TRENDING)
 from generic.views import json_response, invalid_request
 
-from home.models import PinnedProduct
+from home.models import PinnedProduct,TrendingSpaceStatus
 
 from space.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status
@@ -74,7 +75,7 @@ def create(request):
 			status.total_post = status.total_post + 1
 			status.save()
 
-			return redirect('/space/product/'+post.uid+'/')
+			return redirect('/space/product/'+str(post.uid)+'/')
 
 	else:
 		form = ProductPostForm(request=request)
@@ -110,6 +111,7 @@ def update(request, uid):
 
 			context['form'] = form
 			context['media'] = media
+			context['product'] = product
 
 			return render(request, 'space/product/update.html', context) 
 
@@ -118,6 +120,49 @@ def update(request, uid):
 		pass
 
 	return invalid_request(request)
+
+
+@login_required(login_url=LOGIN_URL)
+def delete(request, uid):
+	try:
+		product = Product.objects.get(uid=uid)
+		if product.space.owner == request.user:
+			space_name = product.space.name
+			
+			# count of total
+
+			total_pin = PinnedProduct.objects.filter(product_id=product.uid).count()
+			PinnedProduct.objects.filter(product_id=product.uid).delete()
+			ProductReact.objects.filter(product_id=product.uid).delete()
+
+			status = Status.objects.get(space_id=product.space_id)
+			status.total_good_react -= product.react_good
+			status.total_bad_react -=product.react_bad
+			status.total_fake_react -=product.react_fake
+			status.total_post -= 1
+			status.total_pinned -= total_pin
+
+			remove_point = ((ACTIVITY_POINT['GOOD']*product.react_good)+(ACTIVITY_POINT['PIN']*total_pin)+
+				(ACTIVITY_POINT['BAD']*product.react_bad)+(ACTIVITY_POINT['FAKE']*product.react_fake))
+
+			status.rating -= remove_point
+			status.save()
+
+			if status.rating < MIN_RATE_FOR_SPACE_TRENDING:
+				TrendingSpaceStatus.objects.get(status_id=status.space_id).delete()
+				
+				
+
+			product.delete()
+
+			return json_response(request, json_data='product deleted')
+
+	except ObjectDoesNotExist as e:
+		pass
+	return json_response(request, json_data='something went wrong')
+
+
+
 
 
 @login_required(login_url=LOGIN_URL)
