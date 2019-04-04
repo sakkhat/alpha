@@ -1,5 +1,3 @@
-from account.forms import MessageBoxForm
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,7 +10,7 @@ from generic.views import json_response, invalid_request
 from home.models import PinnedProduct,TrendingSpaceStatus
 
 from space.forms import ProductPostForm,ProductUpdateForm
-from space.models import Product, ProductMedia, ProductReact,Status
+from space.models import Product, ProductMedia, ProductReact,Status,Category
 
 
 def route(request):
@@ -43,9 +41,6 @@ def view(request, uid):
 				context['has_pin'] = False
 
 
-		form = MessageBoxForm()
-
-		context['form'] = form
 		context['product'] = product
 		context['media'] = media
 		
@@ -77,7 +72,7 @@ def create(request):
 			post = form.save()
 
 			status = Status.objects.get(space=post.space)
-			status.total_post = status.total_post + 1
+			status.total_post += 1
 			status.save()
 
 			return redirect('/space/product/'+str(post.uid)+'/')
@@ -108,7 +103,10 @@ def update(request, uid):
 					product.in_stock = form.cleaned_data['in_stock']
 					product.phone_request = form.cleaned_data['phone_request']
 					product.email_request = form.cleaned_data['email_request']
-					product.messagebox_request = form.cleaned_data['messagebox_request']
+
+					category = product.category
+					category.total_product += 1
+					category.save()
 
 					product.save()
 
@@ -159,8 +157,17 @@ def delete(request, uid):
 
 			if status.rating < MIN_RATE_FOR_SPACE_TRENDING:
 				TrendingSpaceStatus.objects.get(status_id=status.space_id).delete()
-				
-				
+
+			media = ProductMedia.objects.filter(product_id=product.uid)
+			# delete image sources
+			for item in media:
+				Image.delete(item.location)
+			# delete database objects
+			media.delete()
+
+			category = product.category
+			category.total_product -= 1
+			category.save()
 
 			product.delete()
 

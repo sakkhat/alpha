@@ -92,7 +92,7 @@ class ProductPostForm(forms.ModelForm):
 	class Meta:
 		model = Product
 		fields = ['title', 'description', 'category', 'price', 'phone_request',
-			'email_request', 'messagebox_request'
+			'email_request',
 		]
 
 		widgets = {
@@ -108,8 +108,6 @@ class ProductPostForm(forms.ModelForm):
 			'phone_request' : forms.CheckboxInput(attrs=
 				{'class':'custom-control-input'}),
 			'email_request' : forms.CheckboxInput(attrs=
-				{'class':'custom-control-input'}),
-			'messagebox_request' : forms.CheckboxInput(attrs=
 				{'class':'custom-control-input'}),
 		}
 
@@ -191,7 +189,7 @@ class ProductUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Product
 		fields = ['title', 'description', 'price', 'category', 'in_stock',
-			'phone_request', 'email_request', 'messagebox_request'
+			'phone_request', 'email_request',
 		]
 
 		widgets = {
@@ -209,8 +207,6 @@ class ProductUpdateForm(forms.ModelForm):
 			'phone_request' : forms.CheckboxInput(attrs=
 				{'class':'custom-control-input'}),
 			'email_request' : forms.CheckboxInput(attrs=
-				{'class':'custom-control-input'}),
-			'messagebox_request' : forms.CheckboxInput(attrs=
 				{'class':'custom-control-input'}),
 		}
 
@@ -235,4 +231,3 @@ class ProductUpdateForm(forms.ModelForm):
 		self.fields['in_stock'].initial = self.product.in_stock
 		self.fields['phone_request'].initial = self.product.phone_request
 		self.fields['email_request'].initial = self.product.email_request
-		self.fields['messagebox_request'].initial = self.product.messagebox_request

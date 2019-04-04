@@ -88,14 +88,3 @@ class Account(AbstractBaseUser,PermissionsMixin):
 
 	def has_module_perms(self, perms, obj=None):
 		return all(self.has_perm(perm, obj) for perm in perms)
-
-
-
-
-class MessageBox(models.Model):
-	uid = models.UUIDField(primary_key=True, default=uuid4)
-	message = models.CharField(max_length=100)
-	sender = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='sender')
-	receiver = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='receiver')
-	date_time = models.DateTimeField(auto_now_add=True)
-	seen = models.BooleanField(default=False)

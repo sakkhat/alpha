@@ -58,11 +58,10 @@
                     {% endif %}
                 </h5>
                 <a class="list-group-item bg-light" href="/space/{{product.space.name}}/">@{{ product.space.name }}</a>
-                <br>
                 <div class="list-group-item">
-                    <button class="btn btn-outline-dark">{{ product.category }}</button>
+                    <button class="btn btn-sm btn-outline-dark">{{ product.category }}</button>
                 </div>
-                <div class="list-group-item">
+                <div class="list-group-item description">
                     <p>{{ product.description | linebreaks | urlize}}</p>
                 </div>
                 <br>
@@ -119,31 +118,7 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endif %}
-
-                        {% if product.messagebox_request %}
-                            <button class="btn product-request" data-toggle="modal" data-target="#messagebox_request_model">
-                                <i class="fa fa-comments">MessageBox</i>
-                            </button>
-                            <div class="modal fade" id="messagebox_request_model">
-                                <div class="modal-dialog">
-                                    <div class="modal-content"> 
-                                        <div class="modal-body">
-                                            <form class="POST">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="receiver" uid="{{product.space.owner.id}}"/>
-                                                {{ form.as_p}}
-                                                <button class="btn btn-primary">Send</button>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                        
+                        {% endif %}                        
                     </div>
                 {% endif %}
                 <br>

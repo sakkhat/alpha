@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django import forms
 
-from account.models import Account, MessageBox
+from account.models import Account
 
 
 class SignupForm(forms.ModelForm):
@@ -170,13 +170,3 @@ class ProfileUpdateForm(forms.ModelForm):
 		self.fields['gender'].initial = self.user.gender
 
 
-
-class MessageBoxForm(forms.ModelForm):
-	class Meta:
-		model = MessageBox
-		fields = ['message']
-
-		widgets = {
-			'message' : forms.Textarea(attrs=
-				{'class':'form-control', 'placeholder':'Type a message in 100 character'})
-		}

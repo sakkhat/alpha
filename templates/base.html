@@ -39,10 +39,10 @@
                             <a class="nav-link" href="/trending/">Trending <i class="fa fa-line-chart"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/space/all/">All Spaces</a>
+                            <a class="nav-link" href="/space/all/">Spaces</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/space/product/all/">All Products</a>
+                            <a class="nav-link" href="/space/product/all/">Products</a>
                         </li>
                         {% if not request.user.is_authenticated %}
                             <li class="nav-item">
@@ -55,9 +55,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/notification/">
                                     {% if request.user.has_notification %}
-                                        <i class="fa fa-bell" style="color:#ff6961;"><sup>*</sup></i>
+                                        Notification <i class="fa fa-bell" style="color:#ff6961;"><sup>*</sup></i>
                                     {% else %}
-                                        <i class="fa fa-bell"></i>
+                                        Notification <i class="fa fa-bell"></i>
                                     {% endif %}
                                 </a>
                             </li>

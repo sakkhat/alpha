@@ -2,6 +2,8 @@ from django.db import models
 
 from account.models import Account
 
+from generic.variables import DISTRICTS
+
 from uuid import uuid4
 
 
@@ -53,8 +55,7 @@ class Space(models.Model):
 	owner = models.OneToOneField(Account, on_delete=models.CASCADE)
 	name = models.CharField(max_length=30, unique=True)
 	description = models.TextField()
-
-	# join = models.DateTimeField(auto_now=True)
+	join = models.DateTimeField(auto_now_add=True)
 	
 	def __str__(self):
 		return self.name + ' : '+self.uid
@@ -86,7 +87,7 @@ class Product(models.Model):
 	react_fake = models.PositiveIntegerField(default=0)
 	phone_request = models.BooleanField(default=True)
 	email_request = models.BooleanField(default=True)
-	messagebox_request = models.BooleanField(default=True)
+
 
 
 class ProductReact(models.Model):

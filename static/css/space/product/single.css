@@ -18,6 +18,12 @@
 .bt-config button {
 	margin: 5px 5px 0px 2px;
 }
+
+.description {
+	max-height: 300px;
+	overflow-y: auto; width: 100%;
+}
+
 .product-request i{
 	font-size: 20px;
 }
