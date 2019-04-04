@@ -84,6 +84,9 @@ class Product(models.Model):
 	react_good = models.PositiveIntegerField(default=0)
 	react_bad = models.PositiveIntegerField(default=0)
 	react_fake = models.PositiveIntegerField(default=0)
+	phone_request = models.BooleanField(default=True)
+	email_request = models.BooleanField(default=True)
+	messagebox_request = models.BooleanField(default=True)
 
 
 class ProductReact(models.Model):
@@ -124,13 +127,3 @@ class Status(models.Model):
 	total_post = models.PositiveIntegerField(default=0)
 	rating = models.PositiveIntegerField(default=0)
 
-
-class Sell(models.Model):
-	"""
-	Doc here
-	"""
-	uid = models.UUIDField(primary_key=True, default=uuid4)
-	by = models.ForeignKey(Space, on_delete=models.CASCADE)
-	to = models.ForeignKey(Account, null=True, blank=True,on_delete=models.SET_NULL)
-	product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
-	time_date = models.DateTimeField(auto_now=True)

@@ -91,18 +91,26 @@ class ProductPostForm(forms.ModelForm):
 
 	class Meta:
 		model = Product
-		fields = ['title', 'description', 'category', 'price']
+		fields = ['title', 'description', 'category', 'price', 'phone_request',
+			'email_request', 'messagebox_request'
+		]
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
-				{'placeholder':'Title', 'class':'form-control'}),
+				{'placeholder':'Product Name', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'}),
+				{'placeholder':'Product Description', 'class':'form-control'}),
 
 			'price' : forms.NumberInput(attrs=
-				{'placeholder':'Price (TK)', 'class':'form-control'}),
+				{'placeholder':'(TK)', 'class':'form-control'}),
 			'category' : forms.Select(attrs=
-				{'class':'form-control'})
+				{'class':'form-control'}),
+			'phone_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
+			'email_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
+			'messagebox_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
 		}
 
 
@@ -182,7 +190,9 @@ class SpaceUpdateForm(forms.ModelForm):
 class ProductUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Product
-		fields = ['title', 'description', 'price', 'category', 'in_stock']
+		fields = ['title', 'description', 'price', 'category', 'in_stock',
+			'phone_request', 'email_request', 'messagebox_request'
+		]
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
@@ -195,7 +205,13 @@ class ProductUpdateForm(forms.ModelForm):
 			'category' : forms.Select(attrs=
 				{'class':'form-control'}),
 			'in_stock' : forms.CheckboxInput(attrs=
-				{'class' : 'custom-control-input'})
+				{'class' : 'custom-control-input'}),
+			'phone_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
+			'email_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
+			'messagebox_request' : forms.CheckboxInput(attrs=
+				{'class':'custom-control-input'}),
 		}
 
 
@@ -217,3 +233,6 @@ class ProductUpdateForm(forms.ModelForm):
 		self.fields['price'].initial = self.product.price
 		self.fields['category'].initial = self.product.category
 		self.fields['in_stock'].initial = self.product.in_stock
+		self.fields['phone_request'].initial = self.product.phone_request
+		self.fields['email_request'].initial = self.product.email_request
+		self.fields['messagebox_request'].initial = self.product.messagebox_request

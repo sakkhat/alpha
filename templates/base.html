@@ -53,9 +53,9 @@
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link" href="/notification/">Notification
+                                <a class="nav-link" href="/notification/">
                                     {% if request.user.has_notification %}
-                                        <i class="fa fa-bell"><sup>*</sup></i>
+                                        <i class="fa fa-bell" style="color:#ff6961;"><sup>*</sup></i>
                                     {% else %}
                                         <i class="fa fa-bell"></i>
                                     {% endif %}

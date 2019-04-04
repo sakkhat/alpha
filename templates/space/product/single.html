@@ -78,9 +78,62 @@
                 </div>
                 <br>
                 {% if product.space.owner == request.user %}
-                    <a href="update/" class="list-group-item list-group-item-action" style="text-align: center;">Update</a>
+                    <a href="update/" class="list-group-item list-group-item-primary text-center">Update</a>
                 {% else %}
-                    <div id="request-block">
+                    <div class="list-group-item bt-config">
+                        {% if product.phone_request %}
+                            <button class="btn product-request" data-toggle="modal" data-target="#phone_request_model">
+                                <i class="fa fa-phone-square">Phone</i>
+                            </button>
+                            <div class="modal fade" id="phone_request_model">
+                                <div class="modal-dialog">
+                                    <div class="modal-content"> 
+                                        <div class="modal-body">
+                                            {{ product.space.owner.phone }}
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if product.email_request %}
+                            <button class="btn product-request" data-toggle="modal" data-target="#email_request_model">
+                                <i class="fa fa-at">Email</i>
+                            </button>
+                            <div class="modal fade" id="email_request_model">
+                                <div class="modal-dialog">
+                                    <div class="modal-content"> 
+                                        <div class="modal-body">
+                                            {{ product.space.owner.email }}
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if product.messagebox_request %}
+                            <button class="btn product-request" data-toggle="modal" data-target="#messagebox_request_model">
+                                <i class="fa fa-comments">MessageBox</i>
+                            </button>
+                            <div class="modal fade" id="messagebox_request_model">
+                                <div class="modal-dialog">
+                                    <div class="modal-content"> 
+                                        <div class="modal-body">
+                                            {{ product.space.owner.id }}
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         
                     </div>
                 {% endif %}
@@ -92,8 +145,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a class="list-group-item bg-primary" href="#" style="text-decoration: none; color: white;"><h4 style="margin: 0px">Related Products</h4></a>
-                <br>
+                <p class="list-group-item bg-dark text-white">Related Products</p>
                 <div class="product-slick-container">
                     {% for product in related_products %}
                         <figure class="slider-card-container">
@@ -423,46 +475,4 @@
 
         ReactDOM.render(element, document.getElementById('product-react-pin'));
     </script>
-
-    {% if not product.space.owner == request.user %}
-        <script type="text/babel">
-            class Request extends React.Component {
-                constructor(props){
-                    super(props);
-
-                    this.state = {'clicked' : false};
-
-                    this.handleClick = this.handleClick.bind(this);
-                }
-
-                handleClick(){
-                    if(this.state.clicked){
-                        this.setState({clicked : false});
-                        return;
-                    }
-
-                    this.setState({clicked : true});
-                    return;
-                }
-
-                render(){
-                    if(this.state.clicked){
-                        return (
-                            <button className="btn btn-outline-success btn-block" onClick={this.handleClick}>
-                                Contact: {{ product.space.owner.phone }}
-                            </button>
-                        );
-                    }
-                    return(
-                        <button className="btn btn-success btn-block" onClick={this.handleClick}>
-                            Make Request
-                        </button>
-                    );
-                }
-            }
-
-            const element = (<Request/>)
-            ReactDOM.render(element, document.getElementById('request-block'))
-        </script>
-    {% endif %}
 {% endblock %}

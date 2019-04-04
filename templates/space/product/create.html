@@ -12,14 +12,22 @@
 	<div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <form method="POST" class="form-block " enctype="multipart/form-data">
+                <form method="POST" class="form-block list-group-item" enctype="multipart/form-data">
                 	{% csrf_token %}
+                    {{ form.title.label }}
                     {{ form.title }}
+
+                    {{ form.description.label }}
                     {{ form.description }}
+
+                    {{ form.category.label }}
                     {{ form.category }}
+
+                    {{ form.price.label }}
                     {{ form.price }}
 
                     <div class="list-group-item">
+                        <label>Upload Product Images</label>
                         <div class="list-group-item">
                             <img src="{% static 'res/vector/logo_bw.svg' %}" class="image-preview" 
                                 id="img-view-1">
@@ -49,6 +57,28 @@
                         <label for="id_preview_select">Select Your Preview Image</label>
                         {{form.preview_select}}
                     </div>
+                    <div class="list-group-item">
+                        <label>Select Product Request Method</label>
+                        <div class="custom-control custom-checkbox">
+                            {{ form.phone_request }}
+                            <label class="custom-control-label" for="id_phone_request">
+                                Phone Request
+                            </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            {{ form.email_request }}
+                            <label class="custom-control-label" for="id_email_request">
+                                Email Request
+                            </label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            {{ form.messagebox_request }}
+                            <label class="custom-control-label" for="id_messagebox_request">
+                                MessageBox Request
+                            </label>
+                        </div>
+                    </div>
+
                     <input type="submit" value="Create" class="btn btn-success btn-block">
                 </form>
 
