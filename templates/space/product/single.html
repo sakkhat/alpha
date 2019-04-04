@@ -89,7 +89,9 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content"> 
                                         <div class="modal-body">
-                                            {{ product.space.owner.phone }}
+                                            <input class="form-control" id="phone-data"
+                                            onclick="copyToClipboard(this)" value="{{product.space.owner.phone}}"  data-toggle="popover" title="Phone" data-content="copied" data-trigger="focus"/>
+                                            <a class="btn btn-primary btn-md" href="tel:{{product.space.owner.phone}}">Call</a>
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -107,7 +109,9 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content"> 
                                         <div class="modal-body">
-                                            {{ product.space.owner.email }}
+                                            <input class="form-control" id="phone-data"
+                                            onclick="copyToClipboard(this)" value="{{product.space.owner.email}}"  data-toggle="popover" title="Email" data-content="copied" data-trigger="focus"/>
+                                            <a class="btn btn-primary btn-md" href="mailto:{{product.space.owner.email}}">Email</a>
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -125,7 +129,12 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content"> 
                                         <div class="modal-body">
-                                            {{ product.space.owner.id }}
+                                            <form class="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="receiver" uid="{{product.space.owner.id}}"/>
+                                                {{ form.as_p}}
+                                                <button class="btn btn-primary">Send</button>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -184,6 +193,7 @@
 {% block extra_script %}
 	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/space/product/single.js'%}"></script>
 
     <script type="text/javascript" src="{% static 'lib/js/react.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js'%}"></script>
