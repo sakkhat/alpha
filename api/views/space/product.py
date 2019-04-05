@@ -1,34 +1,23 @@
+from account.models import Account
+
 from api.serializer_models.space.product import ( ProductSerializer, ProductReactSerializer,
 	ProductSerializerForReact)
+from api.serializer_models.home import PinnedProductDetailSerializer
+from api.handler import activity,productlist
 
-from api.handler import activity
 from django.core.exceptions import ObjectDoesNotExist
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from home.models import PinnedProduct
+
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework.exceptions import NotFound, PermissionDenied
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-from space.models import Product, ProductReact
-
-
-
-class PinnedProductListView(ListAPIView):
-	serializer_class = ProductSerializer
-	permission_classes = (IsAuthenticatedOrReadOnly,)
-
-	def get_queryset(self):
-		request = self.request
-		if not request.user.is_authenticated:
-			raise NotFound('request not found')
-		ac_id = self.kwargs['ac_id']
-		if request.user.phone != ac_id:
-			raise PermissionDenied('invalid request for this user')
-		else:
-			queryset = pinned_product_objects(request.user)
-			return queryset
+from space.models import Product, ProductReact, Category
 
 
 
@@ -39,12 +28,12 @@ class ProductReactListView (ListAPIView):
 	def get_queryset(self):
 		request = self.request
 		if not request.user.is_authenticated:
-			raise NotFound('request not found')
+			raise NotFound('invalid request')
 		ac_id = self.kwargs['ac_id']
 		if request.user.phone != ac_id:
 			raise PermissionDenied('invalid request for this user')
 		else:
-			queryset = ProductReact.objects.filter(user=request.user).order_by('-unix_time')
+			queryset = ProductReact.objects.filter(user_id=request.user.id).order_by('-unix_time')
 			return queryset
 
 
@@ -67,7 +56,7 @@ class ProductViewForReact (APIView):
 			return Response(serializer.data)
 		except ObjectDoesNotExist as e:
 			pass
-		raise NotFound('request not found')
+		raise NotFound('invalid request')
 
 
 class PinnedProductRequestView(APIView):
@@ -81,4 +70,39 @@ class PinnedProductRequestView(APIView):
 			if res:
 				return Response({'response' : 'request accepted'});
 
-		raise NotFound('request not found')
+		raise NotFound('invalid request')
+
+
+@api_view(['GET'])
+def manager(request, format=None):
+	category = request.GET.get('category', None)
+	query = request.GET.get('query', None)
+	pinned_by = request.GET.get('pinned_by', None)
+
+	if category is not None:
+		try:
+			category_obj = Category.objects.get(name__iexact=category)
+			result = Product.objects.filter(category_id=category_obj.name)
+			serializer = ProductSerializer(result, many=True)
+			return Response(serializer.data)
+
+		except ObjectDoesNotExist as e:
+			pass
+
+	elif query is not None:
+		pass
+
+	elif pinned_by is not None:
+		try:
+			user = Account.objects.get(id=pinned_by)
+			if request.user.id != user.id:
+				raise PermissionDenied('request is not accepted')
+			result = PinnedProduct.objects.filter(user_id=user.id)
+			serializer = PinnedProductDetailSerializer(result, many=True)
+			return Response(serializer.data)
+
+		except ObjectDoesNotExist as e:
+			pass
+
+
+	raise NotFound('invalid request')

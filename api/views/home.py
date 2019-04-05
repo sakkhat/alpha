@@ -2,8 +2,6 @@
 from api.serializer_models.home import (NotificationSerializer,PinnedProductSerializer,
 	FavoriteSpaceSerializer)
 
-from generic.query import pinned_product_objects
-
 from home.models import PinnedProduct, Notification, Favorite
 
 from rest_framework.exceptions import PermissionDenied,NotFound

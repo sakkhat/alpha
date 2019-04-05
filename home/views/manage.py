@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
-from generic.query import pinned_product_objects
 from generic.variables import LOGIN_URL
 from generic.views import json_response
 
@@ -23,7 +22,7 @@ def index(request):
 		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:5]
 		context['favorite'] = favorite
 		
-		pinned_products = pinned_product_objects(request.user, 10)
+		pinned_products = products
 		context['pinned_products'] = pinned_products
 
 	context['trending_products'] = trending_products
