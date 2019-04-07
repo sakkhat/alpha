@@ -3,7 +3,7 @@ from account.models import Account
 from api.serializer_models.space.product import ( ProductSerializer, ProductReactSerializer,
 	ProductSerializerForReact)
 from api.serializer_models.home import PinnedProductDetailSerializer
-from api.handler import activity,productlist
+from api.handler import activity
 
 from django.core.exceptions import ObjectDoesNotExist
 

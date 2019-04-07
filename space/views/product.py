@@ -53,6 +53,20 @@ def view(request, uid):
 
 
 def manager(request):
+	if request.method == 'GET':
+		category = request.GET.get('category', None)
+		if category is not None:
+			pass
+
+		pinned_by = request.GET.get('pinned_by', None)
+		if pinned_by is not None:
+			pass
+
+		query = request.GET.get('query', None)
+		if query is not None:
+			pass
+
+
 	products = Product.objects.all()
 	context = {
 		'products' : products
