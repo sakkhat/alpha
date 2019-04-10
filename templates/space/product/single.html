@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/single.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slider-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
 
 {% endblock %}
 
@@ -132,7 +132,7 @@
                 <p class="list-group-item bg-dark text-white">Related Products</p>
                 <div class="product-slick-container">
                     {% for product in related_products %}
-                        <figure class="slider-card-container">
+                        <figure class="card-container slider-card">
                             <img src="{{product.logo_url}}">
                             <figcaption>
                                 <h5 class="title">{{product.title}}</h5>

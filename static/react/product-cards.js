@@ -20,8 +20,8 @@ class ProductCards extends React.Component {
 		.then(response => response.json())
 		.then(data =>{
 			const results = data.map((item) => 
-				<div className="col-md-3">
-                    <figure className="dash-card-container">
+				<div className="col-auto mb-3">
+                    <figure className="card-container fixed-card">
                         <img src={item.logo_url}/>
                         <figcaption>
                             <h5 className="title">{item.title}</h5>

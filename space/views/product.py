@@ -53,6 +53,7 @@ def view(request, uid):
 
 
 def manager(request):
+	context = {}
 	if request.method == 'GET':
 		category = request.GET.get('category', None)
 		if category is not None:
@@ -66,11 +67,8 @@ def manager(request):
 		if query is not None:
 			pass
 
-
 	products = Product.objects.all()
-	context = {
-		'products' : products
-	}
+	context['products'] = products
 
 	return render(request, 'space/product/list.html', context)
 	

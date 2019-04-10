@@ -2,18 +2,18 @@
 {% load static %}
 
 {% block extra_head %}
-	<title>Explore Products</title>
+    <title>Explore Products</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/dash-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-	<div class="container fluid">
-        <div class="row">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
             {% for product in products %}
-                <div class="col-md-4 grid-item">
-                    <figure class="dash-card-container">
+                <div class="col-auto mb-1">
+                    <figure class="card-container fixed-card">
                         <img src="{{ product.logo_url }}">
                         <figcaption>
                             <h5 class="title">{{ product.title }}</h5>
@@ -41,7 +41,7 @@
     </div>
 {% endblock %}
 
-	
+    
 
 {% block extra_script %}
 {% endblock %}

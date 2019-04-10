@@ -11,17 +11,17 @@
 {% block extra_content %}
 	<div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 list-group-item">
                 <form method="POST" class="space-create-form">
                 	{% csrf_token %}
-                    {{ form.name }}
-                    {{ form.description }}
-                    {{ form.category }}
+                    {{ form.as_p }}
                     <input type="submit" value="Create" class="btn btn-success btn-block">
                 </form>
-
             </div>
-            <div class="col-md-6"></div>
+            <br>
+            <div class="col-md-6">
+                
+            </div>
             
         </div>
     </div>

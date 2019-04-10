@@ -20,9 +20,9 @@ class SpaceCreateForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs=
-				{'placeholder':'Space Name', 'class':'form-control'}),
+				{'placeholder':'Sakkhat', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'})
+				{'placeholder':'My description. Follow: https://facebook.com/sakkhat/', 'class':'form-control'})
 		}
 
 

@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slider-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/home/manage/index.css'%}">
 {% endblock %}
@@ -129,7 +129,7 @@
                     </a>
                     <div class="product-slick-container">
                         {% for product in pinned_products %}
-                            <figure class="slider-card-container">
+                            <figure class="card-container slider-card">
                                 <img src="{{product.logo_url}}">
                                 <figcaption>
                                     <h5 class="title">{{product.title}}</h5>
@@ -153,7 +153,7 @@
                             </figure>
 
                             {% empty %}
-                            <figure class="slider-card-container">
+                            <figure class="card-container slider-card">
                                 <img src="{% static 'res/vector/logo_wb.svg' %}">
                                 <figcaption>
                                     <h5 class="title">No Pinned Product</h5>
@@ -166,7 +166,7 @@
                     <p class="list-group-item bg-dark text-white">Products you may like</p>
                     <div class="product-slick-container">
                         {% for product in related_products %}
-                            <figure class="slider-card-container">
+                            <figure class="card-container slider-card">
                                 <img src="{{product.logo_url}}">
                                 <figcaption>
                                     <h5 class="title">{{product.title}}</h5>
@@ -220,7 +220,7 @@
                 </p>
                 <div class="product-slick-container">
                     {% for product in recent_products %}
-                        <figure class="slider-card-container">
+                        <figure class="card-container slider-card">
                             <img src="{{product.logo_url}}">
                             <figcaption>
                                 <h5 class="title">{{product.title}}</h5>
@@ -244,7 +244,7 @@
                         </figure>
 
                         {% empty %}
-                        <figure class="slider-card-container">
+                        <figure class="card-container slider-card">
                             <img src="{% static 'res/vector/logo_wb.svg' %}">
                             <figcaption>
                                 <h5 class="title">No Pinned Product</h5>
