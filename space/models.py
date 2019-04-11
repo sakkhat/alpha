@@ -2,8 +2,6 @@ from django.db import models
 
 from account.models import Account
 
-from generic.variables import DISTRICTS
-
 from uuid import uuid4
 
 
@@ -27,12 +25,12 @@ _PRODDUCT_CATEGORY_DIC = {
 }
 
 _PRODDUCT_CATEGORY_KEY_DIC = {
-	'Others' : 'Ots',
-	'Gadget' : 'Gdt',
-	'Man-Fashion' : 'MFs',
-	'Woman-Fashion' : 'WFs',
-	'Computer-Accessory' : 'CAc',
-	'Electronics' : 'Elc',
+	'others' : 'Ots',
+	'gadget' : 'Gdt',
+	'man-fashion' : 'MFs',
+	'woman-fashion' : 'WFs',
+	'computer-accessory' : 'CAc',
+	'electronics' : 'Elc',
 }
 
 

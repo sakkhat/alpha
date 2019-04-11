@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from generic.media import Image
-from generic.variables import (LOGIN_URL, now_str,random, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
+from generic.variables import (LOGIN_URL, now_str, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
 	MIN_RATE_FOR_SPACE_TRENDING)
 from generic.views import json_response, invalid_request
 
@@ -107,7 +107,7 @@ def create(request):
 			status.total_post += 1
 			status.save()
 
-			category = Category.objects.get(id=product.category_id)
+			category = Category.objects.get(id=post.category_id)
 			category.total_products += 1
 			category.save()
 
@@ -196,7 +196,7 @@ def delete(request, uid):
 			media.delete()
 
 			category = Category.objects.get(id=product.category_id)
-			category.total_product -= 1
+			category.total_products -= 1
 			category.save()
 
 			product.delete()

@@ -82,6 +82,7 @@ def manager(request, format=None):
 
 	if category is not None:
 		try:
+			category = category.lower()
 			key = category_key.get(category)
 			category_obj = Category.objects.get(name__iexact=key)
 			result = Product.objects.filter(category_id=category_obj.id)

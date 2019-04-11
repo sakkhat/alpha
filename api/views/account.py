@@ -27,8 +27,6 @@ def user_thumbnail_update(request, ac_id):
 		try:
 			
 			file = request.FILES['image']
-			print(file.name)
-			print(type(file))
 			img_src = Image.load(file_stream=file)
 
 			try:

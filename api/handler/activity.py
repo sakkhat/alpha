@@ -3,7 +3,7 @@ from django.db.models import Min
 
 from home.models import Favorite, PinnedProduct
 
-from generic.variables import (random,now_str,ACTIVITY_POINT,MAX_TRENDING_SPACE,
+from generic.variables import (now_str,ACTIVITY_POINT,MAX_TRENDING_SPACE,
 	MIN_RATE_FOR_SPACE_TRENDING)
 
 from space.models import Product, ProductReact, Space, Status

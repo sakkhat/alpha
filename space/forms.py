@@ -1,6 +1,6 @@
 from django import forms
 
-from generic.variables import random, FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
+from generic.variables import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
 from generic.media import Image
 
 from space.models import Space,Product, ProductMedia,Banner
