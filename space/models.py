@@ -26,6 +26,16 @@ _PRODDUCT_CATEGORY_DIC = {
 	'Elc': 'Electronics',
 }
 
+_PRODDUCT_CATEGORY_KEY_DIC = {
+	'Others' : 'Ots',
+	'Gadget' : 'Gdt',
+	'Man-Fashion' : 'MFs',
+	'Woman-Fashion' : 'WFs',
+	'Computer-Accessory' : 'CAc',
+	'Electronics' : 'Elc',
+}
+
+
 _PRODUCT_REACT = (
 	('G', 'Good'),
 	('B', 'Bad'),

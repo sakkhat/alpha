@@ -18,6 +18,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from space.models import Product, ProductReact, Category
+from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
 
 
 
@@ -81,7 +82,8 @@ def manager(request, format=None):
 
 	if category is not None:
 		try:
-			category_obj = Category.objects.get(name__iexact=category)
+			key = category_key.get(category)
+			category_obj = Category.objects.get(name__iexact=key)
 			result = Product.objects.filter(category_id=category_obj.name)
 			serializer = ProductSerializer(result, many=True)
 			return Response(serializer.data)

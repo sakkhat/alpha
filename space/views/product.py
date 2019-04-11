@@ -21,17 +21,23 @@ def view(request, uid):
 	context = {}
 	try:
 		product = Product.objects.get(uid = uid)
-		media = ProductMedia.objects.filter(product=product)
-		related_products = Product.objects.filter(category=product.category).order_by('-time_date')[:10]
+		media = ProductMedia.objects.filter(product_id=product.uid)
+		related_products = Product.objects.filter(category_id=product.category_id).order_by('-time_date')[:10]
 
 		if request.user.is_authenticated:
 	
-			react_obj = ProductReact.objects.filter(product=product, user=request.user).first()
+			react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
 			if react_obj is not None:
 				context['has_react'] = True
 				context['current_react'] = react_obj.react
 			else:
 				context['has_react'] = False
+				context['current_react'] = 'N'
+
+			if request.user.id == product.space.owner_id:
+				context['is_owner'] = True
+			else:
+				context['is_owner'] = False
 
 
 			pin = PinnedProduct.objects.filter(product=product, user=request.user).first()
@@ -54,24 +60,38 @@ def view(request, uid):
 
 def manager(request):
 	context = {}
+	has_attribute = False
+
 	if request.method == 'GET':
 		category = request.GET.get('category', None)
-		if category is not None:
-			pass
-
 		pinned_by = request.GET.get('pinned_by', None)
-		if pinned_by is not None:
-			pass
-
 		query = request.GET.get('query', None)
-		if query is not None:
-			pass
 
+
+		if category is not None:
+			has_attribute = True
+			context['category'] = category
+	
+
+		elif pinned_by is not None:
+			if request.user.is_authenticated:
+				has_attribute = True
+				context['pinned_by'] = True
+
+		elif query is not None:
+			has_attribute = True
+			context['query'] = query
+		
+
+	context['has_attribute'] = has_attribute
+	if has_attribute:
+		return render(request, 'space/product/list.html', context)
+	
 	products = Product.objects.all()
 	context['products'] = products
 
 	return render(request, 'space/product/list.html', context)
-	
+
 
 
 @login_required(login_url=LOGIN_URL)

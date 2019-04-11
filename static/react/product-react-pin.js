@@ -4,7 +4,8 @@ class ProductReact extends React.Component {
     constructor(props){
         super(props);
 
-        {% if request.user.is_authenticated %}
+        if(props.obj.auth){
+
             var reactCodeDic = {'None':'N', 'Good':'G', 'Bad':'B', 'Fake':'F'};
             var reactStateDic ={'N':true, 'G':false,'B':false,'F':false};
 
@@ -18,13 +19,15 @@ class ProductReact extends React.Component {
                 'fakeClass' : 'btn btn-sm btn-outline-danger',
 
                 'currentReact' : 'N',
-                'url' : '/api/product/{{product.uid}}/activity/react/',
+                'url' : '/api/product/'+props.obj.uid+'/activity/react/',
                 'auth' : true,
 
                 'reactCodeDic' : reactCodeDic,
                 'reactStateDic' : reactStateDic
             };
-        {% else %}
+        }
+        else {
+
             this.state = {
                 'good' : 0,
                 'bad' : 0,
@@ -36,9 +39,9 @@ class ProductReact extends React.Component {
                 'auth' : false,
 
                 'currentReact' : 'N',
-                'url' : '/api/product/{{product.uid}}/activity/react/',
+                'url' : '/api/product/'+props.obj.uid+'/activity/react/',
             };
-        {% endif %}
+        }
         
 
         this.handleGood = this.handleGood.bind(this);
@@ -48,8 +51,9 @@ class ProductReact extends React.Component {
 
     componentDidMount(){
 
-        {% if has_react %}
-            const _currentReact = "{{current_react}}";
+        if(this.props.has_react){
+
+            const _currentReact = this.props.currentReact;
             var reactStateDic = this.state.reactStateDic;
             reactStateDic[_currentReact] = true;
             reactStateDic[this.state.reactCodeDic['None']] = false;
@@ -60,7 +64,8 @@ class ProductReact extends React.Component {
             });
             this.updateColor(reactStateDic);
 
-        {% endif %}
+        }
+        
 
         this.updateReacts();
     }
@@ -100,53 +105,52 @@ class ProductReact extends React.Component {
         });
     }
 
-    {% if request.user.is_authenticated %}
-        handle(name){
 
-            var reactCodeDic = this.state.reactCodeDic;
-            var reactStateDic = this.state.reactStateDic;
+    handle(name){
 
-            var keys = Object.keys(reactCodeDic);
+        var reactCodeDic = this.state.reactCodeDic;
+        var reactStateDic = this.state.reactStateDic;
+
+        var keys = Object.keys(reactCodeDic);
 
 
-            if(reactStateDic[reactCodeDic[name]]){
-                for(var item=0; item<keys.length; item++){
-                    reactStateDic[reactCodeDic[keys[item]]] = false;
-                }
-
-                fetch(this.state.url+'?react=None&format=json')
-                .then(response => response.json())
-                .then(date =>{
-                    this.setState({
-                        currentReact : reactCodeDic['None'],
-                        reactStateDic : reactStateDic,
-                        reactCodeDic : reactCodeDic,
-                    });
-                    this.updateReacts();
-                    this.updateColor(reactStateDic);
-                });
+        if(reactStateDic[reactCodeDic[name]]){
+            for(var item=0; item<keys.length; item++){
+                reactStateDic[reactCodeDic[keys[item]]] = false;
             }
-            else{
-                for(var item=0; item<keys.length; item++){
-                    reactStateDic[reactCodeDic[keys[item]]] = false;
-                }
-                reactStateDic[reactCodeDic[name]] = true
 
-
-                fetch(this.state.url+'?react='+name+'&format=json')
-                .then(response => response.json())
-                .then(date =>{
-                    this.setState({
-                        currentReact : reactCodeDic[name],
-                        reactStateDic : reactStateDic,
-                        reactCodeDic : reactCodeDic
-                    });
-                    this.updateReacts();
-                    this.updateColor(reactStateDic);
+            fetch(this.state.url+'?react=None&format=json')
+            .then(response => response.json())
+            .then(date =>{
+                this.setState({
+                    currentReact : reactCodeDic['None'],
+                    reactStateDic : reactStateDic,
+                    reactCodeDic : reactCodeDic,
                 });
-            }
+                this.updateReacts();
+                this.updateColor(reactStateDic);
+            });
         }
-    {% endif %}
+        else{
+            for(var item=0; item<keys.length; item++){
+                reactStateDic[reactCodeDic[keys[item]]] = false;
+            }
+            reactStateDic[reactCodeDic[name]] = true
+
+
+            fetch(this.state.url+'?react='+name+'&format=json')
+            .then(response => response.json())
+            .then(date =>{
+                this.setState({
+                    currentReact : reactCodeDic[name],
+                    reactStateDic : reactStateDic,
+                    reactCodeDic : reactCodeDic
+                });
+                this.updateReacts();
+                this.updateColor(reactStateDic);
+            });
+        }
+    }
 
     handleGood(){
 
@@ -205,21 +209,24 @@ class ProductPin extends React.Component{
     constructor(props){
         super(props);
         
-        {% if has_pin %}
+        if(props.obj.has_pin){
             this.state = {
                 'btClassName' : 'btn btn-sm btn-dark',
                 'pinned' : true,
                 'text' : 'remove',
                 'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
             };
-        {% else %}
+        }
+
+        else {
+
             this.state = {
                 'btClassName' : 'btn btn-sm btn-outline-dark',
                 'pinned' : false,
                 'text' : 'add',
                 'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
             };
-        {% endif %}
+        }
 
         this.handlePin = this.handlePin.bind(this);
     }
