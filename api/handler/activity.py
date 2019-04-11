@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Min
 
-from home.models import Favorite, PinnedProduct,TrendingSpaceStatus
+from home.models import Favorite, PinnedProduct
 
 from generic.variables import (random,now_str,ACTIVITY_POINT,MAX_TRENDING_SPACE,
 	MIN_RATE_FOR_SPACE_TRENDING)
@@ -30,8 +30,6 @@ def handle_pin(user, uid, req):
 					status.rating = _addition(status.rating, ACTIVITY_POINT['PIN'])
 					status.save()
 
-					_migrate_trending_space(status)
-
 					return True
 			else:
 				try:
@@ -41,8 +39,6 @@ def handle_pin(user, uid, req):
 					status.total_pinned -= 1
 					status.rating = _addition(status.rating, -ACTIVITY_POINT['PIN'])
 					status.save()
-
-					_migrate_trending_space(status)
 
 					return True
 
@@ -111,8 +107,6 @@ def handle_react(user, uid, what):
 			product.save()
 			status.save()
 
-			_migrate_trending_space(status)
-
 			return product
 
 		except ObjectDoesNotExist as e:
@@ -147,8 +141,6 @@ def handle_favorite(user, name, req):
 					status.rating = _addition(status.rating, ACTIVITY_POINT['FAVORITE'])
 					status.save()
 
-					_migrate_trending_space(status)
-
 					return True
 				
 			else:
@@ -158,8 +150,6 @@ def handle_favorite(user, name, req):
 					status.total_favorite -= 1
 					status.rating = _addition(status.rating, -ACTIVITY_POINT['FAVORITE'])
 					status.save()
-
-					_migrate_trending_space(status)
 					
 					return True
 
@@ -213,32 +203,3 @@ def _decrease_fake_react(product, status):
 	status.total_fake_react -= 1
 	status.rating = _addition(status.rating, ACTIVITY_POINT['FAKE'])
 
-
-def _migrate_trending_space(status):
-	if status.rating < MIN_RATE_FOR_SPACE_TRENDING:
-		# if this space is in trending then remove it
-		query = TrendingSpaceStatus.objects.filter(status_id=status.space_id).first()
-		if query:
-			query.delete()
-		return
-	try:
-		old_obj = TrendingSpaceStatus.objects.get(status=status)
-		# already in trending...
-		# no need to change
-		return
-	except ObjectDoesNotExist as e:
-		# don't exist in trending
-		if TrendingSpaceStatus.objects.all().count()< MAX_TRENDING_SPACE:
-			# trending space has space to enter
-			TrendingSpaceStatus.objects.create(status=status)
-		else:
-			# no free space in trending table try to upgrade
-			query = TrendingSpaceStatus.objects.all().aggregate(Min('status__rating'))
-			min_rating = query.get('status__rating__min', None)
-			if min_rating is not None:
-				if status.rating > min_rating:
-					# update the table
-					old_obj = TrendingSpaceStatus.objects.filter(status__rating = min_rating).first()
-					old_obj.delete()
-
-					TrendingSpaceStatus.objects.create(status=status)

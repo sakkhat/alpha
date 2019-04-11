@@ -5,8 +5,8 @@ from django.shortcuts import render
 from generic.variables import LOGIN_URL
 from generic.views import json_response
 
-from home.models import Favorite, PinnedProduct,Notification,TrendingSpaceStatus
-from space.models import Product
+from home.models import Favorite, PinnedProduct,Notification
+from space.models import Product,Category
 
 def index(request):
 	# filter limited order
@@ -17,7 +17,10 @@ def index(request):
 	recent_products = Product.objects.all().order_by('-time_date')[:10]
 	related_products = products
 
-	trending_status = TrendingSpaceStatus.objects.all().order_by('-status__rating')[:5]
+	categories = Category.objects.all()
+	context['categories'] = categories
+
+	
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:5]
 		context['favorite'] = favorite
@@ -25,10 +28,9 @@ def index(request):
 		pinned_products = products
 		context['pinned_products'] = pinned_products
 
-	context['trending_products'] = trending_products
+
 	context['recent_products'] = recent_products
 	context['related_products'] = related_products
-	context['trending_status'] = trending_status
 
 	return render(request, 'home/manage/index.html', context)
 

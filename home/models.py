@@ -31,10 +31,6 @@ class Notification(models.Model):
 	seen = models.BooleanField(default=False)
 
 
-class TrendingSpaceStatus(models.Model):
-	status = models.OneToOneField(Status, on_delete=models.CASCADE, primary_key=True)
-
-
 
 class PinnedProduct(models.Model):
 	"""

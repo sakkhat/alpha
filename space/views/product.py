@@ -7,7 +7,7 @@ from generic.variables import (LOGIN_URL, now_str,random, PRODUCTS_FILE_PATH, AC
 	MIN_RATE_FOR_SPACE_TRENDING)
 from generic.views import json_response, invalid_request
 
-from home.models import PinnedProduct,TrendingSpaceStatus
+from home.models import PinnedProduct
 
 from space.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status,Category
@@ -107,6 +107,10 @@ def create(request):
 			status.total_post += 1
 			status.save()
 
+			category = Category.objects.get(id=product.category_id)
+			category.total_products += 1
+			category.save()
+
 			return redirect('/space/product/'+str(post.uid)+'/')
 
 	else:
@@ -135,10 +139,6 @@ def update(request, uid):
 					product.in_stock = form.cleaned_data['in_stock']
 					product.phone_request = form.cleaned_data['phone_request']
 					product.email_request = form.cleaned_data['email_request']
-
-					category = product.category
-					category.total_product += 1
-					category.save()
 
 					product.save()
 
@@ -187,8 +187,6 @@ def delete(request, uid):
 			status.rating -= remove_point
 			status.save()
 
-			if status.rating < MIN_RATE_FOR_SPACE_TRENDING:
-				TrendingSpaceStatus.objects.get(status_id=status.space_id).delete()
 
 			media = ProductMedia.objects.filter(product_id=product.uid)
 			# delete image sources
@@ -197,7 +195,7 @@ def delete(request, uid):
 			# delete database objects
 			media.delete()
 
-			category = product.category
+			category = Category.objects.get(id=product.category_id)
 			category.total_product -= 1
 			category.save()
 

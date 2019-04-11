@@ -47,14 +47,6 @@
                 </div>
 
                 <div class="list-group-item">
-                    <h3>
-                        {{space.name}}
-                        {% if in_trending %}
-                         <i class="fa fa-line-chart" style="color:#F93B24;">
-                            <sup>trending</sup>
-                        </i>
-                        {% endif %}
-                    </h3>
                     <p>{{space.description | urlize | linebreaks }}</p>    
                 </div>
 

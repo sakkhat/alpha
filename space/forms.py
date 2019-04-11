@@ -37,8 +37,8 @@ class SpaceCreateForm(forms.ModelForm):
 			if i.lower() == name.lower():
 				raise forms.ValidationError('Restricted Name')
 
-		query = Space.objects.filter(name=name)
-		if query.exists():
+		query = Space.objects.filter(name__iexact=name).first()
+		if query:
 			raise forms.ValidationError('Space name already taken')
 
 		return name

@@ -17,17 +17,11 @@
     <div class="container-fluid">
         <div class="col-md-12 col-config">
             <div class="fade-slider">
-                <div class="site-banner-container">
-                    <img src="{% static 'res/sakkhat_board.png'%}" height="350px">
-                </div>
-
-                <div class="site-banner-container">
-                    <img src="{% static 'res/bing (1).jpg'%}" height="350px">
-                </div>
-
-                <div class="site-banner-container">
-                    <img src="{% static 'res/bing (2).jpg'%}" height="350px">
-                </div>
+                {% for item in categories %}
+                    <div class="site-banner-container">
+                        <img src="{{item.cover_url}}" height="350px">
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -36,88 +30,22 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="category-slider">
-                    <figure class="category-card-container">
-                        <img src="{% static 'res/vector/imac.svg' %}">
-                        <figcaption>
-                            <h5 class="title1">Computer Accessories</h5>
-                            <h5 class="title2">100 Products</h5>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
-
-                    <figure class="category-card-container">
-                        <img src="{% static 'res/vector/man.svg' %}">
-                        <figcaption>
-                            <h5 class="title1">Man Fashion</h5>
-                            <h5 class="title2">300 Products</h5>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
-
-                    <figure class="category-card-container">
-                        <img src="{% static 'res/vector/lady.svg' %}">
-                        <figcaption>
-                            <h5 class="title1">Woman Fashion</h5>
-                            <h5 class="title2">200 Products</h5>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+                    {% for item in categories %}
+                        <figure class="card-container category-card">
+                            <img src="{{item.logo_url}}">
+                            <figcaption>
+                                <h5 class="title1">{{item}}</h5>
+                                <h5 class="title2">{{item.total_products}}</h5>
+                            </figcaption>
+                            <a href="#"></a>
+                        </figure>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
     
     <br><br>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action bg-info text-white" href="/trending/">
-                        Trending Spaces
-                    </a>
-                    {% for item in trending_status %}
-                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
-                            {{item.status.space.name}}
-                        </a>
-                    {% endfor%}
-                </div>
-                <br>
-            </div>
-            <div class="col-md-3">
-                <div class="list-group">
-                    <p class="list-group-item bg-dark text-white">Most Good React</p>
-                    {% for item in trending_status %}
-                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
-                            {{item.status.space.name}}
-                        </a>
-                    {% endfor%}
-                </div>
-                <br>
-            </div>
-            <div class="col-md-3">
-                <div class="list-group">
-                    <p class="list-group-item bg-dark text-white">Most Favorite</p>
-                    {% for item in trending_status %}
-                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
-                            {{item.status.space.name}}
-                        </a>
-                    {% endfor%}
-                </div>
-                <br>
-            </div>
-            <div class="col-md-3">
-                <div class="list-group">
-                    <p class="list-group-item bg-dark text-white">Recently Join</p>
-                    {% for item in trending_status %}
-                        <a href="/space/{{item.status.space.name}}/" class="list-group-item list-group-item-action">
-                            {{item.status.space.name}}
-                        </a>
-                    {% endfor%}
-                </div>
-            </div>
-        </div>
-    </div>
 
     <br><br>
     {% if request.user.is_authenticated %}

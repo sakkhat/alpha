@@ -11,16 +11,25 @@
 {% block extra_content %}
 	<div class="container-fluid">
         <div class="row">
-            <div class="col-md-6 list-group-item">
+            <div class="col-md-6 list-group-item mt-2">
+                <h5>Create a space</h5>
                 <form method="POST" class="space-create-form">
                 	{% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.name.label }}
+                    {% if form.errors.name %}
+                        <strong class="list-group-item list-group-item-danger">{{ form.errors.name}}</strong>
+                    {% endif %}
+                    {{ form.name }}
+
+                    {{ form.description.label}}
+                    {{ form.description}}
                     <input type="submit" value="Create" class="btn btn-success btn-block">
                 </form>
             </div>
             <br>
-            <div class="col-md-6">
-                
+            <div class="col-md-6 view mt-3">
+                <img src="{% static 'res/vector/trade.svg' %}">
+                <h1 class="text-white text-center mt-3">Express your own product</h1>
             </div>
             
         </div>

@@ -1,3 +1,11 @@
 .sign-up-form input,select {
 	margin: 10px 0px 5px 0px;
 }
+body {
+	background-color: rgb(10,10,10);
+}
+
+.view img{
+	width: 50%; height: 50%; overflow: hidden;
+	margin: auto; display: flex; align-self: center;
+}

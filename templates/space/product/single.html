@@ -59,7 +59,7 @@
                 </h5>
                 <a class="list-group-item bg-light" href="/space/{{product.space.name}}/">@{{ product.space.name }}</a>
                 <div class="list-group-item">
-                    <button class="btn btn-sm btn-outline-dark">{{ product.category }}</button>
+                    <a class="btn btn-sm btn-outline-dark" href="/space/product/all/?category={{product.category}}">{{ product.category }}</a>
                 </div>
                 <div class="list-group-item description">
                     <p>{{ product.description | linebreaks | urlize}}</p>

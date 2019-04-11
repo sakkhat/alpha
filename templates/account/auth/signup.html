@@ -11,22 +11,44 @@
 
 	<div class="container-fluid">
         <div class="row">
+            <div class="col-md-6 view">
+                <img src="{% static 'res/vector/logo_wb_t.svg' %}">
+                <h1 class="text-white text-center mt-3">Meet your needs</h1>
+            </div>
             <div class="col-md-6">
-                <form class="sign-up-form" method="POST">
+                <form class="sign-up-form list-group-item" method="POST">
                 	{% csrf_token %}
+                    {{ form.name.label }}
                     {{ form.name }}
-                    {{ form.phone }}
-                    {{ form.email }}
-                    {{ form.gender }}
-                    {{ form.password1 }}
-                    {{ form.password2 }}
+
+                    {{ form.phone.label}}
+                    {% if form.errors.phone %}
+                        <strong class="list-group-item list-group-item-danger">{{ form.errors.phone}}</strong>
+                    {% endif %}
+                    {{ form.phone}}
+
+                    {{ form.email.label}}
+                    {% if form.errors.email %}
+                        <strong class="list-group-item list-group-item-danger">{{ form.errors.email}}</strong>
+                    {% endif %}
+                    {{ form.email}}
+
+                    {{ form.gender.label}}
+                    {{ form.gender}}
+
+                    {{ form.password.label}}
+                    {{ form.password}}
+
+                    {{ form.confirm_password.label}}
+                    {{ form.confirm_password}}
+                    {% if form.errors.confirm_password %}
+                        <strong class="list-group-item list-group-item-danger">{{ form.errors.confirm_password}}</strong>
+                    {% endif %}                    
                     <input type="submit" value="Sign Up" class="btn btn-success btn-block">
                 </form>
-
+                <br>
             </div>
-            
-            <div class="col-md-6"></div>
-            
+            <br>
         </div>
         
     </div>

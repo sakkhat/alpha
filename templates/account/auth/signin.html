@@ -11,6 +11,12 @@
         <div class="d-flex justify-content-center align-items-center" style="margin: 20px;">
             <div class="col-lg-5 list-group-item">
                 <h6 align="center">Sign In</h6>
+                {% if messages %}
+                    {% for message in messages %}
+                       <p class="list-group-item list-group-item-danger">{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+                
                 <form class="sign-in-form" method="POST">
                     {% csrf_token %}
                 	{{ form.phone }}

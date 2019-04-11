@@ -11,18 +11,18 @@ from uuid import uuid4
 _PRODDUCT_CATEGORY = (
 	('Ots', 'Others'),
 	('Gdt', 'Gadget'),
-	('MFs', 'Man Fashion'),
-	('WFs', 'Woman Fashion'),
-	('CAc', 'Computer Accessory'),
+	('MFs', 'Man-Fashion'),
+	('WFs', 'Woman-Fashion'),
+	('CAc', 'Computer-Accessory'),
 	('Elc', 'Electronics')
 )
 
 _PRODDUCT_CATEGORY_DIC = {
 	'Ots': 'Others',
 	'Gdt': 'Gadget',
-	'MFs': 'Man Fashion',
-	'WFs': 'Woman Fashion',
-	'CAc': 'Computer Accessory',
+	'MFs': 'Man-Fashion',
+	'WFs': 'Woman-Fashion',
+	'CAc': 'Computer-Accessory',
 	'Elc': 'Electronics',
 }
 
@@ -46,7 +46,7 @@ class Category(models.Model):
 	"""
 	Doc here
 	"""
-	name = models.CharField(max_length=3, choices=_PRODDUCT_CATEGORY, default='Ots',primary_key=True)
+	name = models.CharField(max_length=3, choices=_PRODDUCT_CATEGORY, default='Ots',unique=True)
 	logo_url = models.TextField()
 	cover_url = models.TextField()
 	total_products = models.PositiveIntegerField(default=0)
@@ -129,7 +129,7 @@ class Status(models.Model):
 	"""
 	Doc here
 	"""
-	space = models.OneToOneField(Space, primary_key=True, on_delete=models.CASCADE)
+	space = models.OneToOneField(Space, on_delete=models.CASCADE)
 	total_good_react = models.PositiveIntegerField(default=0)
 	total_bad_react = models.PositiveIntegerField(default=0)
 	total_fake_react = models.PositiveIntegerField(default=0)

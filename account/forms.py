@@ -6,10 +6,10 @@ from account.models import Account
 
 class SignupForm(forms.ModelForm):
 
-	password1 = forms.CharField(widget=forms.PasswordInput(attrs=
+	password = forms.CharField(widget=forms.PasswordInput(attrs=
 		{'placeholder' : 'Password (min 6 length)', 'class' : 'form-control', 'minLength': '6'}))
 
-	password2 = forms.CharField(widget=forms.PasswordInput(attrs=
+	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs=
 		{'placeholder' : 'Confirm Password', 'class' : 'form-control'}))
 
 	class Meta:
@@ -18,15 +18,15 @@ class SignupForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs={
-				'placeholder' : 'Name', 'class' : 'form-control'
+				'placeholder' : 'Rafiul Islam', 'class' : 'form-control'
 				}),
 
 			'phone' : forms.TextInput(attrs={
-				'placeholder' : 'Phone', 'class' : 'form-control'
+				'placeholder' : '01XXXXXXXXX', 'class' : 'form-control'
 				}),
 
 			'email' : forms.EmailInput(attrs={
-				'placeholder' : 'Email', 'class' : 'form-control'
+				'placeholder' : 'example@mail.com', 'class' : 'form-control'
 				}),
 
 			'gender' : forms.Select(attrs={
@@ -36,9 +36,9 @@ class SignupForm(forms.ModelForm):
 
 	def clean_phone(self):
 		phone = self.cleaned_data['phone']
-		query = Account.objects.filter(phone=phone)
+		query = Account.objects.filter(phone=phone).first()
 
-		if query.exists():
+		if query:
 			raise forms.ValidationError('this phone already registered')
 
 		return phone
@@ -46,27 +46,27 @@ class SignupForm(forms.ModelForm):
 
 	def clean_email(self):
 		email = self.cleaned_data['email']
-		query = Account.objects.filter(email=email)
+		query = Account.objects.filter(email__iexact=email).first()
 
-		if query.exists():
+		if query:
 			raise forms.ValidationError('this email already taken')
 
 		return email
 
 
-	def clean_password2(self):
-		password1 = self.cleaned_data['password1']
-		password2 = self.cleaned_data['password2']
+	def clean_confirm_password(self):
+		password = self.cleaned_data['password']
+		confirm_password = self.cleaned_data['confirm_password']
 
-		if password1 and password2 and password1 != password2:
+		if password and confirm_password and password != confirm_password:
 			raise forms.ValidationError("passwords doesn't matched")
 
-		return password2
+		return confirm_password
 
 
 	def save(self, commit=True):
 		user = super(SignupForm,self).save(commit=False)
-		user.set_password(self.cleaned_data['password2'])
+		user.set_password(self.cleaned_data['confirm_password'])
 		if commit:
 			user.save()
 		return user

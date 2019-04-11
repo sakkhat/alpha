@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from account.forms import SignupForm,SigninForm,PasswordChangeForm
@@ -20,6 +21,7 @@ def signup(request):
 			login(request, user)
 
 			return redirect('/account/')
+
 
 	else:
 		form = SignupForm()
@@ -49,6 +51,8 @@ def signin(request):
 			
 				login(request, user)
 				return redirect('/account/')
+			else:
+				messages.error(request, 'Incorrect information')
 
 	else:
 		form = SigninForm()

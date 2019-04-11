@@ -84,7 +84,7 @@ def manager(request, format=None):
 		try:
 			key = category_key.get(category)
 			category_obj = Category.objects.get(name__iexact=key)
-			result = Product.objects.filter(category_id=category_obj.name)
+			result = Product.objects.filter(category_id=category_obj.id)
 			serializer = ProductSerializer(result, many=True)
 			return Response(serializer.data)
 
