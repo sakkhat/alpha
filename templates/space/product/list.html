@@ -2,46 +2,77 @@
 {% load static %}
 
 {% block extra_head %}
-	<title>Explore Products</title>
+    <title>Explore Products</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/dash-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-	<div class="container fluid">
-        <div class="row">
-            {% for product in products %}
-                <div class="col-md-4 grid-item">
-                    <figure class="dash-card-container">
-                        <img src="{{ product.logo_url }}">
-                        <figcaption>
-                            <h5 class="title">{{ product.title }}</h5>
-                            <h6>{{ product.price }}</h6>
-                            <div>
-                                <button class="react-btn">
-                                    <i class="em em---1"></i>
-                                    <span class="badge badge-success">{{product.react_good}}</span>
-                                </button>
-                                 <button class="react-btn">
-                                    <i class="em em--1"></i>
-                                    <span class="badge badge-warning">{{product.react_bad}}</span>
-                                </button>
-                                 <button class="react-btn">
-                                    <i class="em em-rage"></i>
-                                    <span class="badge badge-danger">{{product.react_fake}}</span>
-                                </button>
-                            </div>
-                        </figcaption>
-                        <a href="/space/product/{{product.uid}}/"></a>
-                    </figure>
+    {% if has_attribute %}
+        {% if category %}
+            <div class="container-fluid">
+                <div class="row justify-content-center" id="cards-container" url="/api/product/?category={{category}}&format=json">
+               </div>
+            </div>
+        {% elif pinned_by %}
+            {% if request.user.is_authenticated %}
+                <div class="container-fluid">
+                    <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{request.user.id}}&format=json">
+                   </div>
                 </div>
-            {% endfor %}
+            {% else %}
+                <h5 align="center">You are not authenticated</h5>
+            {% endif %}
+        {% elif query %}
+            <div class="container-fluid">
+                <div class="row justify-content-center" id="cards-container" url="/api/product/?query={{query}}&format=json">
+               </div>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                {% for product in products %}
+                    <div class="col-auto mb-1">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
+                            <figcaption>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
+                                </div>
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
-	
+    
 
 {% block extra_script %}
+    {% if has_attribute %}
+        <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+        <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
+    {% endif %}
 {% endblock %}

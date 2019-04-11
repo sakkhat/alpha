@@ -34,6 +34,8 @@
                         </div>
                         <button class="btn btn-primary btn-block" type="submit">Update</button>
                     </form>
+                    <br>
+                    <a href="/account/" class="list-group-item list-group-item-action">Back to profile</a>
                 </div>
             </div>
         </div>
@@ -46,6 +48,7 @@
     <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'js/generic/file-streamer.js' %}"></script> -->
 
     <script type="text/babel">
         
@@ -64,11 +67,9 @@
             }
 
             handleSelect(e){
-                console.log('Button status Changed');
-                console.log(this.state.data);
                 
                 if (e.target.files && e.target.files[0]){
-
+                
                     const file = e.target.files[0];
                     
                     if(file.size > 1048576){
@@ -76,22 +77,24 @@
                         return;
                     }
 
+                    var formData = new FormData();
+                    formData.append('image', file);
+
+
                     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
                     var ac_id = '{{request.user.phone}}'
-                    const url = '/api/user/01775998872/thumbnail/';
+                    const url = '/api/user/'+ac_id+'/thumbnail/?format=json';
                     fetch(url, {
                         method: 'PUT',
-                        body : file,
+                        body : formData,
                         headers: {
                         "X-CSRFToken": $crf_token,
-                        "Content-Type" : "multipart/form-data",
-                        "enctype" : "multipart/form-data",
-                        Accept: 'application/json, text/plain, */*',},
+                        Accept: 'application/json, text/plain, */*',
+                    },
 
                     })
                     .then(response => response.json())
                     .then(data =>{
-                        console.log(data.thumbnail);
                         this.setState({
                             thumbnail : data.thumbnail,
                             uploading : false

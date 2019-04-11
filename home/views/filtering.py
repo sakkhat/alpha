@@ -1,13 +1,10 @@
 from django.shortcuts import render
 from generic.views import invalid_request
-from home.models import TrendingSpaceStatus
+
 from space.models import Product
 
 def trending(request):
-	trending_status = TrendingSpaceStatus.objects.all()
-	context = {
-		'trending_status' : trending_status
-	}
+	context = {}
 
 	return render(request, 'home/filtering/trending.html', context)
 

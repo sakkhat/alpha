@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 	<title>Update | {{ space.name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/update.css'%}">
 {% endblock %}
 
@@ -11,6 +12,45 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7">
+                <div class="list-group-item">
+                    <ul class="nav nav-tabs" role="tablist">
+                        {% for item in banners %}
+                            <li class="nav-item">
+                                {% if forloop.first %}
+                                <a class="nav-link active" data-toggle="pill" href="#img{{forloop.counter}}">
+                                {% else %}
+                                <a class="nav-link" data-toggle="pill" href="#img{{forloop.counter}}">
+                                {% endif %}
+                                    <img class="product-avatar-select" src="{{ item.location }}">
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                  <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        {% for item in banners %}
+                            {% if forloop.first %}
+                            <div id="img{{forloop.counter}}" class="container tab-pane active product-avatar">
+                            {% else %}
+                            <div id="img{{forloop.counter}}" class="container tab-pane product-avatar">
+                            {% endif %}
+
+                                <img src="{{ item.location }}" id="img-view-{{forloop.counter}}">
+                                <form method="POST" enctype="multipart/form-data" action="{{item.uid}}/">
+                                    {% csrf_token %}
+                                    <label class="image-text-block" for="image{{forloop.counter}}">
+                                        <h6>Select Image</h6>
+                                    </label>
+                                    <input type="file" accept=".png, .jpeg, .jpg" name="banner" id="image{{forloop.counter}}" class="d-none" onchange = 'openFile{{forloop.counter}}(event)'>
+                                    <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="list-group-item">
@@ -19,35 +59,14 @@
                     <button type="submit" class="btn btn-primary btn-block">Update</button>
                 </form>
                 <br>
+                <a href="/space/{{space.name}}/" class="list-group-item list-group-item-action">Back to Space</a>
+                <br><br>
             </div>
-            <div class="col-md-5">
-               <div id="banner-block">
-                    <div class="col-md-12">
-
-                        {% for banner in banners %}
-                            <div class="list-group-item">
-                                <form method="POST" enctype="multipart/form-data" action="{{banner.uid}}/">
-                                    {%csrf_token%}
-                                    <label class="banner-container" for="banner1">
-                                        <img src="{{banner.location}}">
-                                        <div class="image-text-block">
-                                            <h6>Select Image</h6>
-                                        </div>
-                                    </label>
-                                    <input type="file" name="banner" id="banner1" class="d-none">
-                                    <button class="btn btn-primary btn-block" type="submit">Update this banner</button>
-                                </form>
-                            </div><br>
-                        {% endfor %}
-
-                    </div>
-               </div>
-            </div>
-
         </div>
     </div>
 {% endblock %}
 
 
 {% block extra_script %}
+    <script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
 {% endblock %}

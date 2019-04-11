@@ -4,11 +4,14 @@ from space.views import manage,product
 
 
 urlpatterns = [
+	path('', manage.route, name='space_route'),
 
+	path('product/', product.route, name='product_route'),
 	path('product/all/', product.manager, name='product_manager'),
 	path('product/create/', product.create, name='product_create'),
 	path('product/<uid>/', product.view, name='product_view'),
 	path('product/<uid>/update/', product.update, name='product_update'),
+	path('product/<uid>/update/delete/', product.delete, name='product_delete'),
 	path('product/<uid>/update/<media_id>/', product.update_product_media, name='product_media_update'),
 
 	path('create/', manage.create, name='space_create'),

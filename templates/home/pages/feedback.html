@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Feedback - Sakkhat</title>
+	<style type="text/css">
+		.media-block {
+			display: flex; justify-content: center;align-items: center;
+			max-height: 400px; max-width: 400px; min-width: 200px; min-height: 200px;
+			margin: auto;
+		}
+		.media-block img {
+			padding: 10px; 
+			width: 100%; height: 100%;
+		}
+	</style>
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 list-group-item bg-info text-white">
+				<div class="media-block">
+					<img src="{% static 'res/vector/vote.svg' %}">
+				</div>
+				<h5 align="center">Help us to improve our service</h5>
+			</div>
+			<div class="col-md-6">
+				{% if sent %}
+					<h6 class="list-group-item list-group-item-success">Thanks for your feedback</h6>
+				{% endif %}
+				<form method="POST" class="list-group-item list-group-item-info">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button class="btn btn-success">Send</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+	
+
+{% block extra_script %}
+{% endblock %}

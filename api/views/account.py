@@ -25,16 +25,16 @@ def user_thumbnail_update(request, ac_id):
 
 	if request.method == 'PUT':
 		try:
-			file = request.body
-			img_src = Image.load(raw=file)
+			
+			file = request.FILES['image']
+			img_src = Image.load(file_stream=file)
 
 			try:
 				user = Account.objects.get(phone=ac_id)
 				img_path = Image.save(USER_THUMBNAIL_PATH, img_src)
 
 				Image.delete(user.thumbnail)
-				
-				print(img_path)
+			
 
 				user.thumbnail = img_path
 				user.save()

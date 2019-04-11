@@ -3,14 +3,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str, random, SPACE_BANNER_PATH
+from generic.variables import LOGIN_URL, now_str, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
 
-from home.models import Favorite,PinnedProduct,TrendingSpaceStatus
+from home.models import Favorite,PinnedProduct
 
 from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
+
+def route(request):
+	return redirect('/space/all/')
 
 
 def manager(request):
@@ -51,11 +54,6 @@ def index(request, name):
 		context['products'] = products
 		context['has_favorite'] = False
 
-		in_trending = TrendingSpaceStatus.objects.filter(status=status)
-		if in_trending is not None:
-			context['in_trending'] = True
-		else:
-			context['in_trending'] = False
 
 		if request.user.is_authenticated:
 			try:
@@ -77,6 +75,8 @@ def create(request):
 	context = {}
 
 	if request.method == 'POST':
+		if request.user.has_space:
+			return invalid_request(request)
 		form = SpaceCreateForm(request.POST, request=request)
 		if form.is_valid():
 			space = form.save()
@@ -142,7 +142,6 @@ def update_space_banner(request, name , uid):
 							banner.delete()
 
 							new_banner = Banner(space=space, location=img_path)
-							new_banner.uid = random()
 							new_banner.save()
 
 							return redirect('/space/'+space.name+'/update/')

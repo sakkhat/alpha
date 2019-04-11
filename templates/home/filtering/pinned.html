@@ -4,100 +4,25 @@
 {% block extra_head %}
 	<title>Filter Product</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/product_post_card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-    <h5 style="text-align: center;">{{request.user.name}}'s' pinned products</h5><br><br>
-	<div class="container-fluid">
-        <div class="row d-flex" id="product-container">         
-        </div>
+    <h5 class="text-center">{{request.user.name}}'s' pinned products</h5><br><br>
+    <div class="container-fluid">
+        <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{request.user.id}}&format=json">
+       </div>
     </div>
+	
 {% endblock %}
 
-
+ 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static 'js/generic/product_post_card.js'%}"></script>
 
     <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
 
-    <script type="text/babel">
-        class Product extends React.Component {
-
-            constructor(props){
-                super(props);
-                this.state = {
-                    'ac_id' : '{{ request.user.phone }}',
-                    'data' : null,
-                    'loaded' : false
-                };
-            }
-
-            getProductLink(uid){
-                return '/space/product/'+uid;
-            }
-
-            componentDidMount(){
-                fetch('/api/user/'+this.state.ac_id+'/pinned_product_view/?format=json')
-                .then(response => response.json())
-                .then(data =>{
-                    const results = data.results
-
-                    const items = results.map((item) =>
-                        <div className="card bg-light card-config" id="product-card">
-                            <a href={this.getProductLink(item.uid)}>
-                                <img src={item.logo_url}/>
-                            </a>
-                            <div className="card-body">
-                                <center>
-                                   <a href={this.getProductLink(item.uid)}><h5>{item.title}</h5></a>
-                                   <h6 class="d-inline-block">{item.price}</h6>            
-                                </center>
-                                <center>
-                                    <button className="btn btn-success" data-toggle="tooltip" title="Good">
-                                        <span class="badge badge-light">{item.react_good}</span>
-                                    </button>
-                                    <button className="btn btn-warning" data-toggle="tooltip" title="Bad">
-                                        <span class="badge badge-light">{ item.react_bad}</span>
-                                    </button>
-                                    <button className="btn btn-danger" data-toggle="tooltip" title="Fake">
-                                        <span className="badge badge-light">{item.react_fake}</span>
-                                    </button>
-                                </center>
-                            </div>
-                        </div>
-                    );
-                    this.setState({
-                        data : items,
-                        loaded : true
-                    });
-                });
-            }
-
-            render(){
-                
-                if (this.state.loaded){
-                    return this.state.data;
-                }
-                return (
-                    <div>
-                        <div className="spinner-grow text-muted"></div>
-                        <div className="spinner-grow text-primary"></div>
-                        <div className="spinner-grow text-success"></div>
-                        <div className="spinner-grow text-info"></div>
-                        <div className="spinner-grow text-warning"></div>
-                        <div className="spinner-grow text-danger"></div>
-                        <div className="spinner-grow text-secondary"></div>
-                        <div className="spinner-grow text-dark"></div>
-                        <div className="spinner-grow text-light"></div>
-                    </div>
-                );
-            }
-        }
-        const element = (<Product/>);
-        ReactDOM.render(element, document.getElementById('product-container'))
-    </script>
+    <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
 {% endblock %}

@@ -20,6 +20,8 @@ urlpatterns = [
 
 	path('user/<ac_id>/notification/', home.NotificationListView.as_view(), name='user-notification'),
 
+	path('product/', product.manager, name='product-manager'),
+
 	path('product/<uid>/activity/react/', product.ProductViewForReact.as_view(), name='react-view'),
 
 	path('product/<uid>/activity/pin/', product.PinnedProductRequestView.as_view(), name='pin-view'),

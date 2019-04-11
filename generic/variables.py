@@ -28,8 +28,3 @@ def now_str(mul=1):
 	"""
 	return str(int(time()*(10**mul)))
 
-
-from uuid import uuid4
-from hashlib import md5
-def random():
-	return str(md5(now_str(2).encode()+uuid4().hex.encode()).hexdigest())

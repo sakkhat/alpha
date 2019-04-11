@@ -4,7 +4,7 @@
 {% block extra_head %}
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/dash-card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
    
 {% endblock %}
@@ -47,14 +47,6 @@
                 </div>
 
                 <div class="list-group-item">
-                    <h3>
-                        {{space.name}}
-                        {% if in_trending %}
-                         <i class="fa fa-line-chart" style="color:#F93B24;">
-                            <sup>trending</sup>
-                        </i>
-                        {% endif %}
-                    </h3>
                     <p>{{space.description | urlize | linebreaks }}</p>    
                 </div>
 
@@ -77,9 +69,10 @@
                 <div class="list-group" style="color: white">
                     <h4 class="list-group-item disable bg-dark">Status</h4>
                     <h6 class="list-group-item text-dark">Rating : {{status.rating}}</h6>
+                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
                     <h6 class="list-group-item text-dark">Reacts : {{total_react}}</h6>
                     <h6 class="list-group-item text-dark">Favorites : {{ status.total_favorite }}</h6>
-                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
+                    <h6 class="list-group-item text-dark">Total Pinned : {{status.total_pinned}}</h6>
                 </div>
                 <br><br>
                 {% if request.user.is_authenticated and request.user == space.owner %}
@@ -96,7 +89,7 @@
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 grid-item">
-                    <figure class="dash-card-container">
+                    <figure class="card-container dash-card">
                         <img src="{{ product.logo_url }}">
                         <figcaption>
                             <h5 class="title">{{ product.title }}</h5>
