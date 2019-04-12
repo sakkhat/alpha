@@ -25,6 +25,8 @@ urlpatterns = [
 	path('product/<uid>/activity/react/', product.ProductViewForReact.as_view(), name='react-view'),
 
 	path('product/<uid>/activity/pin/', product.PinnedProductRequestView.as_view(), name='pin-view'),
+
+	path('space/', space.manager, name='space-manager'),
 	
 	path('space/<name>/activity/favorite/', space.FavoriteRequestView.as_view(), name='favorite-view'),
 ]
