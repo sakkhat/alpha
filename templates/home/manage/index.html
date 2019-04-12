@@ -208,7 +208,16 @@
             </div>
         </div>
         <br>
+        <div>
+            <h4 class="text-center row-header">Top Spaces</h4>
+            <div class="row" id="cards-container" url="/api/space/?query=top&limit=8&format=json">
+
+            </div>
+        </div>
+        <br>
     </div>
+
+    <div id="bi"></div>
 {% endblock %}
 
 
@@ -216,4 +225,10 @@
 	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/home/manage/index.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel" src="{% static 'react/space-cards.js' %}"></script>
 {% endblock %}

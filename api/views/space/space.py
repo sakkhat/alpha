@@ -30,10 +30,18 @@ def manager(request, format=None):
 	if query is not None:
 		query = query.lower()
 		if query == 'top':
-			result = Status.objects.order_by('-rating')[:30]
+			limit = request.GET.get('limit', None)
+			if limit is not None:
+				if limit.isdigit():
+					limit = int(limit)
+					result = Status.objects.order_by('-rating')[:limit]
+					serializer = SpaceStatusSerializer(result, many=True)
+					return Response(serializer.data)
+
+			result = Status.objects.order_by('-rating')[:32]
 			serializer = SpaceStatusSerializer(result, many=True)
 			return Response(serializer.data)
 
-	result = Status.objects.all()
+	result = Status.objects.all().order_by('-space_id')
 	serializer = SpaceStatusSerializer(result, many=True)
 	return Response(serializer.data)

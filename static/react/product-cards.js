@@ -80,7 +80,12 @@ function getURL(dom){
 	return dom.getAttribute('url').toString();
 }
 
+function getRenderBlock(dom){
+	return dom.getAttribute('renderID').toString();
+}
 
 const dom = document.getElementById('cards-container');
 const element = (<ProductCards url={getURL(dom)}/>);
-ReactDOM.render(element, dom);
+const block = document.getElementById(getRenderBlock(dom));
+
+ReactDOM.render(element, block);

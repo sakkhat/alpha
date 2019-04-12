@@ -12,23 +12,19 @@
 
 
 {% block extra_content %}
-
 	<div class="container-fluid">
-		<div class="row">
-			{% for item in space_list %}
-				<div class="col-md-4">
-					<a href="/space/{{item.name}}/" class="list-group-item list-group-item-action">
-						{{item.name}}
-					</a>
-				</div>
-				
-			{% endfor %}
-		</div>
-	</div>
-	
+        <div class="row" id="cards-container" url="/api/space/?format=json">
+
+       </div>
+    </div>	
 {% endblock %}
 
 	
 
 {% block extra_script %}
+	<script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel" src="{% static 'react/space-cards.js' %}"></script>
 {% endblock %}
