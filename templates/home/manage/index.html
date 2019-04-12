@@ -44,115 +44,20 @@
             </div>
         </div>
     </div>
-    
-    <br><br>
 
-    <br><br>
-    {% if request.user.is_authenticated %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3">
-                    <a class="list-group-item list-group-item-action text-white bg-info" href="/?filter=pinned-products">
-                        Pinned Products
-                    </a>
-                    <div class="product-slick-container">
-                        {% for product in pinned_products %}
-                            <figure class="card-container slider-card">
-                                <img src="{{product.logo_url}}">
-                                <figcaption>
-                                    <h5 class="title">{{product.title}}</h5>
-                                    <h6>{{product.price}} TK</h6>
-                                    <div>
-                                        <button class="react-btn">
-                                            <i class="em em---1"></i>
-                                            <span class="badge badge-success">{{product.react_good}}</span>
-                                        </button>
-                                         <button class="react-btn">
-                                            <i class="em em--1"></i>
-                                            <span class="badge badge-warning">{{product.react_bad}}</span>
-                                        </button>
-                                         <button class="react-btn">
-                                            <i class="em em-rage"></i>
-                                            <span class="badge badge-danger">{{product.react_fake}}</span>
-                                        </button>
-                                    </div>
-                                </figcaption>
-                                <a href="/space/product/{{product.uid}}/"></a>
-                            </figure>
-
-                            {% empty %}
-                            <figure class="card-container slider-card">
-                                <img src="{% static 'res/vector/logo_wb.svg' %}">
-                                <figcaption>
-                                    <h5 class="title">No Pinned Product</h5>
-                                </figcaption>
-                            </figure>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <p class="list-group-item bg-dark text-white">Products you may like</p>
-                    <div class="product-slick-container">
-                        {% for product in related_products %}
-                            <figure class="card-container slider-card">
-                                <img src="{{product.logo_url}}">
-                                <figcaption>
-                                    <h5 class="title">{{product.title}}</h5>
-                                    <h6>{{product.price}} TK</h6>
-                                    <div>
-                                        <button class="react-btn">
-                                            <i class="em em---1"></i>
-                                            <span class="badge badge-success">{{product.react_good}}</span>
-                                        </button>
-                                         <button class="react-btn">
-                                            <i class="em em--1"></i>
-                                            <span class="badge badge-warning">{{product.react_bad}}</span>
-                                        </button>
-                                         <button class="react-btn">
-                                            <i class="em em-rage"></i>
-                                            <span class="badge badge-danger">{{product.react_fake}}</span>
-                                        </button>
-                                    </div>
-                                </figcaption>
-                                <a href="/space/product/{{product.uid}}/"></a>
-                            </figure>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a class="list-group-item list-group-item-action bg-info text-white" 
-                            href="/account/activity/?what=favorite-space-list">
-                           Favourite Spaces
-                        </a>
-                        {% for item in favorite %}
-                            <a class="list-group-item list-group-item-action" href="/space/{{item.space.name}}">
-                                {{item.space.name}}
-                            </a>
-                        {% empty %}
-                            <p class="list-group-item disabled">No Favorite Space</p>
-                        {% endfor %}
-
-                    </div>
-                </div>
-            </div>
-            <br>
-        </div>
-    {% endif %}
+    <br>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="list-group-item list-group-item-action text-white bg-dark">
-                    Most Recent Products
-                </p>
-                <div class="product-slick-container">
-                    {% for product in recent_products %}
-                        <figure class="card-container slider-card">
-                            <img src="{{product.logo_url}}">
+        <div class="bg-white">
+            <h4 class="text-center row-header">Most recent</h4>
+            <div class="row justify-content-center">
+                {% for product in recent_products %}
+                    <div class="col-auto">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
                             <figcaption>
-                                <h5 class="title">{{product.title}}</h5>
-                                <h6>{{product.price}} TK</h6>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
                                         <i class="em em---1"></i>
@@ -170,22 +75,140 @@
                             </figcaption>
                             <a href="/space/product/{{product.uid}}/"></a>
                         </figure>
-
-                        {% empty %}
-                        <figure class="card-container slider-card">
-                            <img src="{% static 'res/vector/logo_wb.svg' %}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <div class="bg-white">
+            <h4 class="text-center row-header">Most Good Reacts</h4>
+            <div class="row justify-content-center">
+                {% for product in most_goods_products %}
+                    <div class="col-auto">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
                             <figcaption>
-                                <h5 class="title">No Pinned Product</h5>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
+                                </div>
                             </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
                         </figure>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <div class="bg-white">
+            <h4 class="text-center row-header">Top Men Fashion</h4>
+            <div class="row justify-content-center">
+                {% for product in top_mens_products %}
+                    <div class="col-auto">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
+                            <figcaption>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
+                                </div>
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <div class="bg-white">
+            <h4 class="text-center row-header">Top Women Fashion</h4>
+            <div class="row justify-content-center">
+                {% for product in top_womens_products %}
+                    <div class="col-auto">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
+                            <figcaption>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
+                                </div>
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <div class="bg-white">
+            <h4 class="text-center row-header">Top Gadgets</h4>
+            <div class="row justify-content-center">
+                {% for product in top_gadgets_products %}
+                    <div class="col-auto">
+                        <figure class="card-container fixed-card">
+                            <img src="{{ product.logo_url }}">
+                            <figcaption>
+                                <h5 class="title">{{ product.title }}</h5>
+                                <h6>{{ product.price }}</h6>
+                                <div>
+                                    <button class="react-btn">
+                                        <i class="em em---1"></i>
+                                        <span class="badge badge-success">{{product.react_good}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em--1"></i>
+                                        <span class="badge badge-warning">{{product.react_bad}}</span>
+                                    </button>
+                                     <button class="react-btn">
+                                        <i class="em em-rage"></i>
+                                        <span class="badge badge-danger">{{product.react_fake}}</span>
+                                    </button>
+                                </div>
+                            </figcaption>
+                            <a href="/space/product/{{product.uid}}/"></a>
+                        </figure>
+                    </div>
+                {% endfor %}
             </div>
         </div>
         <br>
     </div>
-
-    <br><br>
 {% endblock %}
 
 

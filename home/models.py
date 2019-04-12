@@ -32,6 +32,7 @@ class Notification(models.Model):
 
 
 
+
 class PinnedProduct(models.Model):
 	"""
 	Doc here

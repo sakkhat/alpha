@@ -93,7 +93,11 @@ def manager(request, format=None):
 			pass
 
 	elif query is not None:
-		pass
+		query = query.lower()
+		if query == 'trending':
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[:32]
+			serializer = ProductSerializer(result, many=True)
+			return Response(serializer.data)
 
 	elif pinned_by is not None:
 		try:

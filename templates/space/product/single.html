@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/single.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
 
 {% endblock %}
 
@@ -124,12 +125,10 @@
                 <br>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="list-group-item bg-dark text-white">Related Products</p>
+                <p class="list-group-item bg-secondary text-white">Related Products</p>
                 <div class="product-slick-container">
                     {% for product in related_products %}
                         <figure class="card-container slider-card">
@@ -160,6 +159,7 @@
             </div>
         </div>
     </div>
+
     <div id="fb-root"></div>
 
 {% endblock %}

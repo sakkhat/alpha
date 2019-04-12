@@ -2,42 +2,26 @@
 {% load static %}
 
 {% block extra_head %} 
-    <title>Trending Spaces</title>
+    <title>Trending : Sakkhat</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="col-md-8">
-            <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
-                Trending Spaces
-            </h5>
-            <table class="table table-bordered table-secondary">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Space</th><th>Posts</th><th>Rating</th>
-                        {% for item in trending_status %}
-                            <tr>
-                                <td>
-                                    <a href="/space/{{ item.status.space.name }}/">
-                                        {{ item.status.space.name }}
-                                    </a>
-                                </td>
-                                <td>{{ item.status.total_post }}</td>
-                                <td>{{ item.status.rating }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody id="table-row-block">
-
-                </tbody>
-            </table>
-        </div>
+    <h1 align="center" class="mt-3 mb-3"><i class="fa fa-line-chart" style="color:#F93B24;"><sup>trending</sup></i></h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center" id="cards-container" url="/api/product/?query=trending&format=json">
+       </div>
     </div>
 {% endblock %}
 
     
 
 {% block extra_script %}
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
 {% endblock %}

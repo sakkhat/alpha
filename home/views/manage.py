@@ -6,31 +6,35 @@ from generic.variables import LOGIN_URL
 from generic.views import json_response
 
 from home.models import Favorite, PinnedProduct,Notification
-from space.models import Product,Category
+from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC
 
 def index(request):
-	# filter limited order
 	context = {}
-
-	products = Product.objects.all()
-	trending_products = products
-	recent_products = Product.objects.all().order_by('-time_date')[:10]
-	related_products = products
 
 	categories = Category.objects.all()
 	context['categories'] = categories
 
-	
+	mens_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['men-fashion'])
+	womens_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['women-fashion'])
+	gadets_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['gadget'])
+
+	recent_products = Product.objects.order_by('-time_date')[:8]
+	most_goods_products = Product.objects.order_by('-react_good')[:4]
+	top_mens_products = Product.objects.filter(category_id=mens_category.id).order_by('-react_good')[:4]
+	top_womens_products = Product.objects.filter(category_id=womens_category.id).order_by('-react_good')[:4]
+	top_gadgets_products = Product.objects.filter(category_id=gadets_category.id).order_by('-react_good')[:4]
+
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:5]
 		context['favorite'] = favorite
 		
-		pinned_products = products
-		context['pinned_products'] = pinned_products
-
 
 	context['recent_products'] = recent_products
-	context['related_products'] = related_products
+	context['most_goods_products'] = most_goods_products
+	context['top_mens_products'] = top_mens_products
+	context['top_womens_products'] = top_womens_products
+	context['top_gadgets_products'] = top_gadgets_products
+
 
 	return render(request, 'home/manage/index.html', context)
 

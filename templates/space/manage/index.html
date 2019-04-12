@@ -77,19 +77,19 @@
                 <br><br>
                 {% if request.user.is_authenticated and request.user == space.owner %}
                 <div class="list-group">
+                    <h5 class="list-group-item bg-primary text-white">Manage</h5>
                     <a class="list-group-item list-group-item-action" href="update/">Update</a>
                     <a class="list-group-item list-group-item-action" href="/space/product/create/">Product Create</a>
-                    <a class="list-group-item list-group-item-action" href="#">Delete</a>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="container fluid">
-        <div class="row">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
             {% for product in products %}
-                <div class="col-md-4 grid-item">
-                    <figure class="card-container dash-card">
+                <div class="col-auto">
+                    <figure class="card-container fixed-card">
                         <img src="{{ product.logo_url }}">
                         <figcaption>
                             <h5 class="title">{{ product.title }}</h5>

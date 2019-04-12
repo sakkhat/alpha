@@ -33,7 +33,7 @@ def handle_pin(user, uid, req):
 					return True
 			else:
 				try:
-					pin = PinnedProduct.objects.get(user=user, product=product)
+					pin = PinnedProduct.objects.get(user_id=user.id, product_id=product.uid)
 					pin.delete()
 
 					status.total_pinned -= 1

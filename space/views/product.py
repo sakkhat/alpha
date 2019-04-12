@@ -87,7 +87,7 @@ def manager(request):
 	if has_attribute:
 		return render(request, 'space/product/list.html', context)
 	
-	products = Product.objects.all()
+	products = Product.objects.all().order_by('-time_date')
 	context['products'] = products
 
 	return render(request, 'space/product/list.html', context)

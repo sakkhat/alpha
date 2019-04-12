@@ -54,7 +54,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 	name = models.CharField(max_length=80)
 	gender = models.CharField(max_length=1, choices=_GENDER)
 	email = models.EmailField(max_length=45, unique=True)
-	thumbnail = models.TextField(default='https://i.postimg.cc/Y2zkXSFB/user.png')
+	thumbnail = models.CharField(default='https://i.postimg.cc/Y2zkXSFB/user.png', max_length=150)
 
 	has_space = models.BooleanField(default=False)
 	has_notification = models.BooleanField(default=False)
