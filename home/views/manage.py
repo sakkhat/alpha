@@ -8,6 +8,7 @@ from generic.views import json_response
 from home.models import Favorite, PinnedProduct,Notification
 from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC
 
+
 def index(request):
 	context = {}
 
@@ -40,7 +41,7 @@ def index(request):
 
 
 def manager(request):
-	if request.method == 'GET':
+	if request.method == 'GET' and request.user.is_authenticated:
 		what = request.GET.get('filter',None)
 		if what is not None:
 			what = what.lower()
@@ -80,6 +81,7 @@ def notification_status_changle(request, uid):
 	return json_response(request, {}, 'invalid')
 
 
+@login_required(login_url=LOGIN_URL)
 def _update_user_notification_status(request, notification):
 	notification.save()
 

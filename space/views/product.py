@@ -13,10 +13,12 @@ from space.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status,Category
 
 
+@login_required(login_url=LOGIN_URL)
 def route(request):
 	return redirect('/space/product/all/')
 
 
+@login_required(login_url=LOGIN_URL)
 def view(request, uid):
 	context = {}
 	try:
@@ -58,6 +60,7 @@ def view(request, uid):
 		return invalid_request(request=request)
 
 
+@login_required(login_url=LOGIN_URL)
 def manager(request):
 	context = {}
 	has_attribute = False

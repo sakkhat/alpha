@@ -12,10 +12,12 @@ from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
+@login_required(login_url=LOGIN_URL)
 def route(request):
 	return redirect('/space/all/')
 
 
+@login_required(login_url=LOGIN_URL)
 def manager(request):
 
 	space_list = Space.objects.all()
@@ -26,7 +28,7 @@ def manager(request):
 	return render(request, 'space/manage/list.html', context)
 
 
-
+@login_required(login_url=LOGIN_URL)
 def index(request, name):
 
 	context = {}

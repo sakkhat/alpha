@@ -79,6 +79,13 @@ def manager(request, format=None):
 	category = request.GET.get('category', None)
 	query = request.GET.get('query', None)
 	pinned_by = request.GET.get('pinned_by', None)
+	limit = request.GET.get('limit', None)
+
+	if limit is not None:
+		if limit.isdigit():
+			limit = int(limit)
+		else:
+			limit = None
 
 	if category is not None:
 		try:
@@ -94,10 +101,16 @@ def manager(request, format=None):
 
 	elif query is not None:
 		query = query.lower()
+		result = None
+
 		if query == 'trending':
 			result = Product.objects.order_by('-time_date').order_by('-react_good')[:32]
+
+
+		if result is not None:
 			serializer = ProductSerializer(result, many=True)
 			return Response(serializer.data)
+
 
 	elif pinned_by is not None:
 		try:
