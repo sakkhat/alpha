@@ -1,5 +1,8 @@
+from api.handler.tokenization import encode as token_encode
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+
 from generic.views import invalid_request
 from generic.variables import LOGIN_URL
 
@@ -8,6 +11,8 @@ from space.models import Product
 @login_required(login_url=LOGIN_URL)
 def trending(request):
 	context = {}
+	token = token_encode({'user_id' : request.user.id })
+	context['token'] = token
 
 	return render(request, 'home/filtering/trending.html', context)
 

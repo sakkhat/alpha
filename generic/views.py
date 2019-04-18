@@ -10,7 +10,10 @@ def response(request, template_name, context={}):
 
 
 def invalid_request(request, context={}):
-	return render(request, 'generic/invalid_request.html', context)
+	return render(request, 'generic/invalid_request.html', context, status=404)
+
+def error500(request, context={}):
+	return render(request, 'generic/invalid_request.html', context, status=500)
 
 
 

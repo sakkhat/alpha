@@ -1,3 +1,5 @@
+from api.handler.tokenization import encode as token_encode
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
@@ -25,28 +27,29 @@ def view(request, uid):
 		product = Product.objects.get(uid = uid)
 		media = ProductMedia.objects.filter(product_id=product.uid)
 		related_products = Product.objects.filter(category_id=product.category_id).order_by('-time_date')[:10]
-
-		if request.user.is_authenticated:
 	
-			react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
-			if react_obj is not None:
-				context['has_react'] = True
-				context['current_react'] = react_obj.react
-			else:
-				context['has_react'] = False
-				context['current_react'] = 'N'
+		react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
+		if react_obj is not None:
+			context['has_react'] = True
+			context['current_react'] = react_obj.react
+		else:
+			context['has_react'] = False
+			context['current_react'] = 'N'
 
-			if request.user.id == product.space.owner_id:
-				context['is_owner'] = True
-			else:
-				context['is_owner'] = False
+		if request.user.id == product.space.owner_id:
+			context['is_owner'] = True
+		else:
+			context['is_owner'] = False
 
 
-			pin = PinnedProduct.objects.filter(product=product, user=request.user).first()
-			if pin is not None:
-				context['has_pin'] = True
-			else:
-				context['has_pin'] = False
+		pin = PinnedProduct.objects.filter(product_id=product.uid, user_id=request.user.id).first()
+		if pin is not None:
+			context['has_pin'] = True
+		else:
+			context['has_pin'] = False
+
+		token = token_encode({'user_id' : request.user.id })
+		context['token'] = token
 
 
 		context['product'] = product
@@ -69,6 +72,9 @@ def manager(request):
 		category = request.GET.get('category', None)
 		pinned_by = request.GET.get('pinned_by', None)
 		query = request.GET.get('query', None)
+
+		token = token_encode({'user_id' : request.user.id })
+		context['token'] = token
 
 
 		if category is not None:

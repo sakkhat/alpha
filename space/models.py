@@ -103,7 +103,7 @@ class ProductReact(models.Model):
 	Doc here
 	"""
 	uid = models.UUIDField(primary_key=True, default=uuid4)
-	unix_time = models.CharField(max_length=13, db_index=True)
+	time_date = models.DateTimeField(auto_now=True)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)

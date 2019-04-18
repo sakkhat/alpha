@@ -1,3 +1,5 @@
+from api.handler.tokenization import encode as token_encode
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
@@ -7,6 +9,8 @@ from generic.views import json_response
 
 from home.models import Favorite, PinnedProduct,Notification
 from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC
+
+from uuid import uuid1
 
 
 def index(request):
@@ -27,8 +31,15 @@ def index(request):
 
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:5]
+		token = token_encode({'user_id' : request.user.id })
+
 		context['favorite'] = favorite
-		
+		context['token'] = token
+
+	else:
+		token = token_encode({'guest_uid' : uuid1().hex })
+		context['token'] = token
+
 
 	context['recent_products'] = recent_products
 	context['most_goods_products'] = most_goods_products
@@ -36,7 +47,8 @@ def index(request):
 	context['top_womens_products'] = top_womens_products
 	context['top_gadgets_products'] = top_gadgets_products
 
-
+	# response = render -> set new guest cockie
+	
 	return render(request, 'home/manage/index.html', context)
 
 
@@ -54,6 +66,8 @@ def manager(request):
 @login_required(login_url=LOGIN_URL)
 def notification(request):
 	context = {}
+	token = token_encode({'user_id' : request.user.id })
+	context['token'] = token
 	return render(request, 'home/manage/notification.html', context)
 
 

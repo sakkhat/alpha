@@ -18,24 +18,23 @@ from django.contrib.admin import site
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler500, handler404
+from django.views.generic.base import RedirectView
 
 from home import views as index
-
-
-# from rest_framework import routers
-# from space.views import PostViewSet
 
 
 
 urlpatterns = [
 	
 	# managed all index functionality in home
-    path('api/', include('api.urls')), 
+    path('api/', include('api.urls')),
     path('', include('home.urls')),
     path('admin/', site.urls),
     path('account/', include('account.urls')),
     path('space/', include('space.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'generic.views.invalid_request'

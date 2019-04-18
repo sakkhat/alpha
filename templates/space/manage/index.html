@@ -138,7 +138,7 @@
                                 pinClassName : 'btn btn-sm btn-dark',
                                 pinned : true,
                                 text : 'Remove Favorite',
-                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
+                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/?token={{token}}'
                             };
 
                         {% else %}
@@ -146,7 +146,7 @@
                                 pinClassName : 'btn btn-sm btn-outline-dark',
                                 pinned : false,
                                 text : 'Add Favorite',
-                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
+                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/?token={{token}}'
                             };
                         {% endif %}
 
@@ -162,7 +162,7 @@
                                 text : 'Add Favorite'
                             });
 
-                            fetch(this.state.url+'?req=remove&format=json')
+                            fetch(this.state.url+'&req=remove')
                             .then(response => {
                                 response.json();
                                 console.log(response);
@@ -174,7 +174,7 @@
                                 pinned : true,
                                 text : 'Remove Favorite'
                             });
-                            fetch(this.state.url+'?req=add&remove')
+                            fetch(this.state.url+'&req=add')
                             .then(response => {
                                 response.json();
                                 console.log(response);

@@ -3,7 +3,7 @@ from django.db.models import Min
 
 from home.models import Favorite, PinnedProduct
 
-from generic.variables import (now_str,ACTIVITY_POINT,MAX_TRENDING_SPACE,
+from generic.variables import (ACTIVITY_POINT,MAX_TRENDING_SPACE,
 	MIN_RATE_FOR_SPACE_TRENDING)
 
 from space.models import Product, ProductReact, Space, Status
@@ -23,7 +23,6 @@ def handle_pin(user, uid, req):
 					return False
 				except ObjectDoesNotExist as e:
 					pin = PinnedProduct(user_id=user.id, product_id=product.uid)
-					pin.unix_time = now_str(3)
 					pin.save()
 
 					status.total_pinned += 1
@@ -82,7 +81,6 @@ def handle_react(user, uid, what):
 						_increase_fake_react(product, status)
 						new_react_obj = ProductReact(user_id=user.id, product_id=product.uid, react='F')
 
-					new_react_obj.unix_time = now_str(3)
 					new_react_obj.save()
 
 			else:
@@ -134,7 +132,6 @@ def handle_favorite(user, name, req):
 			if req == 'ADD':
 				if row is None:
 					row = Favorite(user_id=user.id, space_id=space.id)
-					row.unix_time = now_str(3)
 					row.save()
 
 					status.total_favorite += 1
