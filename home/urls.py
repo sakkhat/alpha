@@ -5,7 +5,7 @@ from home.views import manage, filtering, pages
 urlpatterns = [
 	path('', manage.manager , name='view-manager'),
 	path('notification/', manage.notification, name='notification'),
-	path('notification/<uid>/', manage.notification_status_changle, name='notification-status-change'),
+	path('notification/<uid>/action/', manage.notification_route, name='notification-route'),
 	
 	path('trending/', filtering.trending, name='trending-spaces'),
 

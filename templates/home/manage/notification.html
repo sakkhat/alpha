@@ -3,24 +3,60 @@
 
 {% block extra_head %}
 	<title>Notification</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/home/manage/notification.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
 {% endblock %}
 
 
 {% block extra_content %}
-    <br><h4 align="center">Notification</h4><br>
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="col-md-9">
-            <div class="list-group" id="notification-block">
+    <br><h4 align="center">Notification : {{query | capfirst }}</h4><br>
+
+    <div id="notification-container" renderID="notification-list-block", url="/api/user/notification/?token={{token}}&query={{query}}", token={{token}}>
+        
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <h6 class="list-group-item list-group-item-secondary">Level Filter</h6>
+                {% if query == 'all'%}
+                    <a href="/notification/?query=all" class="list-group-item list-group-item-action active">All</a>
+                {% else %}
+                    <a href="/notification/?query=all" class="list-group-item list-group-item-action">All</a>
+                {% endif %}
+
+                {% if query == 'security'%}
+                    <a href="/notification/?query=security" class="list-group-item list-group-item-action active">Security</a>
+                {% else %}
+                    <a href="/notification/?query=security" class="list-group-item list-group-item-action">Security</a>
+                {% endif %}
+
+                {% if query == 'general'%}
+                    <a href="/notification/?query=general" class="list-group-item list-group-item-action active">General</a>
+                {% else %}
+                    <a href="/notification/?query=general" class="list-group-item list-group-item-action">General</a>
+                {% endif %}
+
+                {% if query == 'advertise'%}
+                    <a href="/notification/?query=advertise" class="list-group-item list-group-item-action active">Advertise</a>
+                {% else %}
+                    <a href="/notification/?query=advertise" class="list-group-item list-group-item-action">Advertise</a>
+                {% endif %}
+
+                {% if query == 'offer'%}
+                    <a href="/notification/?query=offer" class="list-group-item list-group-item-action active">Offer</a>
+                {% else %}
+                    <a href="/notification/?query=offer" class="list-group-item list-group-item-action">Offer</a>
+                {% endif %}
+
+                <br>
+            </div>
+
+            <div class="col-md-7" id="notification-list-block">
                 
             </div>
         </div>
     </div>
-    
-
-    
-
+    <br>
 {% endblock %}
 
 
@@ -29,104 +65,5 @@
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
 
-    <script type="text/babel">
-
-        
-        class Notification extends React.Component {
-
-            constructor(props){
-                super(props);
-
-                this.state = {
-                    'token' : '{{token}}',
-                    'loaded' : false,
-                    'data' : null
-                };
-
-                
-            }
-
-            onItemClickHandler(item) {
-                if (item.seen){
-                    console.log('already seen');
-                    return;
-                }
-                fetch('/notification/'+item.uid+'/?seen=true')
-                .then(response => response.json())
-                .then(data =>{
-                    console.log(data.data);
-                })
-            }
-
-            getSeenClass(seen){
-                if(seen){
-                    return 'fa fa-check';
-                }
-                return 'em em-new';
-            }
-
-            handleTimestamp(timeDate){
-                return new Date(timeDate).toLocaleString();
-            }
-
-            getLabel(label){
-                switch(label){
-                    case 'Ad': return 'Advertise';
-                    case 'Sc': return 'Security';
-                    case 'Of': return 'Offer';
-                    default: return 'General';
-                }
-            };
-
-            componentDidMount(){
-
-                const url = '/api/user/notification/?token='+this.state.token;
-                fetch(url)
-                .then(response => response.json())
-                .then(data =>{
-                    const data_list = data.map((item) =>
-                        <div className="list-group-item">
-                            <div>
-                                <button className="btn btn-warning btn-sm disabled notification-label">
-                                    {this.getLabel(item.label)}
-                                </button>
-                                <h6 className="notification-time">{this.handleTimestamp(item.time_date)}</h6>
-                            </div>
-                            <h6 className="list-group-item bg-success text-white">
-                                {item.title} <i className={this.getSeenClass(item.seen)} ></i>
-                            </h6>
-                            <a href={item.action} class="list-group-item list-group-item-action" 
-                                    onClick={this.onItemClickHandler.bind(this, item)}>
-                                {item.message}
-                            </a>
-                        </div>
-                    );
-
-                    this.setState({
-                        loaded : true,
-                        data : data_list
-                    });
-                });
-            }
-
-            
-            render(){
-
-                if(this.state.loaded){
-                    if(this.state.data.length == 0){
-                        return <h6 align="center">Empty</h6>
-                    }
-                    return this.state.data
-                }
-                return(
-                    <h6 align="center">Loading...</h6>
-                );
-            }
-
-        }
-
-        const element = (<Notification/>);
-
-        ReactDOM.render(element, document.getElementById('notification-block'))
-    </script>
+    <script type="text/babel" src="{% static 'react/notification.js'%}"></script>
 {% endblock %}
