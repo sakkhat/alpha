@@ -16,8 +16,10 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-from space.models import Product, ProductReact, Category
+from space.models import Product, ProductReact, Category, Space
 from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
+
+from generic.variables import PAGINATION_SIZE
 
 
 
@@ -98,6 +100,8 @@ def product_pinned_request(request, uid, format=None):
 
 
 
+
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 @renderer_classes((JSONRenderer,))
@@ -112,26 +116,30 @@ def manager(request, format=None):
 	category = request.GET.get('category', None)
 	query = request.GET.get('query', None)
 	pinned_by = request.GET.get('pinned_by', None)
-	limit = request.GET.get('limit', None)
+	space = request.GET.get('space', None)
 
-	if limit is not None:
-		if limit.isdigit():
-			limit = int(limit)
-		else:
-			limit = None
+	limit = request.GET.get('limit', None)
+	page = request.GET.get('page', None)
+
+	limit = __clean_value(limit)
+	page = __clean_value(page)
 
 	serializer = None
 
 	if category is not None:
-		serializer = __category_filter(category, limit)
+		serializer = __category_filter(category, limit=limit, page=page)
 			
 		
 	elif query is not None:
-		serializer = __query_filter(query, limit)
+		serializer = __query_filter(query, limit=limit, page=page)
 
 
 	elif pinned_by is not None:
-		serializer = __user_pinned_filter(data['user_id'], limit, request)
+		serializer = __user_pinned_filter(data['user_id'], limit=limit, page=page, request=request)
+
+
+	elif space is not None:
+		serializer = __space_product(data['space_id'], limit=limit, page=page)
 
 
 	if serializer:
@@ -142,15 +150,36 @@ def manager(request, format=None):
 
 
 
-def __category_filter(category, limit=None, request=None):
+def __clean_value(value):
+	if value is not None:
+		if value.isdigit():
+			return int(value)
+		else:
+			pass
+
+	return None
+
+
+
+
+def __category_filter(category, **kwargs):
 	try:
 		category = category.lower()
 		key = category_key.get(category)
+
+		page = kwargs.get('page', None)
+		limit = kwargs.get('limit', None)
+
 		category_obj = Category.objects.get(name__iexact=key)
-		if limit:
+
+		if page is not None:
+			offset = page*PAGINATION_SIZE
+			result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PAGINATION_SIZE]
+		elif limit:
 			result = Product.objects.filter(category_id=category_obj.id)[:limit]
 		else:
 			result = Product.objects.filter(category_id=category_obj.id)
+
 		serializer = ProductSerializer(result, many=True)
 		return serializer
 
@@ -159,12 +188,29 @@ def __category_filter(category, limit=None, request=None):
 
 
 
-def __user_pinned_filter(user_id, limit=None, request=None):
+def __user_pinned_filter(user_id, **kwargs):
 	try:
 		user = Account.objects.get(id=user_id)
+		request = kwargs.get('request', None)
+		if request is None:
+			return None
+
 		if request.user.id != user.id:
 			raise PermissionDenied('access denied')
-		result = PinnedProduct.objects.filter(user_id=user_id)
+
+		page = kwargs.get('page', None)
+		limit = kwargs.get('limit', None)
+
+		if page is not None:
+			offset = page * PAGINATION_SIZE
+			result = PinnedProduct.objects.filter(user_id=user_id)[offset:offset+PAGINATION_SIZE]
+
+		elif limit:
+			result = PinnedProduct.objects.filter(user_id=user_id)[0:limit]
+
+		else:
+			result = PinnedProduct.objects.filter(user_id=user_id)
+		
 		serializer = PinnedProductDetailSerializer(result, many=True)
 		return serializer
 
@@ -173,12 +219,44 @@ def __user_pinned_filter(user_id, limit=None, request=None):
 
 
 
-def __query_filter(query, limit=None, request=None):
+def __query_filter(query, **kwargs):
 	query = query.lower()
 
+	limit = kwargs.get('limit', None)
+	page = kwargs.get('page', None)
+
 	if query == 'trending':
-		result = Product.objects.order_by('-time_date').order_by('-react_good')[:32]
+		if page is not None:
+			offset = page*PAGINATION_SIZE
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PAGE_SIZE]
+		
+		elif limit:
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[0:limit]
+		
+		else:
+			result = Product.objects.order_by('-time_date').order_by('-react_good')
+		
 		serializer = ProductSerializer(result, many=True)
 		return serializer
 
 	return None
+
+
+
+def __space_product(space_id, **kwargs):
+
+	limit = kwargs.get('limit', None)
+	page = kwargs.get('page', None)
+
+	if page is not None:
+		offset = page*PAGINATION_SIZE
+		result = Product.objects.filter(space_id=space_id)[offset:offset+PAGINATION_SIZE]
+
+	elif limit:
+		result = Product.objects.filter(space_id=space_id)[0:limit]
+
+	else:
+		result = Product.objects.filter(space_id=space_id)
+	
+	serializer = ProductSerializer(result, many=True)
+	return serializer

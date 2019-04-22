@@ -138,7 +138,8 @@ class ProfileUpdateForm(forms.ModelForm):
 
 	def clean_email(self):
 		email = self.cleaned_data['email']
-
+		return email
+		
 		if email == self.user.email:
 			return email
 

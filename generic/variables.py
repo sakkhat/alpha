@@ -20,6 +20,7 @@ ACTIVITY_POINT = {
 
 MAX_TRENDING_SPACE = 10
 MIN_RATE_FOR_SPACE_TRENDING = 5
+PAGINATION_SIZE = 1
 
 from time import time
 def now_str(mul=1):

@@ -41,15 +41,16 @@ def index(request, name):
 		status = Status.objects.get(space=space)
 
 		banners = Banner.objects.filter(space=space)
-		products = Product.objects.filter(space = space)
 
-		token = token_encode({'user_id' : request.user.id })
+		token = token_encode({
+			'user_id' : request.user.id, 
+			'space_id' : space.id,	
+		})
 
 		context['space'] = space
 		context['banners'] = banners
 		context['status'] = status
 		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
-		context['products'] = products
 		context['has_favorite'] = False
 		context['token'] = token
 
