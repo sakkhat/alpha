@@ -40,7 +40,7 @@
             constructor(props){
                 super(props);
                 this.state = {
-                    'ac_id' : "{{ request.user.phone }}",
+                    'token' : "{{ token }}",
                     'data_list' : null,
                     'loaded' : false,
 
@@ -56,12 +56,8 @@
                 }
             }
 
-            handleTimestamp(unix_time){
-                try{
-                    return new Date(parseInt(unixtime)).toLocaleString()
-                }catch(err){
-                    return new Date().toLocaleString()
-                }
+            handleTimestamp(timeDate){
+                return new Date(timeDate).toLocaleString();
             }
 
             getProductLink(product){
@@ -69,16 +65,16 @@
             }
 
             componentDidMount(){
-                const url = '/api/user/'+this.state.ac_id+'/product_react_list/?format=json'
+                const url = '/api/user/product_react_list/?token='+this.state.token
+                console.log(this.state.token);
                 fetch(url)
                 .then(response => response.json())
                 .then(data =>{
-                    const results = data.results;
-                    const data_list = results.map((item) =>      
+                    const data_list = data.map((item) =>      
                             <tr>
                                 <td><a href={this.getProductLink(item.product)}>{item.product}</a></td>
                                 <td>{this.handleReact(item.react)}</td>
-                                <td>{this.handleTimestamp(item.unix_time)}</td>
+                                <td>{this.handleTimestamp(item.time_date)}</td>
                             </tr>
                         );
                     this.setState({

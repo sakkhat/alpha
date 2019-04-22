@@ -97,7 +97,7 @@ class ProductPostForm(forms.ModelForm):
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
-				{'placeholder':'Product Name', 'class':'form-control'}),
+				{'placeholder':'Product Name (max 30 character)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
 				{'placeholder':'Product Description', 'class':'form-control'}),
 

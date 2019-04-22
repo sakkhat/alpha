@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import django_heroku
+import sys
 
 from environs import Env
 
@@ -32,7 +32,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["localhost", "192.168.0.7", "127.0.0.1"]
 
 
 # Application definition
@@ -51,10 +51,10 @@ INSTALLED_APPS = [
 
     # third-party applications
     'rest_framework',
-    
 ]
 
 MIDDLEWARE = [
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -142,20 +143,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_collection')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticfiles')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-MEDIA_URL = '/data/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
+MEDIA_URL = '/data/'
 
-django_heroku.settings(locals())
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
 
 
 # Email configuration
@@ -169,3 +171,20 @@ EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
 
 
 MIN_SPACE_TRENDING_POINT = env.str('MIN_SPACE_TRENDING_POINT')
+
+# LOGGING = { 
+#     'version': 1, 
+#     'disable_existing_loggers': False, 
+#     'handlers': { 
+#         'console': { 
+#             'level': 'DEBUG', 
+#             'class': 'logging.StreamHandler', 
+#             'stream': sys.stdout, 
+#             }, 
+#         }, 'loggers': { 
+#                 'django': { 
+#                     'level': 'DEBUG', 
+#                     'handlers': ['console'], 'propagate': True, 
+#                     }, 
+#                 },  
+#     }

@@ -76,44 +76,19 @@
                 </div>
                 <br><br>
                 {% if request.user.is_authenticated and request.user == space.owner %}
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action" href="update/">Update</a>
-                    <a class="list-group-item list-group-item-action" href="/space/product/create/">Product Create</a>
-                    <a class="list-group-item list-group-item-action" href="#">Delete</a>
-                </div>
+                    <div class="list-group">
+                        <h5 class="list-group-item bg-primary text-white">Manage</h5>
+                        <a class="list-group-item list-group-item-action" href="update/">Update</a>
+                        <a class="list-group-item list-group-item-action" href="/space/product/create/">Product Create</a>
+                    </div>
+                    <br>
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="container fluid">
-        <div class="row">
-            {% for product in products %}
-                <div class="col-md-4 grid-item">
-                    <figure class="card-container dash-card">
-                        <img src="{{ product.logo_url }}">
-                        <figcaption>
-                            <h5 class="title">{{ product.title }}</h5>
-                            <h6>{{ product.price }}</h6>
-                            <div>
-                                <button class="react-btn">
-                                    <i class="em em---1"></i>
-                                    <span class="badge badge-success">{{product.react_good}}</span>
-                                </button>
-                                 <button class="react-btn">
-                                    <i class="em em--1"></i>
-                                    <span class="badge badge-warning">{{product.react_bad}}</span>
-                                </button>
-                                 <button class="react-btn">
-                                    <i class="em em-rage"></i>
-                                    <span class="badge badge-danger">{{product.react_fake}}</span>
-                                </button>
-                            </div>
-                        </figcaption>
-                        <a href="/space/product/{{product.uid}}/"></a>
-                    </figure>
-                </div>
-            {% endfor %}
-        </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center" id="cards-container" url="/api/product/?space={{space.name}}&token={{token}}" renderID="cards-container">
+       </div>
     </div>
 
 {% endblock %}
@@ -123,80 +98,81 @@
     <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+    
+    <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
 
-    {% if request.user.is_authenticated  %}
-        {% if not request.user == space.owner %}
-            <script type="text/babel">
-            
-                class Pin extends React.Component {
+    {% if not request.user == space.owner %}
+        <script type="text/babel">
+        
+            class Pin extends React.Component {
 
-                    constructor(props){
-                        super(props);
+                constructor(props){
+                    super(props);
 
-                        {% if has_favorite %}
-                            this.state = {
-                                pinClassName : 'btn btn-sm btn-dark',
-                                pinned : true,
-                                text : 'Remove Favorite',
-                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
-                            };
+                    {% if has_favorite %}
+                        this.state = {
+                            pinClassName : 'btn btn-sm btn-dark',
+                            pinned : true,
+                            text : 'Remove Favorite',
+                            url : '/api/space/'+'{{space.name}}'+'/activity/favorite/?token={{token}}'
+                        };
 
-                        {% else %}
-                            this.state = {
-                                pinClassName : 'btn btn-sm btn-outline-dark',
-                                pinned : false,
-                                text : 'Add Favorite',
-                                url : '/api/space/'+'{{space.name}}'+'/activity/favorite/'
-                            };
-                        {% endif %}
+                    {% else %}
+                        this.state = {
+                            pinClassName : 'btn btn-sm btn-outline-dark',
+                            pinned : false,
+                            text : 'Add Favorite',
+                            url : '/api/space/'+'{{space.name}}'+'/activity/favorite/?token={{token}}'
+                        };
+                    {% endif %}
 
-                        this.handleClick = this.handleClick.bind(this);
-                    }
-
-                    handleClick(){
-
-                        if(this.state.pinned){
-                            this.setState({
-                                pinClassName : 'btn btn-sm btn-outline-dark',
-                                pinned : false,
-                                text : 'Add Favorite'
-                            });
-
-                            fetch(this.state.url+'?req=remove&format=json')
-                            .then(response => {
-                                response.json();
-                                console.log(response);
-                            });
-                        }
-                        else{
-                            this.setState({
-                                pinClassName : 'btn btn-sm btn-dark',
-                                pinned : true,
-                                text : 'Remove Favorite'
-                            });
-                            fetch(this.state.url+'?req=add&remove')
-                            .then(response => {
-                                response.json();
-                                console.log(response);
-                            });
-                        }
-
-                    }
-
-                    render(){
-                        return(
-                            <button class={this.state.pinClassName} onClick={this.handleClick}>
-                                {this.state.text} <i class="em em-heart"></i>
-                            </button>
-                        );
-                    }
+                    this.handleClick = this.handleClick.bind(this);
                 }
 
-                const element = (<Pin/>);
-                ReactDOM.render(element, document.getElementById('pin-block'));
-            </script>
-        {% endif %}
+                handleClick(){
+
+                    if(this.state.pinned){
+                        this.setState({
+                            pinClassName : 'btn btn-sm btn-outline-dark',
+                            pinned : false,
+                            text : 'Add Favorite'
+                        });
+
+                        fetch(this.state.url+'&req=remove')
+                        .then(response => {
+                            response.json();
+                            console.log(response);
+                        });
+                    }
+                    else{
+                        this.setState({
+                            pinClassName : 'btn btn-sm btn-dark',
+                            pinned : true,
+                            text : 'Remove Favorite'
+                        });
+                        fetch(this.state.url+'&req=add')
+                        .then(response => {
+                            response.json();
+                            console.log(response);
+                        });
+                    }
+
+                }
+
+                render(){
+                    return(
+                        <button class={this.state.pinClassName} onClick={this.handleClick}>
+                            {this.state.text} <i class="em em-heart"></i>
+                        </button>
+                    );
+                }
+            }
+
+            const element = (<Pin/>);
+            ReactDOM.render(element, document.getElementById('pin-block'));
+        </script>
     {% endif %}
+
 
     <script type="text/babel">
         

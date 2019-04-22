@@ -9,8 +9,8 @@ from uuid import uuid4
 _PRODDUCT_CATEGORY = (
 	('Ots', 'Others'),
 	('Gdt', 'Gadget'),
-	('MFs', 'Man-Fashion'),
-	('WFs', 'Woman-Fashion'),
+	('MFs', 'Men-Fashion'),
+	('WFs', 'Women-Fashion'),
 	('CAc', 'Computer-Accessory'),
 	('Elc', 'Electronics')
 )
@@ -18,8 +18,8 @@ _PRODDUCT_CATEGORY = (
 _PRODDUCT_CATEGORY_DIC = {
 	'Ots': 'Others',
 	'Gdt': 'Gadget',
-	'MFs': 'Man-Fashion',
-	'WFs': 'Woman-Fashion',
+	'MFs': 'Men-Fashion',
+	'WFs': 'Women-Fashion',
 	'CAc': 'Computer-Accessory',
 	'Elc': 'Electronics',
 }
@@ -27,8 +27,8 @@ _PRODDUCT_CATEGORY_DIC = {
 _PRODDUCT_CATEGORY_KEY_DIC = {
 	'others' : 'Ots',
 	'gadget' : 'Gdt',
-	'man-fashion' : 'MFs',
-	'woman-fashion' : 'WFs',
+	'men-fashion' : 'MFs',
+	'women-fashion' : 'WFs',
 	'computer-accessory' : 'CAc',
 	'electronics' : 'Elc',
 }
@@ -45,8 +45,8 @@ class Category(models.Model):
 	Doc here
 	"""
 	name = models.CharField(max_length=3, choices=_PRODDUCT_CATEGORY, default='Ots',unique=True)
-	logo_url = models.TextField()
-	cover_url = models.TextField()
+	logo_url = models.CharField(max_length=150)
+	cover_url = models.CharField(max_length=150)
 	total_products = models.PositiveIntegerField(default=0)
 
 
@@ -66,14 +66,14 @@ class Space(models.Model):
 	join = models.DateTimeField(auto_now_add=True)
 	
 	def __str__(self):
-		return self.name + ' : '+self.uid
+		return self.name
 
 
 
 class Banner(models.Model):
 	uid = models.UUIDField(primary_key=True, default=uuid4)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
-	location = models.TextField(default='https://i.postimg.cc/GmzSz9Nq/banner.png')
+	location = models.CharField(default='https://i.postimg.cc/GmzSz9Nq/banner.png', max_length=150)
 
 
 
@@ -85,7 +85,7 @@ class Product(models.Model):
 	title = models.CharField(max_length=30)
 	price = models.FloatField()
 	description = models.TextField()
-	logo_url = models.TextField()
+	logo_url = models.CharField(max_length=150)
 	time_date = models.DateTimeField(auto_now=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
@@ -103,7 +103,7 @@ class ProductReact(models.Model):
 	Doc here
 	"""
 	uid = models.UUIDField(primary_key=True, default=uuid4)
-	unix_time = models.CharField(max_length=13, db_index=True)
+	time_date = models.DateTimeField(auto_now=True)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)
@@ -115,7 +115,7 @@ class ProductMedia(models.Model):
 	Doc here
 	"""
 	uid = models.UUIDField(primary_key=True, default=uuid4)
-	location = models.TextField(unique=True)
+	location = models.CharField(max_length=150)
 	is_image = models.BooleanField(default=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
@@ -127,7 +127,7 @@ class Status(models.Model):
 	"""
 	Doc here
 	"""
-	space = models.OneToOneField(Space, on_delete=models.CASCADE)
+	space = models.OneToOneField(Space, on_delete=models.CASCADE,primary_key=True)
 	total_good_react = models.PositiveIntegerField(default=0)
 	total_bad_react = models.PositiveIntegerField(default=0)
 	total_fake_react = models.PositiveIntegerField(default=0)
@@ -135,4 +135,3 @@ class Status(models.Model):
 	total_pinned = models.PositiveIntegerField(default=0)
 	total_post = models.PositiveIntegerField(default=0)
 	rating = models.PositiveIntegerField(default=0)
-

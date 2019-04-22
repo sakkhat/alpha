@@ -1,9 +1,11 @@
+from account.forms import ProfileUpdateForm
+from account.models import Account
+
+from api.handler.tokenization import encode as token_encode
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
-
-from account.forms import ProfileUpdateForm
-from account.models import Account
 
 from generic.variables import LOGIN_URL
 from generic.views import json_response
@@ -82,14 +84,20 @@ def activity_manager(request):
 
 @login_required(login_url=LOGIN_URL)
 def activity_product_react_list(request):
-	return render(request, 'account/manage/product_react_list.html', {})
+	token = token_encode({'user_id' : request.user.id})
+	context = {'token' : token}
+	return render(request, 'account/manage/product_react_list.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
 def activity_favorite_space_list(request):
-	return render(request, 'account/manage/favorite_space_list.html', {})
+	token = token_encode({'user_id' : request.user.id})
+	context = {'token' : token}
+	return render(request, 'account/manage/favorite_space_list.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
 def activity_pinned_product_list(request):
-	return render(request, 'account/manage/pinned_product_list.html', {})
+	token = token_encode({'user_id' : request.user.id})
+	context = {'token' : token}
+	return render(request, 'account/manage/pinned_product_list.html', context)

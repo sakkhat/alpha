@@ -10,7 +10,7 @@
     
     <div class="d-flex justify-content-center align-items-center">
         <div class="col-md-8">
-            <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
+            <h5 class="list-group-item list-group-item-dark text-center">
                 Your pinned products
             </h5>
             <table class="table table-bordered table-secondary">
@@ -41,19 +41,15 @@
             constructor(props){
                 super(props);
                 this.state = {
-                    'ac_id' : "{{ request.user.phone }}",
+                    'token' : "{{ token }}",
                     'data_list' : null,
                     'loaded' : false,
 
                 }
             }
 
-            handleTimestamp(unix_time){
-                try{
-                    return new Date(parseInt(unixtime)).toLocaleString()
-                }catch(err){
-                    return new Date().toLocaleString()
-                }
+            handleTimestamp(timeDate){
+                return new Date(timeDate).toLocaleString();
             }
 
             getSpaceLink(product){
@@ -61,15 +57,14 @@
             }
 
             componentDidMount(){
-                const url = '/api/user/'+this.state.ac_id+'/pinned_product_list/?format=json'
+                const url = '/api/user/pinned_product_list/?token='+this.state.token
                 fetch(url)
                 .then(response => response.json())
                 .then(data =>{
-                    const results = data.results;
-                    const data_list = results.map((item) =>      
+                    const data_list = data.map((item) =>      
                             <tr>
                                 <td><a href={this.getSpaceLink(item.product)}>{item.product}</a></td>
-                                <td>{this.handleTimestamp(item.unix_time)}</td>
+                                <td>{this.handleTimestamp(item.time_date)}</td>
                             </tr>
                         );
                     this.setState({

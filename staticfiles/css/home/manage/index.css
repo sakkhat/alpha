@@ -1,7 +1,3 @@
-body {
-	background-color: #E2E9EA;
-}
-
 .site-banner-container {
 	height: 350px; width: 100%;
 }
@@ -11,4 +7,10 @@ body {
 }
 .col-config {
 	margin: 0; padding: 0;
+}
+body {
+	background-color: #E2E9EA;
+}
+.row-header {
+	padding: 10px 5px;
 }

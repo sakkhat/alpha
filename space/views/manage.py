@@ -1,3 +1,5 @@
+from api.handler.tokenization import encode as token_encode
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
@@ -12,21 +14,25 @@ from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
+@login_required(login_url=LOGIN_URL)
 def route(request):
 	return redirect('/space/all/')
 
 
+@login_required(login_url=LOGIN_URL)
 def manager(request):
 
 	space_list = Space.objects.all()
+	token = token_encode({'user_id' : request.user.id })
 	context = {
-		'space_list' : space_list
+		'space_list' : space_list,
+		'token' : token
 	}
 
 	return render(request, 'space/manage/list.html', context)
 
 
-
+@login_required(login_url=LOGIN_URL)
 def index(request, name):
 
 	context = {}
@@ -34,33 +40,25 @@ def index(request, name):
 		space = Space.objects.get(name__iexact=name)
 		status = Status.objects.get(space=space)
 
-		if request.user.is_authenticated and request.method == 'GET':
-			favorite = request.GET.get('favorite', None)
-			if favorite is not None:
-				favorite = favorite.lower()
-				if favorite == 'add':
-					handle_favorite(request, space, True)
-				elif favorite == 'remove':
-					handle_favorite(request, space, False)
-
-
 		banners = Banner.objects.filter(space=space)
-		products = Product.objects.filter(space = space)
+
+		token = token_encode({
+			'user_id' : request.user.id, 
+			'space_id' : space.id,	
+		})
 
 		context['space'] = space
 		context['banners'] = banners
 		context['status'] = status
 		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
-		context['products'] = products
 		context['has_favorite'] = False
+		context['token'] = token
 
-
-		if request.user.is_authenticated:
-			try:
-				favorite = Favorite.objects.get(user=request.user, space=space)
-				context['has_favorite'] = True
-			except ObjectDoesNotExist as e:
-				pass
+		try:
+			favorite = Favorite.objects.get(user_id=request.user.id, space_id=space.id)
+			context['has_favorite'] = True
+		except ObjectDoesNotExist as e:
+			pass
 
 		return render(request, 'space/manage/index.html', context)
 	except ObjectDoesNotExist as e:

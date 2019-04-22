@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/single.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
 
 {% endblock %}
 
@@ -124,12 +125,10 @@
                 <br>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="list-group-item bg-dark text-white">Related Products</p>
+                <p class="list-group-item bg-secondary text-white">Related Products</p>
                 <div class="product-slick-container">
                     {% for product in related_products %}
                         <figure class="card-container slider-card">
@@ -160,6 +159,7 @@
             </div>
         </div>
     </div>
+
     <div id="fb-root"></div>
 
 {% endblock %}
@@ -199,7 +199,7 @@
                         'fakeClass' : 'btn btn-sm btn-outline-danger',
 
                         'currentReact' : 'N',
-                        'url' : '/api/product/{{product.uid}}/activity/react/',
+                        'url' : '/api/product/{{product.uid}}/activity/react/?token={{token}}',
                         'auth' : true,
 
                         'reactCodeDic' : reactCodeDic,
@@ -217,7 +217,7 @@
                         'auth' : false,
 
                         'currentReact' : 'N',
-                        'url' : '/api/product/{{product.uid}}/activity/react/',
+                        'url' : '/api/product/{{product.uid}}/activity/react/?token={{token}}',
                     };
                 {% endif %}
                 
@@ -268,7 +268,7 @@
             }
 
             updateReacts(){
-                fetch(this.state.url+'?format=json')
+                fetch(this.state.url)
                 .then(response => response.json())
                 .then(data => {
 
@@ -281,53 +281,51 @@
                 });
             }
 
-            {% if request.user.is_authenticated %}
-                handle(name){
+            handle(name){
 
-                    var reactCodeDic = this.state.reactCodeDic;
-                    var reactStateDic = this.state.reactStateDic;
+                var reactCodeDic = this.state.reactCodeDic;
+                var reactStateDic = this.state.reactStateDic;
 
-                    var keys = Object.keys(reactCodeDic);
+                var keys = Object.keys(reactCodeDic);
 
 
-                    if(reactStateDic[reactCodeDic[name]]){
-                        for(var item=0; item<keys.length; item++){
-                            reactStateDic[reactCodeDic[keys[item]]] = false;
-                        }
-
-                        fetch(this.state.url+'?react=None&format=json')
-                        .then(response => response.json())
-                        .then(date =>{
-                            this.setState({
-                                currentReact : reactCodeDic['None'],
-                                reactStateDic : reactStateDic,
-                                reactCodeDic : reactCodeDic,
-                            });
-                            this.updateReacts();
-                            this.updateColor(reactStateDic);
-                        });
+                if(reactStateDic[reactCodeDic[name]]){
+                    for(var item=0; item<keys.length; item++){
+                        reactStateDic[reactCodeDic[keys[item]]] = false;
                     }
-                    else{
-                        for(var item=0; item<keys.length; item++){
-                            reactStateDic[reactCodeDic[keys[item]]] = false;
-                        }
-                        reactStateDic[reactCodeDic[name]] = true
 
-
-                        fetch(this.state.url+'?react='+name+'&format=json')
-                        .then(response => response.json())
-                        .then(date =>{
-                            this.setState({
-                                currentReact : reactCodeDic[name],
-                                reactStateDic : reactStateDic,
-                                reactCodeDic : reactCodeDic
-                            });
-                            this.updateReacts();
-                            this.updateColor(reactStateDic);
+                    fetch(this.state.url+'&react='+None)
+                    .then(response => response.json())
+                    .then(date =>{
+                        this.setState({
+                            currentReact : reactCodeDic['None'],
+                            reactStateDic : reactStateDic,
+                            reactCodeDic : reactCodeDic,
                         });
-                    }
+                        this.updateReacts();
+                        this.updateColor(reactStateDic);
+                    });
                 }
-            {% endif %}
+                else{
+                    for(var item=0; item<keys.length; item++){
+                        reactStateDic[reactCodeDic[keys[item]]] = false;
+                    }
+                    reactStateDic[reactCodeDic[name]] = true
+
+
+                    fetch(this.state.url+'&react='+name)
+                    .then(response => response.json())
+                    .then(date =>{
+                        this.setState({
+                            currentReact : reactCodeDic[name],
+                            reactStateDic : reactStateDic,
+                            reactCodeDic : reactCodeDic
+                        });
+                        this.updateReacts();
+                        this.updateColor(reactStateDic);
+                    });
+                }
+            }
 
             handleGood(){
 
@@ -391,14 +389,14 @@
                         'btClassName' : 'btn btn-sm btn-dark',
                         'pinned' : true,
                         'text' : 'remove',
-                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
+                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/?token={{token}}'
                     };
                 {% else %}
                     this.state = {
                         'btClassName' : 'btn btn-sm btn-outline-dark',
                         'pinned' : false,
                         'text' : 'add',
-                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/'
+                        'url' : '/api/product/'+'{{product.uid}}'+'/activity/pin/?token={{token}}'
                     };
                 {% endif %}
 
@@ -412,7 +410,7 @@
                         pinned : false,
                         text : 'add'
                     });
-                    fetch(this.state.url+'?req=remove&format=json')
+                    fetch(this.state.url+'&req=remove')
                     .then(response => response.json())
                     .then(data => {
                     });
@@ -423,7 +421,7 @@
                         pinned : true,
                         text : 'remove'
                     });
-                    fetch(this.state.url+'?req=add&format=json')
+                    fetch(this.state.url+'&req=add')
                     .then(response => response.json())
                     .then(data => {
                     });

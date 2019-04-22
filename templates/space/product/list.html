@@ -11,22 +11,25 @@
 {% block extra_content %}
     {% if has_attribute %}
         {% if category %}
+            <h3 align="center" class="mt-3 mb-3">{{ category }}</h3>
             <div class="container-fluid">
-                <div class="row justify-content-center" id="cards-container" url="/api/product/?category={{category}}&format=json">
+                <div class="row justify-content-center" id="cards-container" url="/api/product/?category={{category}}&token={{token}}" renderID="cards-container">
                </div>
             </div>
         {% elif pinned_by %}
             {% if request.user.is_authenticated %}
+                <h3 align="center" class="mt-3 mb-3">{{ request.user.name }}'s' pinned</h3>
                 <div class="container-fluid">
-                    <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{request.user.id}}&format=json">
+                    <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{request.user.name}}&token={{token}}" renderID="cards-container">
                    </div>
                 </div>
             {% else %}
                 <h5 align="center">You are not authenticated</h5>
             {% endif %}
         {% elif query %}
+            <h3 align="center" class="mt-3 mb-3">"{{query}}" result</h3>
             <div class="container-fluid">
-                <div class="row justify-content-center" id="cards-container" url="/api/product/?query={{query}}&format=json">
+                <div class="row justify-content-center" id="cards-container" url="/api/product/?query={{query}}&token={{token}}" renderID="cards-container">
                </div>
             </div>
         {% endif %}

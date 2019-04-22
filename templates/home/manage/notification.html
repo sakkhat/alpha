@@ -38,7 +38,7 @@
                 super(props);
 
                 this.state = {
-                    'ac_id' : '{{request.user.phone}}',
+                    'token' : '{{token}}',
                     'loaded' : false,
                     'data' : null
                 };
@@ -65,12 +65,8 @@
                 return 'em em-new';
             }
 
-            handleTimestamp(unix_time){
-                try{
-                    return new Date(parseInt(unixtime)).toLocaleString()
-                }catch(err){
-                    return new Date().toLocaleString()
-                }
+            handleTimestamp(timeDate){
+                return new Date(timeDate).toLocaleString();
             }
 
             getLabel(label){
@@ -84,19 +80,17 @@
 
             componentDidMount(){
 
-                const url = '/api/user/'+this.state.ac_id+'/notification/?format=json';
+                const url = '/api/user/notification/?token='+this.state.token;
                 fetch(url)
                 .then(response => response.json())
                 .then(data =>{
-                    const results = data.results;
-
-                    const data_list = results.map((item) =>
+                    const data_list = data.map((item) =>
                         <div className="list-group-item">
                             <div>
                                 <button className="btn btn-warning btn-sm disabled notification-label">
                                     {this.getLabel(item.label)}
                                 </button>
-                                <h6 className="notification-time">{this.handleTimestamp(item.unix_time)}</h6>
+                                <h6 className="notification-time">{this.handleTimestamp(item.time_date)}</h6>
                             </div>
                             <h6 className="list-group-item bg-success text-white">
                                 {item.title} <i className={this.getSeenClass(item.seen)} ></i>
@@ -125,7 +119,7 @@
                     return this.state.data
                 }
                 return(
-                    <h6>Loading...</h6>
+                    <h6 align="center">Loading...</h6>
                 );
             }
 

@@ -33,7 +33,7 @@ def signup(request):
 
 def signin(request):
 	if request.user.is_authenticated:
-		return redirect('/')
+		return redirect('/account/')
 		
 	context = {}
 	if request.method == 'POST':
@@ -50,6 +50,10 @@ def signin(request):
 					user.save()
 			
 				login(request, user)
+
+				goto = request.GET.get('next', None)
+				if goto:
+					return redirect(goto)
 				return redirect('/account/')
 			else:
 				messages.error(request, 'Incorrect information')

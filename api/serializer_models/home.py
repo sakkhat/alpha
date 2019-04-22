@@ -8,14 +8,14 @@ class FavoriteSpaceSerializer(ModelSerializer):
 	space = ReadOnlyField(source='space.name')
 	class Meta:
 		model = Favorite
-		fields = ('unix_time', 'space')
+		fields = ('time_date', 'space')
 
 
 
 class PinnedProductSerializer(ModelSerializer):
 	class Meta:
 		model = PinnedProduct
-		fields = ('uid', 'unix_time', 'product') 
+		fields = ('uid', 'time_date', 'product') 
 
 
 
@@ -37,5 +37,5 @@ class PinnedProductDetailSerializer(ModelSerializer):
 class NotificationSerializer(ModelSerializer):
 	class Meta:
 		model = Notification
-		fields = ('uid', 'unix_time', 'label', 'title', 'message', 'seen', 'action')
+		fields = ('uid', 'time_date', 'label', 'title', 'message', 'seen', 'action')
 
