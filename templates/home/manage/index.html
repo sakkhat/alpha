@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/space-box.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/home/manage/index.css'%}">
 {% endblock %}
@@ -48,7 +49,7 @@
     <br>
 
     <div class="container-fluid">
-        <div class="bg-white">
+        <div class="bg-white row-container">
             <h4 class="text-center row-header">Most recent</h4>
             <div class="row justify-content-center">
                 {% for product in recent_products %}
@@ -57,7 +58,7 @@
                             <img src="{{ product.logo_url }}">
                             <figcaption>
                                 <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.space.name }}</h6>
+                                <h6>{{ product.space__name }}</h6>
                                 <h6>@ {{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
@@ -81,7 +82,7 @@
             </div>
         </div>
         <br>
-        <div class="bg-white">
+        <div class="bg-white row-container">
             <h4 class="text-center row-header">Most Good Reacts</h4>
             <div class="row justify-content-center">
                 {% for product in most_goods_products %}
@@ -90,7 +91,7 @@
                             <img src="{{ product.logo_url }}">
                             <figcaption>
                                 <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.space.name }}</h6>
+                                <h6>{{ product.space__name }}</h6>
                                 <h6>@ {{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
@@ -114,7 +115,7 @@
             </div>
         </div>
         <br>
-        <div class="bg-white">
+        <div class="bg-white row-container">
             <h4 class="text-center row-header">Top Men Fashion</h4>
             <div class="row justify-content-center">
                 {% for product in top_mens_products %}
@@ -123,7 +124,7 @@
                             <img src="{{ product.logo_url }}">
                             <figcaption>
                                 <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.space.name }}</h6>
+                                <h6>{{ product.space__name }}</h6>
                                 <h6>@ {{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
@@ -147,7 +148,7 @@
             </div>
         </div>
         <br>
-        <div class="bg-white">
+        <div class="bg-white row-container">
             <h4 class="text-center row-header">Top Women Fashion</h4>
             <div class="row justify-content-center">
                 {% for product in top_womens_products %}
@@ -156,7 +157,7 @@
                             <img src="{{ product.logo_url }}">
                             <figcaption>
                                 <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.space.name }}</h6>
+                                <h6>{{ product.space__name }}</h6>
                                 <h6>@ {{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
@@ -180,7 +181,7 @@
             </div>
         </div>
         <br>
-        <div class="bg-white">
+        <div class="bg-white row-container">
             <h4 class="text-center row-header">Top Gadgets</h4>
             <div class="row justify-content-center">
                 {% for product in top_gadgets_products %}
@@ -189,7 +190,7 @@
                             <img src="{{ product.logo_url }}">
                             <figcaption>
                                 <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.space.name }}</h6>
+                                <h6>{{ product.space__name }}</h6>
                                 <h6>@ {{ product.price }}</h6>
                                 <div>
                                     <button class="react-btn">
@@ -213,16 +214,28 @@
             </div>
         </div>
         <br>
-        <div>
-            <h4 class="text-center row-header">Top Spaces</h4>
-            <div class="row" id="cards-container" url="/api/space/?token={{token}}&query=top&limit=8">
-
-            </div>
-        </div>
-        <br>
     </div>
 
-    <div id="bi"></div>
+    <div>
+        <h4 class="text-center row-header">Top Spaces</h4>
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                {% for item in top_spaces %}
+                    <div class="col-auto mb-3">
+                        <div class="card space-box">
+                            <h5 class="card-title bg-dark text-white list-group-item">{{item.space__name}}</h5>
+                            <div class="card-body">
+                                <p class="card-text float-left mr-2 lead">Posts: {{item.total_post}}</p>
+                                <p class="card-text lead">Rating: {{item.rating}}</p>
+                                <a href={this.getSpaceURL(item.space)} class="card-link btn btn-success">Visit</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 
@@ -230,10 +243,4 @@
 	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/home/manage/index.js' %}"></script>
-
-    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
-
-    <script type="text/babel" src="{% static 'react/space-cards.js' %}"></script>
 {% endblock %}

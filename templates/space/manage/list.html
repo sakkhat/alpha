@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 	<title>Space List</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/space-box.css' %}">
 	<style type="text/css">
 		body{
 			background-color: #E2E9EA;
@@ -12,11 +13,9 @@
 
 
 {% block extra_content %}
-	<div class="container-fluid">
-        <div class="row" id="cards-container" url="/api/space/?token={{token}}">
+    <div id="cards-container" url="/api/space/?token={{token}}">
 
-       </div>
-    </div>	
+   </div>
 {% endblock %}
 
 	

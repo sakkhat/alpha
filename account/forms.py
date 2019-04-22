@@ -136,29 +136,22 @@ class ProfileUpdateForm(forms.ModelForm):
 		}
 
 
-	def clean_email(self):
-		email = self.cleaned_data['email']
-		return email
-		
-		if email == self.user.email:
-			return email
+	def clean(self):
+		cleaned_data = self.cleaned_data
 
-		query = Account.objects.filter(email=email)
+		email = cleaned_data['email']
+		gender = cleaned_data['gender']
 
-		if query.exists():
-			print(email)
-			print(query)
-			print('ValidationError')
-			raise forms.ValidationError('this email already taken')
+		duplicate_email = Account.objects.filter(email=email).exclude(id=self.user.id)
+		if duplicate_email.exists():
+			raise forms.ValidationError('This email is already registered')
 
-		return email
-
-	def clean_gender(self):
-		gender = self.cleaned_data['gender']
 		if gender is None:
 			raise forms.ValidationError('set a gender')
 
-		return gender
+		return cleaned_data
+
+
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)

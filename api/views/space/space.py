@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 
 from space.models import Status
 
+from generic.variables import SPACE_PAGINATION_SIZE
+
 
 
 @api_view(['GET'])
@@ -39,8 +41,12 @@ def favorite_request(request, name, format=None):
 @api_view(['GET'])
 @renderer_classes((JSONRenderer,))
 def manager(request, format=None):
+
 	token = request.GET.get('token', None)
-	req = request.GET.get('req', None)
+	query = request.GET.get('query', None)
+
+	page = request.GET.get('page', None)
+	limit = request.GET.get('limit', None)
 
 	if token is None:
 		raise NotFound('invalid request')
@@ -48,23 +54,61 @@ def manager(request, format=None):
 	if data is None:
 		raise NotFound('invalid request')
 
-	query = request.GET.get('query', None)
+	serializer = None
+
+	page = __clean_value(page)
+	limit = __clean_value(limit)
 
 	if query is not None:
-		query = query.lower()
-		if query == 'top':
-			limit = request.GET.get('limit', None)
-			if limit is not None:
-				if limit.isdigit():
-					limit = int(limit)
-					result = Status.objects.order_by('-rating')[:limit]
-					serializer = SpaceStatusSerializer(result, many=True)
-					return Response(serializer.data)
+		serializer = __query_filter(query, page=page, limit=limit)
 
+	else:
+		if page is not None:
+			offset = page * SPACE_PAGINATION_SIZE
+			result = Status.objects.all().order_by('-space_id')[offset:offset+SPACE_PAGINATION_SIZE]
+		else:
+			result = Status.objects.all().order_by('-space_id')
+		serializer = SpaceStatusSerializer(result, many=True)
+
+
+	if serializer:
+		return Response(serializer.data)
+	
+
+	return NotFound('invalid request')
+
+
+
+
+def __clean_value(value):
+	if value is not None:
+		if value.isdigit():
+			return abs(int(value))
+
+	return None
+
+
+
+def __query_filter(query, **kwargs):
+	query = query.lower()
+
+	page = kwargs.get('page', None)
+	limit = kwargs.get('limit', None)
+
+	if query == 'top':
+		if page is not None:
+			offset = page * SPACE_PAGINATION_SIZE
+			result = Status.objects.order_by('-rating')[offset:offset+SPACE_PAGINATION_SIZE]
+
+		elif limit is not None:
+			result = Status.objects.order_by('-rating')[:limit]
+
+		else:
 			result = Status.objects.order_by('-rating')[:32]
-			serializer = SpaceStatusSerializer(result, many=True)
-			return Response(serializer.data)
+		
+		
+		serializer = SpaceStatusSerializer(result, many=True)
+		return serializer
 
-	result = Status.objects.all().order_by('-space_id')
-	serializer = SpaceStatusSerializer(result, many=True)
-	return Response(serializer.data)
+
+	return None

@@ -71,8 +71,6 @@ class ProductCards extends React.Component {
 			loaded : false,
 		});
 		this.fetchData();
-
-		console.log(this.state.page)
 	}
 
 	componentDidMount(){
