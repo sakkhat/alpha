@@ -1,7 +1,6 @@
 from django.urls import path, include
 from api.views import account, home
-from api.views.space import space
-from api.views.space import product
+from api.views.space import space, product
 
 
 urlpatterns = [

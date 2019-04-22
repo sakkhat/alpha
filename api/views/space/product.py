@@ -153,9 +153,7 @@ def manager(request, format=None):
 def __clean_value(value):
 	if value is not None:
 		if value.isdigit():
-			return int(value)
-		else:
-			pass
+			return abs(int(value))
 
 	return None
 
@@ -175,7 +173,7 @@ def __category_filter(category, **kwargs):
 		if page is not None:
 			offset = page*PAGINATION_SIZE
 			result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PAGINATION_SIZE]
-		elif limit:
+		elif limit != 0:
 			result = Product.objects.filter(category_id=category_obj.id)[:limit]
 		else:
 			result = Product.objects.filter(category_id=category_obj.id)
@@ -205,7 +203,7 @@ def __user_pinned_filter(user_id, **kwargs):
 			offset = page * PAGINATION_SIZE
 			result = PinnedProduct.objects.filter(user_id=user_id)[offset:offset+PAGINATION_SIZE]
 
-		elif limit:
+		elif limit != 0:
 			result = PinnedProduct.objects.filter(user_id=user_id)[0:limit]
 
 		else:
@@ -228,9 +226,9 @@ def __query_filter(query, **kwargs):
 	if query == 'trending':
 		if page is not None:
 			offset = page*PAGINATION_SIZE
-			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PAGE_SIZE]
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PAGINATION_SIZE]
 		
-		elif limit:
+		elif limit != 0:
 			result = Product.objects.order_by('-time_date').order_by('-react_good')[0:limit]
 		
 		else:
@@ -252,7 +250,7 @@ def __space_product(space_id, **kwargs):
 		offset = page*PAGINATION_SIZE
 		result = Product.objects.filter(space_id=space_id)[offset:offset+PAGINATION_SIZE]
 
-	elif limit:
+	elif limit != 0:
 		result = Product.objects.filter(space_id=space_id)[0:limit]
 
 	else:

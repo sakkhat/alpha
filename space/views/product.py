@@ -26,8 +26,11 @@ def view(request, uid):
 	try:
 		product = Product.objects.get(uid = uid)
 		media = ProductMedia.objects.filter(product_id=product.uid)
-		related_products = Product.objects.filter(category_id=product.category_id).order_by('-time_date')[:10]
-	
+		related_products = Product.objects.filter(category_id=product.category_id).values(
+			'uid', 'title','price', 'space__name', 'react_good', 'react_bad', 'react_fake',
+			'logo_url').order_by('-time_date')[:10]
+
+
 		react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
 		if react_obj is not None:
 			context['has_react'] = True

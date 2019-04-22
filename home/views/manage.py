@@ -23,14 +23,34 @@ def index(request):
 	womens_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['women-fashion'])
 	gadets_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['gadget'])
 
-	recent_products = Product.objects.order_by('-time_date')[:8]
-	most_goods_products = Product.objects.order_by('-react_good')[:4]
-	top_mens_products = Product.objects.filter(category_id=mens_category.id).order_by('-react_good')[:4]
-	top_womens_products = Product.objects.filter(category_id=womens_category.id).order_by('-react_good')[:4]
-	top_gadgets_products = Product.objects.filter(category_id=gadets_category.id).order_by('-react_good')[:4]
+	recent_products = Product.objects.filter(in_stock=True).values(
+		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(
+		'-time_date')[:8]
+
+	most_goods_products = Product.objects.values(
+		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(
+		'-react_good')[:4]
+
+
+	top_mens_products = Product.objects.filter(category_id=mens_category.id).values(
+		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(
+		'-react_good')[:4]
+
+
+	top_womens_products = Product.objects.filter(category_id=womens_category.id).values(
+		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(
+		'-react_good')[:4]
+
+
+	top_gadgets_products = Product.objects.filter(category_id=gadets_category.id).values(
+		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(
+		'-react_good')[:4]
+
+
+	top_spaces = Status.objects.values('space__name', 'rating', 'total_post').order_by('-rating')[:8]
 
 	if request.user.is_authenticated:
-		favorite = Favorite.objects.filter(user=request.user).order_by('-unix_time')[:5]
+		favorite = Favorite.objects.filter(user=request.user).order_by('-time_date')[:5]
 		token = token_encode({'user_id' : request.user.id })
 
 		context['favorite'] = favorite
@@ -46,6 +66,7 @@ def index(request):
 	context['top_mens_products'] = top_mens_products
 	context['top_womens_products'] = top_womens_products
 	context['top_gadgets_products'] = top_gadgets_products
+	context['top_spaces'] = top_spaces
 
 	# response = render -> set new guest cockie
 	
