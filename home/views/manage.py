@@ -135,4 +135,9 @@ def notification_route(request, uid):
 	item.seen = True
 	item.save()
 
+	remain_notification = Notification.objects.filter(seen=False, user_id=user_id).count()
+	if remain_notification == 0:
+		request.user.has_notification = False
+		request.user.save()
+
 	return redirect(action)
