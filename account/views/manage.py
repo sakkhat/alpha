@@ -8,7 +8,6 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
 from generic.variables import LOGIN_URL
-from generic.views import json_response
 
 from space.models import ProductReact,Space,Status
 

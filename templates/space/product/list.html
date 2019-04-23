@@ -35,47 +35,21 @@
         {% endif %}
 
     {% else %}
+        <h3 align="center" class="mt-3 mb-3">Explore Products</h3>
         <div class="container-fluid">
-            <div class="row justify-content-center">
-                {% for product in products %}
-                    <div class="col-auto mb-1">
-                        <figure class="card-container fixed-card">
-                            <img src="{{ product.logo_url }}">
-                            <figcaption>
-                                <h5 class="title">{{ product.title }}</h5>
-                                <h6>{{ product.price }}</h6>
-                                <div>
-                                    <button class="react-btn">
-                                        <i class="em em---1"></i>
-                                        <span class="badge badge-success">{{product.react_good}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em--1"></i>
-                                        <span class="badge badge-warning">{{product.react_bad}}</span>
-                                    </button>
-                                     <button class="react-btn">
-                                        <i class="em em-rage"></i>
-                                        <span class="badge badge-danger">{{product.react_fake}}</span>
-                                    </button>
-                                </div>
-                            </figcaption>
-                            <a href="/space/product/{{product.uid}}/"></a>
-                        </figure>
-                    </div>
-                {% endfor %}
+            <div class="row justify-content-center" id="cards-container" url="/api/product/?token={{token}}" renderID="cards-container">
+               </div>
             </div>
-        </div>
     {% endif %}
 {% endblock %}
 
     
 
 {% block extra_script %}
-    {% if has_attribute %}
-        <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
 
-        <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
-    {% endif %}
+    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+    <script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
 {% endblock %}

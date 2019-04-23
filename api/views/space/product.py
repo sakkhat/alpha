@@ -19,7 +19,7 @@ from rest_framework.response import Response
 from space.models import Product, ProductReact, Category, Space
 from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
 
-from generic.variables import PAGINATION_SIZE
+from generic.variables import PRODUCT_PAGINATION_SIZE
 
 
 
@@ -141,6 +141,8 @@ def manager(request, format=None):
 	elif space is not None:
 		serializer = __space_product(data['space_id'], limit=limit, page=page)
 
+	else:
+		serializer = __all_products(page)
 
 	if serializer:
 		return Response(serializer.data)
@@ -168,15 +170,16 @@ def __category_filter(category, **kwargs):
 		page = kwargs.get('page', None)
 		limit = kwargs.get('limit', None)
 
+		if page is None and limit is None:
+			return None
+
 		category_obj = Category.objects.get(name__iexact=key)
 
 		if page is not None:
-			offset = page*PAGINATION_SIZE
-			result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PAGINATION_SIZE]
-		elif limit != 0:
-			result = Product.objects.filter(category_id=category_obj.id)[:limit]
+			offset = page*PRODUCT_PAGINATION_SIZE
+			result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PRODUCT_PAGINATION_SIZE]
 		else:
-			result = Product.objects.filter(category_id=category_obj.id)
+			result = Product.objects.filter(category_id=category_obj.id)[:limit]
 
 		serializer = ProductSerializer(result, many=True)
 		return serializer
@@ -199,15 +202,15 @@ def __user_pinned_filter(user_id, **kwargs):
 		page = kwargs.get('page', None)
 		limit = kwargs.get('limit', None)
 
-		if page is not None:
-			offset = page * PAGINATION_SIZE
-			result = PinnedProduct.objects.filter(user_id=user_id)[offset:offset+PAGINATION_SIZE]
+		if page is None and limit is None:
+			return None
 
-		elif limit != 0:
-			result = PinnedProduct.objects.filter(user_id=user_id)[0:limit]
+		if page is not None:
+			offset = page * PRODUCT_PAGINATION_SIZE
+			result = PinnedProduct.objects.filter(user_id=user_id)[offset:offset+PRODUCT_PAGINATION_SIZE]
 
 		else:
-			result = PinnedProduct.objects.filter(user_id=user_id)
+			result = PinnedProduct.objects.filter(user_id=user_id)[0:limit]
 		
 		serializer = PinnedProductDetailSerializer(result, many=True)
 		return serializer
@@ -223,17 +226,17 @@ def __query_filter(query, **kwargs):
 	limit = kwargs.get('limit', None)
 	page = kwargs.get('page', None)
 
+	if page is None and page is None:
+		return None
+
 	if query == 'trending':
 		if page is not None:
-			offset = page*PAGINATION_SIZE
-			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PAGINATION_SIZE]
-		
-		elif limit != 0:
-			result = Product.objects.order_by('-time_date').order_by('-react_good')[0:limit]
+			offset = page*PRODUCT_PAGINATION_SIZE
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PRODUCT_PAGINATION_SIZE]
 		
 		else:
-			result = Product.objects.order_by('-time_date').order_by('-react_good')
-		
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[0:limit]
+
 		serializer = ProductSerializer(result, many=True)
 		return serializer
 
@@ -246,9 +249,12 @@ def __space_product(space_id, **kwargs):
 	limit = kwargs.get('limit', None)
 	page = kwargs.get('page', None)
 
+	if page is None and limit is None:
+		return None
+
 	if page is not None:
-		offset = page*PAGINATION_SIZE
-		result = Product.objects.filter(space_id=space_id)[offset:offset+PAGINATION_SIZE]
+		offset = page*PRODUCT_PAGINATION_SIZE
+		result = Product.objects.filter(space_id=space_id)[offset:offset+PRODUCT_PAGINATION_SIZE]
 
 	elif limit != 0:
 		result = Product.objects.filter(space_id=space_id)[0:limit]
@@ -258,3 +264,13 @@ def __space_product(space_id, **kwargs):
 	
 	serializer = ProductSerializer(result, many=True)
 	return serializer
+
+
+
+def __all_products(page):
+	if page is None:
+		return None
+
+	offset = page*PRODUCT_PAGINATION_SIZE
+	result = Product.objects.all()[offset:offset+PRODUCT_PAGINATION_SIZE]
+	return ProductSerializer(result, many=True)

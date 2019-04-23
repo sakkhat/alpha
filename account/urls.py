@@ -8,14 +8,15 @@ urlpatterns = [
 	path('', manage.profile, name='account_profile'),
 	path('activity/', manage.activity_manager, name='activity_manager'),
 
-	path('signup/', auth.signup, name='account_signup'),
-	path('signin/', auth.signin, name='account_signin'),
-	path('signout/', auth.signout, name='account_signout'),
-    path('change-password/', auth.change_password, name='change_password'),
+	path('signup/', auth.signup, name='account-signup'),
+	path('verify/<token>/', auth.verify, name='account-verify'),
+	path('signin/', auth.signin, name='account-signin'),
+	path('signout/', auth.signout, name='account-signout'),
+    path('change-password/', auth.change_password, name='change-password'),
 
-	path('update/', manage.update, name='account_update'),
-	path('delete/', manage.delete, name='account_delete'),
-	path('deactivate/', manage.decactive, name='account_deactivate'),
+	path('update/', manage.update, name='account-update'),
+	path('delete/', manage.delete, name='account-delete'),
+	path('deactivate/', manage.decactive, name='account-deactivate'),
 
 
 	path('password-reset/', resetviews.PasswordResetView.as_view(
