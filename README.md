@@ -2,5 +2,5 @@
  :rocket: alpha
 </h1>
 
-##### Alpha developing stage of Sakkhat.
+##### This repo is the alpha deployment of Sakkhat.
 ##### :copyright: All rights reservered [Sakkhat](https://github.com/sakkhat)
