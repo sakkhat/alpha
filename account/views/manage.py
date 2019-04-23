@@ -8,7 +8,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
 from generic.variables import LOGIN_URL
-from generic.views import json_response
+from generic.mail import verify_email
 
 from space.models import ProductReact,Space,Status
 
@@ -29,20 +29,29 @@ def profile(request):
 @login_required(login_url=LOGIN_URL)
 def update(request):
 	context = {}
-	if request.method == 'POST':
+	user = request.user
 
-		form = ProfileUpdateForm(request.POST, user=request.user)
+	if request.method == 'POST':
+		form = ProfileUpdateForm(request.POST, user=user)
 		if form.is_valid():
 			
-			request.user.name = form.cleaned_data['name']
-			request.user.email = form.cleaned_data['email']
-			request.user.gender = form.cleaned_data['gender']
-			request.user.save()
+			user.name = form.cleaned_data['name']
+			user.gender = form.cleaned_data['gender']
+			email = form.cleaned_data['email']
+			
+			if email != user.email:
+				user.is_active = False
+				user.email = email
+				user.save()
+				verify_email(request, user)
+				return render(request, 'account/auth/verify.html', {})
+
+			user.email = email
+			user.save()
 
 			return redirect('/account/')
-
-
-	form = ProfileUpdateForm(user=request.user)
+	else:
+		form = ProfileUpdateForm(user=request.user)
 
 	context['form'] = form
 

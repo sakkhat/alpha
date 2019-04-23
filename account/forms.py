@@ -117,6 +117,9 @@ class PasswordChangeForm(forms.Form):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+	password = forms.CharField(widget=forms.PasswordInput(attrs=
+		{'class' : 'form-control', 'placeholder' : 'Your Password'}))
+
 	class Meta:
 		model = Account
 		fields = ['name', 'email', 'gender']
@@ -139,8 +142,13 @@ class ProfileUpdateForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = self.cleaned_data
 
+		password = cleaned_data['password']
 		email = cleaned_data['email']
 		gender = cleaned_data['gender']
+
+		valid = self.user.check_password(password)
+		if not valid:
+			raise forms.ValidationError('invalid password')
 
 		duplicate_email = Account.objects.filter(email=email).exclude(id=self.user.id)
 		if duplicate_email.exists():

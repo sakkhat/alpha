@@ -14,10 +14,10 @@ _NOTIFICATION_LABEL = (
 )
 
 _NOTIFICATION_LABEL_DIC = {
-	'Security' : 'Sc',
-	'Advertise' : 'Ad',
-	'General' : 'Gn',
-	'Offer' : 'Of'
+	'security' : 'Sc',
+	'advertise' : 'Ad',
+	'general' : 'Gn',
+	'offer' : 'Of'
 }
 
 class Notification(models.Model):
@@ -27,6 +27,7 @@ class Notification(models.Model):
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.CharField(max_length=50)
 	message = models.TextField()
+	action = models.CharField(max_length=120, default='#')
 	seen = models.BooleanField(default=False)
 
 
