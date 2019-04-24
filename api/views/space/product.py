@@ -93,10 +93,10 @@ def product_pinned_request(request, uid, format=None):
 
 	req = req.upper()
 	result = activity.handle_pin(request.user, uid, req)
-	if result is None:
+	if not result:
 		raise NotFound('request not found')
 
-	return Response({'response' : 'product pinned'});
+	return Response({'response' : True});
 
 
 

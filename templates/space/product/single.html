@@ -2,7 +2,14 @@
 {% load static %}
 
 {% block extra_head %}
+    
+    <meta property="og:title" content="{{product.title}}">
+    <meta property="og:description" content="{{product.category}}">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="{{current_site.domain}}">
+
     <title>{{ product.title }} | {{ product.space.name }}</title>
+
 	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
@@ -70,11 +77,7 @@
 
                 </div>
                 <div class="list-group-item">
-                    <div class="fb-share-button" data-href="https://sakkhat.in/space/product/{{product.uid}}"
-                        data-layout="button" data-size="large"><a target="_blank" 
-                        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" 
-                        class="fb-xfbml-parse-ignore">Share</a>
-                    </div>
+                    <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fsakkhat.in%2F&layout=button&size=large&width=73&height=28&appId=716791738331982" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                 </div>
                 <br>
                 {% if product.space.owner == request.user %}
@@ -161,8 +164,6 @@
         </div>
     </div>
 
-    <div id="fb-root"></div>
-
 {% endblock %}
 
 
@@ -174,11 +175,6 @@
     <script type="text/javascript" src="{% static 'lib/js/react.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js'%}"></script>
     <script type="text/javascript" src="{% static 'lib/js/browser.min.js'%}"></script>
-
-    <script async defer crossorigin="anonymous" 
-        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2"> 
-    </script>
-
 
     <script type="text/babel">
         class ProductReact extends React.Component {

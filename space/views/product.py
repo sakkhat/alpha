@@ -1,6 +1,7 @@
 from api.handler.tokenization import encode as token_encode
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -59,6 +60,9 @@ def view(request, uid):
 		context['media'] = media
 		
 		context['related_products'] = related_products
+
+		current_site = get_current_site(request)
+		context['current_site'] = current_site
 
 		return render(request, 'space/product/single.html', context)
 		

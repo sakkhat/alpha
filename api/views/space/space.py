@@ -32,7 +32,8 @@ def favorite_request(request, name, format=None):
 		raise NotFound('request not found')
 	
 	result = activity.handle_favorite(request.user, name, req)
-	if result is None:
+	
+	if not result:
 		raise NotFound('request not found')
 
 	return Response({'response' : 'space added to favorite list'})
