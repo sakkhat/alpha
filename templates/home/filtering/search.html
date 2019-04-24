@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	<title>Search - {{ query }}</title>
+	{% if what == 'product' %}
+		<link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css'%}">
+    	<link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+	{% elif what == 'space' %}
+		<link rel="stylesheet" type="text/css" href="{% static 'css/generic/space-box.css' %}">
+	{% endif %}
+	<style type="text/css">
+		body {background-color: #E2E9EA;}
+	</style>
+{% endblock %}
+
+
+{% block extra_content %}
+	<div class="d-flex justify-content-center mt-2 mb-2">
+		<ul class="nav nav-pills">
+			{% if what == 'product' %}
+				<li class="nav-item">
+					<a href="/search/?query={{query}}&what=product" class="nav-link active">Product</a>
+				</li>
+				<li class="nav-item">
+					<a href="/search/?query={{query}}&what=space" class="nav-link">Space</a>
+				</li>
+			{% elif what == 'space' %}
+				<li class="nav-item">
+					<a href="/search/?query={{query}}&what=product" class="nav-link">Product</a>
+				</li>
+				<li class="nav-item">
+					<a href="/search/?query={{query}}&what=space" class="nav-link active">Space</a>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+	<h4 class="text-center mb-3">{{what | capfirst}} results for "{{query}}"</h4>
+
+	{% if what == 'product' %}
+        <div class="container-fluid">
+	        <div class="row justify-content-center" id="cards-container" url="/api/product/?query={{query}}&token={{token}}" renderID="cards-container">
+	       </div>
+	    </div>
+	{% elif what == 'space' %}
+		<div id="cards-container" url="/api/space/?query={{query}}&token={{token}}">
+
+   		</div>
+	{% endif %}
+
+	
+{% endblock %}
+
+	
+
+{% block extra_script %}
+
+	{% if what == 'product' or what == 'space' %}
+		<script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+
+	{% endif %}
+
+
+	{% if what == 'product' %}
+		<script type="text/babel" src="{% static 'react/product-cards.js' %}"></script>
+	{% elif what == 'space' %}
+		<script type="text/babel" src="{% static 'react/space-cards.js' %}"></script>
+	{% endif %}
+
+
+{% endblock %}

@@ -15,6 +15,9 @@ def handle_pin(user, uid, req):
 	if req =='ADD' or req == 'REMOVE':
 		try:
 			product = Product.objects.get(uid = uid)
+			space = Space.objects.get(id=product.space_id)
+			if space.owner_id == user.id:
+				return False
 			status = Status.objects.get(space_id = product.space_id)
 
 			if req == 'ADD':
@@ -58,6 +61,10 @@ def handle_react(user, uid, what):
 	if  what in _REACTS:
 		try:
 			product = Product.objects.get(uid=uid)
+			space = Space.objects.get(id=product.space_id)
+			if space.owner_id == user.id:
+				return None
+
 			status = Status.objects.get(space_id=product.space_id)
 
 			react_obj = None
@@ -118,6 +125,9 @@ def handle_favorite(user, name, req):
 		return False
 	try:
 		space = Space.objects.get(name__iexact=name)
+		if space.owner_id == user.id:
+			return False			
+		
 		req = req.strip()
 		req = req.upper()
 

@@ -1,4 +1,8 @@
+body {
+	background-color: #E2E9EA;
+}
 
-.notification-time{
-	float: right;
+.content-bar {
+	max-height: 75vh;
+	overflow-y: auto; width: 100%;
 }

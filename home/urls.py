@@ -7,7 +7,8 @@ urlpatterns = [
 	path('notification/', manage.notification, name='notification'),
 	path('notification/<uid>/action/', manage.notification_route, name='notification-route'),
 	
-	path('trending/', filtering.trending, name='trending-spaces'),
+	path('trending/', filtering.trending, name='trending'),
+	path('search/', filtering.search, name='search'),
 
 	path('about/', pages.about, name='about'),
 	path('terms/', pages.terms, name='terms'),

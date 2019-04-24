@@ -17,19 +17,9 @@
                </div>
             </div>
         {% elif pinned_by %}
-            {% if request.user.is_authenticated %}
-                <h3 align="center" class="mt-3 mb-3">{{ request.user.name }}'s' pinned</h3>
-                <div class="container-fluid">
-                    <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{request.user.name}}&token={{token}}" renderID="cards-container">
-                   </div>
-                </div>
-            {% else %}
-                <h5 align="center">You are not authenticated</h5>
-            {% endif %}
-        {% elif query %}
-            <h3 align="center" class="mt-3 mb-3">"{{query}}" result</h3>
+            <h3 align="center" class="mt-3 mb-3">{{ user_name }}'s' pinned</h3>
             <div class="container-fluid">
-                <div class="row justify-content-center" id="cards-container" url="/api/product/?query={{query}}&token={{token}}" renderID="cards-container">
+                <div class="row justify-content-center" id="cards-container" url="/api/product/?pinned_by={{user_name}}&token={{token}}" renderID="cards-container">
                </div>
             </div>
         {% endif %}
@@ -38,8 +28,8 @@
         <h3 align="center" class="mt-3 mb-3">Explore Products</h3>
         <div class="container-fluid">
             <div class="row justify-content-center" id="cards-container" url="/api/product/?token={{token}}" renderID="cards-container">
-               </div>
-            </div>
+           </div>
+        </div>
     {% endif %}
 {% endblock %}
 
