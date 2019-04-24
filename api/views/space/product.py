@@ -24,6 +24,7 @@ from generic.variables import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
 
 
 
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 @renderer_classes((JSONRenderer,))
@@ -170,10 +171,14 @@ def __category_filter(category, **kwargs):
 		if page is None:
 			return None
 
+		if page is None and limit is None:
+			return None
+
 		category_obj = Category.objects.get(name__iexact=key)
 
 		offset = page*PRODUCT_PAGINATION_SIZE
 		result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PRODUCT_PAGINATION_SIZE]
+
 
 		serializer = ProductSerializer(result, many=True)
 		return serializer
