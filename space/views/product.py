@@ -80,24 +80,20 @@ def manager(request):
 		pinned_by = request.GET.get('pinned_by', None)
 		query = request.GET.get('query', None)
 
-		token = token_encode({'user_id' : request.user.id })
+		user = request.user
+
+		token = token_encode({'user_id' : user.id })
 		context['token'] = token
 
 
 		if category is not None:
 			has_attribute = True
 			context['category'] = category
-	
 
 		elif pinned_by is not None:
-			if request.user.is_authenticated:
-				has_attribute = True
-				context['pinned_by'] = True
-
-		elif query is not None:
 			has_attribute = True
-			context['query'] = query
-		
+			context['pinned_by'] = True		
+			context['user_name'] = user.name
 
 	context['has_attribute'] = has_attribute
 

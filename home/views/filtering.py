@@ -21,15 +21,20 @@ def trending(request):
 def search(request):
 	context = {}
 	query = None
-	if request.method == 'POST':
-		query = request.POST.get('query', None)
 
-	elif request.method == 'GET':
-		query == request.GET.get('query', None)
+	if request.method != 'GET':
+		return invalid_request(request)
+
+	query = request.GET.get('query', None)
+	what = request.GET.get('what', 'product')
 
 	if query is None:
 		return redirect('/')
 
+	token = token_encode({'user_id' : request.user.id })
+
+	context['token'] = token
 	context['query'] = query
+	context['what'] = what.lower()
 
 	return render(request, 'home/filtering/search.html', context)

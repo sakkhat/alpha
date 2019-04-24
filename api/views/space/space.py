@@ -2,6 +2,10 @@ from api.handler import activity
 from api.handler.tokenization import decode as token_decode
 from api.serializer_models.space.space import SpaceStatusSerializer
 
+from django.contrib.postgres.search import SearchVector
+
+from generic.variables import SPACE_PAGINATION_SIZE
+
 from rest_framework.decorators import api_view,permission_classes,renderer_classes
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAuthenticated
@@ -10,8 +14,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 
 from space.models import Status
-
-from generic.variables import SPACE_PAGINATION_SIZE
 
 
 
@@ -76,7 +78,7 @@ def manager(request, format=None):
 		return Response(serializer.data)
 	
 
-	return NotFound('invalid request')
+	raise NotFound('invalid request')
 
 
 
@@ -96,20 +98,23 @@ def __query_filter(query, **kwargs):
 	page = kwargs.get('page', None)
 	limit = kwargs.get('limit', None)
 
+	if page is None:
+		return None
+
 	if query == 'top':
-		if page is not None:
-			offset = page * SPACE_PAGINATION_SIZE
-			result = Status.objects.order_by('-rating')[offset:offset+SPACE_PAGINATION_SIZE]
 
-		elif limit is not None:
-			result = Status.objects.order_by('-rating')[:limit]
-
-		else:
-			result = Status.objects.order_by('-rating')[:32]
-		
-		
+		offset = page * SPACE_PAGINATION_SIZE
+		result = Status.objects.order_by('-rating')[offset:offset+SPACE_PAGINATION_SIZE]
 		serializer = SpaceStatusSerializer(result, many=True)
 		return serializer
 
+	elif len(query) > 0:
+
+		offset = page*SPACE_PAGINATION_SIZE	
+		result = Status.objects.annotate(search=SearchVector('space__name', 
+			'space__description')).filter(search=query)[offset:offset+SPACE_PAGINATION_SIZE]
+		
+		serializer = SpaceStatusSerializer(result, many=True)
+		return serializer
 
 	return None
