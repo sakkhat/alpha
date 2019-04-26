@@ -17,8 +17,11 @@ from space.models import ProductReact,Space,Status
 def profile(request):
 	context = {}
 
+	user = request.user
+	context['user'] = user
+
 	if request.user.has_space:
-		space = Space.objects.get(owner=request.user)
+		space = Space.objects.get(owner_id=user.id)
 		status = Status.objects.get(space=space)
 		context['space'] = space
 		context['status'] = status

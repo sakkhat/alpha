@@ -24,7 +24,6 @@ from django.views.generic.base import RedirectView
 from home import views as index
 
 
-
 urlpatterns = [
 	
 	# managed all index functionality in home
@@ -37,4 +36,5 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = 'generic.views.invalid_request'
+handler404 = 'generic.views.error404'
+handler500 = 'generic.views.error500'

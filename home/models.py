@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from account.models import Account
 from space.models import Status,Product,Space
@@ -52,3 +53,17 @@ class Favorite(models.Model):
 	time_date = models.DateTimeField(auto_now_add=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+
+
+
+class Payment(models.Model):
+	"""
+	Doc here
+	"""
+	transection_id = models.CharField(max_length=32)
+	space = models.ForeignKey(Space, on_delete=models.CASCADE)
+	time_date = models.DateTimeField(auto_now_add=True)
+	base_fee = models.PositiveSmallIntegerField()
+	discount = models.PositiveSmallIntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)])
+	total_pay = models.PositiveSmallIntegerField()
