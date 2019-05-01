@@ -44,7 +44,7 @@ class PinnedProduct(models.Model):
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 	class Meta:
-		unique_together = ()
+		unique_together = ('user', 'product')
 
 
 
@@ -70,5 +70,6 @@ class Payment(models.Model):
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	time_date = models.DateTimeField(auto_now_add=True)
 	base_fee = models.FloatField()
-	discount = models.PositiveSmallIntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)])
+	discount = models.PositiveSmallIntegerField(
+		validators=[MinValueValidator(0),MaxValueValidator(100)])
 	total_pay = models.FloatField()

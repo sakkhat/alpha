@@ -65,7 +65,8 @@ class Space(models.Model):
 	name = models.CharField(max_length=30, unique=True)
 	description = models.TextField()
 	join = models.DateTimeField(auto_now_add=True)
-	discount = models.PositiveSmallIntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)],default=0)
+	discount = models.PositiveSmallIntegerField(
+		validators=[MinValueValidator(0),MaxValueValidator(100)],default=0)
 
 	def __str__(self):
 		return self.name
@@ -109,6 +110,9 @@ class ProductReact(models.Model):
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	react = models.CharField(max_length=1, choices=_PRODUCT_REACT)
+
+	class Meta:
+		unique_together = ('user', 'product')
 
 
 
