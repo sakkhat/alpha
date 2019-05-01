@@ -68,6 +68,9 @@
                 <a class="list-group-item bg-light" href="/space/{{product.space.name}}/">@{{ product.space.name }}</a>
                 <div class="list-group-item">
                     <a class="btn btn-sm btn-outline-dark" href="/space/product/all/?category={{product.category}}">{{ product.category }}</a>
+                    <div class="float-right">
+                        <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fsakkhat.in%2F&layout=button&size=large&width=73&height=28&appId=" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    </div>
                 </div>
                 <div class="list-group-item description">
                     <p>{{ product.description | linebreaks | urlize}}</p>
@@ -75,9 +78,6 @@
                 <br>
                 <div class="list-group-item" id="product-react-pin">
 
-                </div>
-                <div class="list-group-item">
-                    <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fsakkhat.in%2F&layout=button&size=large&width=73&height=28&appId=716791738331982" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                 </div>
                 <br>
                 {% if product.space.owner == request.user %}

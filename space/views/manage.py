@@ -8,7 +8,8 @@ from generic.media import Image
 from generic.variables import LOGIN_URL, now_str, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
 
-from home.models import Favorite,PinnedProduct
+from home.models import (Favorite,PinnedProduct, Notification,
+	_NOTIFICATION_LABEL_DIC as NDIC )
 
 from space.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
@@ -80,6 +81,7 @@ def create(request):
 			space = form.save()
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
+			_notify(user)
 			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
@@ -90,6 +92,17 @@ def create(request):
 	context['form'] = form
 
 	return render(request, 'space/manage/create.html', context)
+
+
+def _notify(user):
+	Notification.objects.create(
+		user=user,
+		label=NDIC['offer'],
+		title='Congrates!',
+		message='You got 1 free product post for your space',
+		action='/account/'
+		)
+	user.has_notification = True
 
 
 @login_required(login_url=LOGIN_URL)

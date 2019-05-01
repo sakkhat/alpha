@@ -28,7 +28,7 @@ class Notification(models.Model):
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.CharField(max_length=50)
 	message = models.TextField()
-	action = models.CharField(max_length=120, default='#')
+	action = models.CharField(max_length=60, default='#')
 	seen = models.BooleanField(default=False)
 
 
@@ -56,7 +56,6 @@ class Favorite(models.Model):
 
 
 
-
 class Payment(models.Model):
 	"""
 	Doc here
@@ -64,6 +63,6 @@ class Payment(models.Model):
 	transection_id = models.CharField(max_length=32)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	time_date = models.DateTimeField(auto_now_add=True)
-	base_fee = models.PositiveSmallIntegerField()
+	base_fee = models.FloatField()
 	discount = models.PositiveSmallIntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)])
-	total_pay = models.PositiveSmallIntegerField()
+	total_pay = models.FloatField()
