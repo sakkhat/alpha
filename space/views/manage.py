@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str, SPACE_BANNER_PATH
-from generic.views import invalid_request, json_response
+from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
+from generic.template.views import invalid_request, json_response
 
 from home.models import (Favorite,PinnedProduct, Notification,
 	_NOTIFICATION_LABEL_DIC as NDIC )

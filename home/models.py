@@ -43,6 +43,9 @@ class PinnedProduct(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
+	class Meta:
+		unique_together = ()
+
 
 
 class Favorite(models.Model):
@@ -53,6 +56,9 @@ class Favorite(models.Model):
 	time_date = models.DateTimeField(auto_now_add=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+	class Meta:
+		unique_together = ('space', 'user')
 
 
 

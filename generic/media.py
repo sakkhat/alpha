@@ -1,13 +1,14 @@
 from django.core.files.storage import FileSystemStorage as FSS
 
-from generic.variables import FILE_CHUNK_SIZE
+from generic.constants import FILE_CHUNK_SIZE
+from generic.variables import random_string
 
 from io import BytesIO
-from PIL import Image as _Image
+from PIL import Image as PillowImage
 from time import time
 from os import remove, makedirs
 from os.path import isdir
-from uuid import uuid4
+
 
 
 class Image():
@@ -20,20 +21,20 @@ class Image():
 			if file_stream.multiple_chunks(FILE_CHUNK_SIZE):
 				file_stream.chunks(FILE_CHUNK_SIZE)
 			bytes_data = file_stream.read()
-			img_file = _Image.open(BytesIO(bytes_data))
+			img_file = PillowImage.open(BytesIO(bytes_data))
 
 		elif path is not None:
-			img_file = _Image.open(path)
+			img_file = PillowImage.open(path)
 
 		elif raw is not None:
-			img_file = _Image.open(BytesIO(raw))
+			img_file = PillowImage.open(BytesIO(raw))
 
 		return img_file
 
 
 	def save(loc, file):
 		storage = FSS(location = loc)
-		filename = uuid4().hex+'.'+file.format
+		filename = random_string()+'.'+file.format
 
 		if isdir(storage.location) == False:
 			makedirs(storage.location)

@@ -5,10 +5,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from generic.media import Image
-from generic.variables import (LOGIN_URL, now_str, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
+from generic.constants import (LOGIN_URL, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
 	MIN_RATE_FOR_SPACE_TRENDING)
-from generic.views import json_response, invalid_request
+from generic.media import Image
+from generic.template.views import json_response, invalid_request
 
 from home.models import PinnedProduct
 

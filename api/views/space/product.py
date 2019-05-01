@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from space.models import Product, ProductReact, Category, Space
 from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
 
-from generic.variables import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
+from generic.constants import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
 
 
 

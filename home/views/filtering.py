@@ -3,8 +3,8 @@ from api.handler.tokenization import encode as token_encode
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from generic.views import invalid_request
-from generic.variables import LOGIN_URL
+from generic.constants import LOGIN_URL
+from generic.template.views import invalid_request
 
 from space.models import Product
 

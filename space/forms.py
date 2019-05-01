@@ -1,6 +1,6 @@
 from django import forms
 
-from generic.variables import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
+from generic.constants import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
 from generic.media import Image
 
 from space.models import Space,Product, ProductMedia,Banner
@@ -66,7 +66,6 @@ class SpaceCreateForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop('request', None)
 		super(SpaceCreateForm, self).__init__(*args, **kwargs)
-		
 
 
 
@@ -181,7 +180,6 @@ class SpaceUpdateForm(forms.ModelForm):
 		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
 		
 		self.fields['description'].initial = self.space.description
-
 
 
 

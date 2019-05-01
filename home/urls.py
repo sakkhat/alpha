@@ -10,8 +10,9 @@ urlpatterns = [
 	path('trending/', filtering.trending, name='trending'),
 	path('search/', filtering.search, name='search'),
 
-	path('about/', pages.about, name='about'),
-	path('terms/', pages.terms, name='terms'),
-	path('feedback/', pages.feedback, name='feedback'),
-	path('privacy-policy/', pages.privacy_policy, name='privacy_policy')
+	path('page/about/', pages.about, name='about'),
+	path('page/terms/', pages.terms, name='terms'),
+	path('page/feedback/', pages.feedback, name='feedback'),
+	path('page/privacy-policy/', pages.privacy_policy, name='privacy_policy'),
+	path('page/cookie/', pages.cookie, name='cookie')
 ]

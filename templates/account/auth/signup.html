@@ -17,20 +17,29 @@
             </div>
             <div class="col-md-6">
                 <form class="sign-up-form list-group-item" method="POST">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                 	{% csrf_token %}
                     {{ form.name.label }}
                     {{ form.name }}
 
                     {{ form.phone.label}}
-                    {% if form.errors.phone %}
-                        <strong class="list-group-item list-group-item-danger">{{ form.errors.phone}}</strong>
-                    {% endif %}
                     {{ form.phone}}
 
                     {{ form.email.label}}
-                    {% if form.errors.email %}
-                        <strong class="list-group-item list-group-item-danger">{{ form.errors.email}}</strong>
-                    {% endif %}
                     {{ form.email}}
 
                     {{ form.gender.label}}
@@ -41,9 +50,12 @@
 
                     {{ form.confirm_password.label}}
                     {{ form.confirm_password}}
-                    {% if form.errors.confirm_password %}
-                        <strong class="list-group-item list-group-item-danger">{{ form.errors.confirm_password}}</strong>
-                    {% endif %}                    
+
+                    <h6 class="alert alert-secondary">By signing up, you agree to the 
+                        <a href="/page/terms/">Terms of Service</a> and 
+                        <a href="/page/privacy-policy/">Privacy Policy</a>, including 
+                        <a href="/page/cookie/">Cookie</a> Use. 
+                    </h6>                 
                     <input type="submit" value="Sign Up" class="btn btn-success btn-block">
                 </form>
                 <br>

@@ -8,12 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
-from generic import views
-from generic.mail import verify_email
-from generic.variables import LOGIN_URL
-
-
-from home.models import Notification, _NOTIFICATION_LABEL_DIC as NDIC
+from generic.constants import LOGIN_URL
+from generic.service.mail import verify_email
+from generic.template.views import invalid_request
 
 
 def signup(request):
@@ -56,23 +53,12 @@ def verify(request, token):
 		return redirect('/account/')
 	if email == user.email:
 		user.is_active = True
-		_notify(user)
 		user.save()
 		return render(request, 'account/auth/confirm.html', {})
 
-	return views.invalid_request(request)
+	return invalid_request(request)
 
 
-def _notify(user):
-	Notification.objects.create(
-		user=user,
-		label=NDIC['general'],
-		title='Welcome to sakkhat',
-		action='/account/',
-		message='Hello '+user.name+
-		', explore your favorite space, pinned products and reacts activities.'
-		)
-	user.has_notification = True
 
 def signin(request):
 	if request.user.is_authenticated:
@@ -110,7 +96,7 @@ def signin(request):
 @login_required(login_url=LOGIN_URL)
 def signout(request):
 	logout(request)
-	return views.response(request,'account/auth/signout.html')
+	return render(request,'account/auth/signout.html', {})
 	
 
 @login_required(login_url=LOGIN_URL)

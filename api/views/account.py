@@ -5,7 +5,7 @@ from api.serializer_models.account import AccountSerializerForThumbnail
 from django.core.exceptions import ObjectDoesNotExist
 
 from generic.media import Image
-from generic.variables import USER_THUMBNAIL_PATH
+from generic.constants import USER_THUMBNAIL_PATH
 
 
 from rest_framework.decorators import api_view

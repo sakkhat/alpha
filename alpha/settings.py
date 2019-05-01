@@ -81,7 +81,7 @@ TEMPLATES = [
             ],
 
             'libraries':{
-                'my_filter' : 'generic.template_filter',
+                'filter' : 'generic.template.filter',
 
             }
         },

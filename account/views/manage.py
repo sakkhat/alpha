@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
-from generic.variables import LOGIN_URL
-from generic.mail import verify_email
+from generic.constants import LOGIN_URL
+from generic.service.mail import verify_email
 
 from space.models import ProductReact,Space,Status
 
