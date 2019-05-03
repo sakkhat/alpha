@@ -3,70 +3,60 @@
 
 {% block extra_head %}
 	<title>Update | {{ space.name }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/update.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css'%}">
 {% endblock %}
 
 
 {% block extra_content %}
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="list-group-item">
-                    <ul class="nav nav-tabs" role="tablist">
-                        {% for item in banners %}
-                            <li class="nav-item">
-                                {% if forloop.first %}
-                                <a class="nav-link active" data-toggle="pill" href="#img{{forloop.counter}}">
-                                {% else %}
-                                <a class="nav-link" data-toggle="pill" href="#img{{forloop.counter}}">
-                                {% endif %}
-                                    <img class="product-avatar-select" src="{{ item.location }}">
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+    <div class="d-flex justify-content-center">
+        <div class="col-md-7">
 
-                  <!-- Tab panes -->
-                    <div class="tab-content">
+            <div id="banner-slider" class="carousel slide mb-4" data-ride="carousel" data-interval="false">
+                <ul class="carousel-indicators">
+                    <li data-target="#banner-slider" data-slide-to="0"></li>
+                    <li data-target="#banner-slider" data-slide-to="1"></li>
+                    <li data-target="#banner-slider" data-slide-to="2"></li>
+                </ul>
 
-                        {% for item in banners %}
-                            {% if forloop.first %}
-                            <div id="img{{forloop.counter}}" class="container tab-pane active product-avatar">
-                            {% else %}
-                            <div id="img{{forloop.counter}}" class="container tab-pane product-avatar">
-                            {% endif %}
-
-                                <img src="{{ item.location }}" id="img-view-{{forloop.counter}}">
-                                <form method="POST" enctype="multipart/form-data" action="{{item.uid}}/">
-                                    {% csrf_token %}
-                                    <label class="image-text-block" for="image{{forloop.counter}}">
-                                        <h6>Select Image</h6>
-                                    </label>
-                                    <input type="file" accept=".png, .jpeg, .jpg" name="banner" id="image{{forloop.counter}}" class="d-none" onchange = 'openFile{{forloop.counter}}(event)'>
-                                    <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
-                                </form>
+                <div class="carousel-inner">
+                    {% for banner in banners %}
+                        {% if forloop.first %}
+                        <div class="carousel-item active">
+                        {% else %}
+                        <div class="carousel-item">
+                        {% endif %}
+                        
+                            <div class="banner-slider-item">
+                                <img src="{{banner.location}}" onerror="{this.src='https://images.unsplash.com/photo-1469827160215-9d29e96e72f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'}" height="350px">
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <br>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="list-group-item">
-                        {{ form}}
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Update</button>
-                </form>
-                <br>
-                <a href="/space/{{space.name}}/" class="list-group-item list-group-item-action">Back to Space</a>
-                <br><br>
+
+                <a class="carousel-control-prev" href="#banner-slider" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#banner-slider" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
             </div>
+
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="list-group-item">
+                    {{ form}}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Update</button>
+            </form>
+            <br>
+            <a href="/space/{{space.name}}/" class="list-group-item list-group-item-action">Back to Space</a>
+            <br><br>
         </div>
     </div>
 {% endblock %}
 
 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
+
 {% endblock %}

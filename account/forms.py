@@ -83,6 +83,19 @@ class SigninForm(forms.Form):
 		'class' : 'form-control'}))
 
 
+	def clean(self):
+		cleaned_data = self.cleaned_data
+		phone = cleaned_data['phone']
+		password = cleaned_data['password']
+
+		user = authenticate(phone=phone, password=password)
+		if user:
+			self.user = user
+			return cleaned_data
+		raise forms.ValidationError('invalid information')
+
+
+
 class PasswordChangeForm(forms.Form):
 
 	current_password = forms.CharField(widget=forms.PasswordInput(attrs=

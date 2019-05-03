@@ -23,10 +23,9 @@
 
 {% block extra_content %}
 	<div class="container-fluid">
-        <div class="row">
+        <div class="row" id="product-info-block">
             <div class="col-md-6">
                <ul class="nav nav-tabs" role="tablist">
-
                     {% for item in media %}
                         <li class="nav-item">
                             {% if forloop.first %}
@@ -42,7 +41,6 @@
 
               <!-- Tab panes -->
                 <div class="tab-content">
-
                     {% for item in media %}
                         {% if forloop.first %}
                         <div class="container tab-pane active product-avatar" id="img{{forloop.counter}}">
@@ -54,6 +52,7 @@
                     {% endfor %}
 
                 </div>
+                <br>
             </div>
             <div class="col-md-6">
                 <h4 class="list-group-item bg-light">{{ product.title }}</h4>

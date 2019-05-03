@@ -1,6 +1,7 @@
 from django.urls import path
 
-from space.views import manage,product
+from space.manage import views as manage
+from space.product import views as product
 
 
 urlpatterns = [

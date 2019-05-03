@@ -5,12 +5,11 @@ from account.models import Account, UserManager
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from generic.constants import LOGIN_URL
 from generic.service.mail import verify_email
-from generic.template.views import invalid_request
+from generic.views import invalid_request
 
 
 def signup(request):
@@ -68,22 +67,13 @@ def signin(request):
 	if request.method == 'POST':
 		form = SigninForm(request.POST)
 		if form.is_valid():
-			phone = form.cleaned_data['phone']
-			password = form.cleaned_data['password']
-
-			user = authenticate(phone=phone, password=password)
-
-			if user is not None:
-				login(request, user)
-
-				goto = request.GET.get('next', None)
-				if goto:
-					return redirect(goto)
-				return redirect('/account/')
-
-
-			else:
-				messages.error(request, 'Incorrect information')
+			
+			user = form.user
+			login(request, user)
+			goto = request.GET.get('next', None)
+			if goto:
+				return redirect(goto)
+			return redirect('/account/')
 
 	else:
 		form = SigninForm()

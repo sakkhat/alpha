@@ -6,12 +6,12 @@ from django.shortcuts import redirect, render
 
 from generic.media import Image
 from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
-from generic.template.views import invalid_request, json_response
+from generic.views import invalid_request, json_response
 
 from home.models import (Favorite,PinnedProduct, Notification,
 	_NOTIFICATION_LABEL_DIC as NDIC )
 
-from space.forms import SpaceCreateForm,SpaceUpdateForm
+from space.manage.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
