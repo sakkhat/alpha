@@ -20,7 +20,7 @@ class SpaceCreateForm(forms.ModelForm):
 			'name' : forms.TextInput(attrs=
 				{'placeholder':'Sakkhat', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'My description. Follow: https://facebook.com/sakkhat/', 'class':'form-control'})
+				{'placeholder':'My description. Follow: https://facebook.com/sakkhat.inc/', 'class':'form-control'})
 		}
 
 

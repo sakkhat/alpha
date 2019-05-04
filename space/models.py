@@ -122,7 +122,6 @@ class ProductMedia(models.Model):
 	"""
 	uid = models.UUIDField(primary_key=True, default=uuid4)
 	location = models.CharField(max_length=150)
-	is_image = models.BooleanField(default=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 	def __str__(self):

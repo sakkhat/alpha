@@ -9,52 +9,48 @@
 
 
 {% block extra_content %}
-    <br><h4 align="center">Notification : {{query | capfirst }}</h4><br>
-
     <div id="notification-container" renderID="notification-list-block", url="/api/user/notification/?token={{token}}&query={{query}}", token={{token}}>
         
     </div>
 
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-md-3">
-                <h6 class="list-group-item list-group-item-secondary">Level Filter</h6>
-                {% if query == 'all'%}
-                    <a href="/notification/?query=all" class="list-group-item list-group-item-action active">All</a>
-                {% else %}
-                    <a href="/notification/?query=all" class="list-group-item list-group-item-action">All</a>
-                {% endif %}
+    <div class="left-block">
+        <h6 class="list-group-item list-group-item-secondary">Level Filter</h6>
+        {% if query == 'all'%}
+            <a href="/notification/?query=all" class="list-group-item list-group-item-action active">All</a>
+        {% else %}
+            <a href="/notification/?query=all" class="list-group-item list-group-item-action">All</a>
+        {% endif %}
 
-                {% if query == 'security'%}
-                    <a href="/notification/?query=security" class="list-group-item list-group-item-action active">Security</a>
-                {% else %}
-                    <a href="/notification/?query=security" class="list-group-item list-group-item-action">Security</a>
-                {% endif %}
+        {% if query == 'security'%}
+            <a href="/notification/?query=security" class="list-group-item list-group-item-action active">Security</a>
+        {% else %}
+            <a href="/notification/?query=security" class="list-group-item list-group-item-action">Security</a>
+        {% endif %}
 
-                {% if query == 'general'%}
-                    <a href="/notification/?query=general" class="list-group-item list-group-item-action active">General</a>
-                {% else %}
-                    <a href="/notification/?query=general" class="list-group-item list-group-item-action">General</a>
-                {% endif %}
+        {% if query == 'general'%}
+            <a href="/notification/?query=general" class="list-group-item list-group-item-action active">General</a>
+        {% else %}
+            <a href="/notification/?query=general" class="list-group-item list-group-item-action">General</a>
+        {% endif %}
 
-                {% if query == 'advertise'%}
-                    <a href="/notification/?query=advertise" class="list-group-item list-group-item-action active">Advertise</a>
-                {% else %}
-                    <a href="/notification/?query=advertise" class="list-group-item list-group-item-action">Advertise</a>
-                {% endif %}
+        {% if query == 'advertise'%}
+            <a href="/notification/?query=advertise" class="list-group-item list-group-item-action active">Advertise</a>
+        {% else %}
+            <a href="/notification/?query=advertise" class="list-group-item list-group-item-action">Advertise</a>
+        {% endif %}
 
-                {% if query == 'offer'%}
-                    <a href="/notification/?query=offer" class="list-group-item list-group-item-action active">Offer</a>
-                {% else %}
-                    <a href="/notification/?query=offer" class="list-group-item list-group-item-action">Offer</a>
-                {% endif %}
-                <br>
-            </div>
-          
-            <div class="col-md-7" id="notification-list-block">
-
-                
-            </div>
+        {% if query == 'offer'%}
+            <a href="/notification/?query=offer" class="list-group-item list-group-item-action active">Offer</a>
+        {% else %}
+            <a href="/notification/?query=offer" class="list-group-item list-group-item-action">Offer</a>
+        {% endif %}
+        <br>
+    </div>
+  
+    <div class="right-block">
+        <br><h4 align="center">Notification : {{query | capfirst }}</h4><br>
+        <div class="d-flex justify-content-center">
+            <div id="notification-list-block" class="col-md-10"></div>
         </div>
     </div>
     <br>

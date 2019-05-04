@@ -1,7 +1,6 @@
 from api.handler.tokenization import encode as token_encode
 
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
@@ -177,8 +176,6 @@ def delete(request, uid):
 		form = PasswordConfirmForm(request.POST, user=request.user)
 		if form.is_valid():
 			return _delete_data(request, uid)
-		else:
-			messages.error(request, 'Incorrect information')
 
 	else:
 		form = PasswordConfirmForm(user=request.user)
