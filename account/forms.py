@@ -121,6 +121,13 @@ class PasswordChangeForm(forms.Form):
 		return confirm_password
 
 
+	def save(self, commit=True):
+		new_password = self.cleaned_data['confirm_password']
+		self.user.set_password(new_password)
+		if commit:
+			self.user.save()
+		return self.user
+
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)
@@ -173,15 +180,31 @@ class ProfileUpdateForm(forms.ModelForm):
 		return cleaned_data
 
 
+	def is_new_email(self):
+		if self.user.email.lower() != self.cleaned_data.get('email').lower():
+			return True
+		return False
+
+
+	def save(self, commit=True):
+		name = self.cleaned_data['name']
+		email = self.cleaned_data['email']
+		gender = self.cleaned_data['gender']
+
+		self.user.name = name
+		self.user.email = email
+		self.user.gender = gender
+
+		if commit:
+			self.user.save()
+		return self.user
+
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)
 
-		super(ProfileUpdateForm, self).__init__(*args, **kwargs)
-		
+		super(ProfileUpdateForm, self).__init__(*args, **kwargs)		
 
 		self.fields['name'].initial = self.user.name
 		self.fields['email'].initial = self.user.email
 		self.fields['gender'].initial = self.user.gender
-
-

@@ -76,9 +76,15 @@ class SpaceUpdateForm(forms.ModelForm):
 				{'placeholder':'Description', 'class':'form-control'})
 		}
 
+
+	def save(self, commit=True):
+		description = self.cleaned_data['description']
+		self.space.description = description
+		if commit:
+			self.space.save()
+		return self.space
+
 	def __init__(self, *args, **kwargs):
 		self.space = kwargs.pop('space', None)
-
 		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
-		
 		self.fields['description'].initial = self.space.description

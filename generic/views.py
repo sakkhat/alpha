@@ -25,5 +25,4 @@ def json_response(request, context={}, json_data=None):
 
 
 def password_confirmation(request, context):
-	print(context)
 	return render(request, 'generic/views/password_confirmation.html', context)

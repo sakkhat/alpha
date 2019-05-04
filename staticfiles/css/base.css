@@ -1,6 +1,7 @@
 html, body {
 	margin: 0px; height: 100%;
 	scroll-behavior: smooth;
+	background-color: #E2E9EA;
 }
 
 #site-nav-bar {

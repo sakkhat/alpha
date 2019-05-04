@@ -37,21 +37,14 @@ def update(request):
 	if request.method == 'POST':
 		form = ProfileUpdateForm(request.POST, user=user)
 		if form.is_valid():
-			
-			user.name = form.cleaned_data['name']
-			user.gender = form.cleaned_data['gender']
-			email = form.cleaned_data['email']
-			
-			if email != user.email:
+			if form.is_new_email():
+				user = form.save(commit=False)
 				user.is_active = False
-				user.email = email
 				user.save()
 				verify_email(request, user)
 				return render(request, 'account/auth/verify.html', {})
 
-			user.email = email
 			user.save()
-
 			return redirect('/account/')
 	else:
 		form = ProfileUpdateForm(user=request.user)
@@ -68,7 +61,6 @@ def delete(request):
 	user = request.user
 	logout(request)
 	user.delete()
-
 	redirect('/')
 
 
