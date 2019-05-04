@@ -39,7 +39,7 @@ class Image():
 		if isdir(storage.location) == False:
 			makedirs(storage.location)
 
-		file.save(storage.location+'/'+filename, format=file.format, quality=90)
+		file.save(storage.location+'/'+filename, format=file.format, quality=50)
 
 		return '/'+loc+'/'+filename
 

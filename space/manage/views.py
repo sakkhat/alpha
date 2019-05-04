@@ -121,11 +121,21 @@ def update(request, name):
 
 					return redirect('/space/'+space.name+'/')
 
-			banners = Banner.objects.filter(space=space)
+			tab = request.GET.get('tab', 'information')
+			tab = tab.lower()
+
+			if tab == 'banner':
+				banners = Banner.objects.filter(space_id=space.id)
+				context['banners'] = banners
+			else:
+				tab = 'information'
+				form = SpaceUpdateForm(space=space)
+				context['form'] = form
+
+			token = token_encode({'user_id' : request.user.id })
+			context['tab'] = tab
 			context['space'] = space
-			context['banners'] = banners
-			form = SpaceUpdateForm(space=space)
-			context['form'] = form
+			context['token'] = token
 
 			return render(request, 'space/manage/update.html', context)
 

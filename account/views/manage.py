@@ -56,6 +56,8 @@ def update(request):
 	else:
 		form = ProfileUpdateForm(user=request.user)
 
+	token = token_encode({'user_id' : user.id })
+	context['token'] = token
 	context['form'] = form
 
 	return render(request, 'account/manage/update.html', context)

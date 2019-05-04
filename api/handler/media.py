@@ -4,12 +4,12 @@ from api.handler.tokenization import decode as token_decode
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from generic.constant import (FILE_CHUNK_SIZE,PRODUCTS_FILE_PATH,USER_THUMBNAIL_PATH,
+from generic.constants import (FILE_CHUNK_SIZE,PRODUCTS_FILE_PATH,USER_THUMBNAIL_PATH,
 	SPACE_BANNER_PATH)
 from generic.media import Image as ImageHandler
 
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
-from rest_framework.exceptions import NotFound,PermissionDenied
+from rest_framework.exceptions import NotFound,PermissionDenied, NotAcceptable
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -24,6 +24,7 @@ from space.models import Space, Product, ProductMedia, Banner
 def update(request):
 
 	put_data = request.data
+
 	token = put_data.get('token', None)
 	if token is None:
 		return invalid_request(request)
@@ -41,6 +42,9 @@ def update(request):
 	file = put_data.get('image', None)
 	if file is None:
 		raise NotFound('invalid request')
+	
+	if not ImageHandler.is_valid_format(file.name):
+		raise NotAcceptable('unacceptable type of file')
 
 	if what is None:
 		raise NotFound('invalid request')

@@ -25,7 +25,9 @@ def user_thumbnail_update(request, ac_id):
 
 	if request.method == 'PUT':
 		try:
-			
+			print(request.data.get('username', None))
+			print(type(request.data.get('image', None)))
+
 			file = request.FILES['image']
 			img_src = Image.load(file_stream=file)
 
