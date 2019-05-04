@@ -2,65 +2,79 @@
 {% load static %}
 
 {% block extra_head %}
-	<title>Update | {{ space.name }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/update.css'%}">
+	<title>Update {{tab | capfirst }} | {{ space.name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/update.css'%}">
 {% endblock %}
 
 
 {% block extra_content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-7">
-                <div class="list-group-item">
-                    <ul class="nav nav-tabs" role="tablist">
-                        {% for item in banners %}
-                            <li class="nav-item">
-                                {% if forloop.first %}
-                                <a class="nav-link active" data-toggle="pill" href="#img{{forloop.counter}}">
-                                {% else %}
-                                <a class="nav-link" data-toggle="pill" href="#img{{forloop.counter}}">
-                                {% endif %}
-                                    <img class="product-avatar-select" src="{{ item.location }}">
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                  <!-- Tab panes -->
-                    <div class="tab-content">
-
-                        {% for item in banners %}
-                            {% if forloop.first %}
-                            <div id="img{{forloop.counter}}" class="container tab-pane active product-avatar">
-                            {% else %}
-                            <div id="img{{forloop.counter}}" class="container tab-pane product-avatar">
-                            {% endif %}
-
-                                <img src="{{ item.location }}" id="img-view-{{forloop.counter}}">
-                                <form method="POST" enctype="multipart/form-data" action="{{item.uid}}/">
-                                    {% csrf_token %}
-                                    <label class="image-text-block" for="image{{forloop.counter}}">
-                                        <h6>Select Image</h6>
-                                    </label>
-                                    <input type="file" accept=".png, .jpeg, .jpg" name="banner" id="image{{forloop.counter}}" class="d-none" onchange = 'openFile{{forloop.counter}}(event)'>
-                                    <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
-                                </form>
-                            </div>
-                        {% endfor %}
-                    </div>
+    <div class="container-fluid mt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-3">
+                <div>
+                    <h4 class="list-group-item bg-secondary text-white">Update</h4>
+                    {% if tab == 'information' %}
+                        <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item active">Information</a>
+                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
+                    {% else %}
+                        <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
+                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item active">Banner</a>
+                    {% endif %}
                 </div>
-                <br>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="list-group-item">
-                        {{ form}}
+            </div>
+            <div class="col-md-7">
+                {% if tab == 'banner' %}
+                    <div id="banner-slider" class="carousel slide" data-ride="carousel">
+                        <ul class="carousel-indicators">
+                            <li data-target="#banner-slider" data-slide-to="0"></li>
+                            <li data-target="#banner-slider" data-slide-to="1"></li>
+                            <li data-target="#banner-slider" data-slide-to="2"></li>
+                        </ul>
+
+                        <div class="carousel-inner">
+                            {% for banner in banners %}
+                                {% if forloop.first %}
+                                <div class="carousel-item active">
+                                {% else %}
+                                <div class="carousel-item">
+                                {% endif %}
+                                    <div class="list-group-item banner-container">
+                                        <img src="{{banner.location}}" id="banner-{{forloop.counter}}">
+                                        <form id="form-{{forloop.counter}}">
+                                            {% csrf_token %}
+                                            <label for="banner-{{forloop.counter}}-input" class="btn btn-outline-secondary pickers">Choose</label>
+                                            <input type="text" name="what" value="banner" class="d-none">
+                                            <input type="text" name="current" value="{{banner.uid}}" class="d-none">
+                                            <input type="text" name="space" value="{{space.name}}" class="d-none">
+                                            <input type="text" name="token" value="{{token}}" class="d-none">
+                                            <input type="file" id="banner-{{forloop.counter}}-input" name="image" class="d-none" onchange="previewImage(event, '#banner-{{forloop.counter}}', '#banner-{{forloop.counter}}-uploader')" accept=".png, .jpg, .jpeg">
+                                            <button type="button" class="btn btn-success uploader" onclick="upload(this.id, 'form-{{forloop.counter}}')" id="banner-{{forloop.counter}}-uploader">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <a class="carousel-control-prev" href="#banner-slider" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#banner-slider" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Update</button>
-                </form>
+                {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="list-group-item">
+                            {{ form}}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Update</button>
+                    </form>
+                {% endif %}
                 <br>
                 <a href="/space/{{space.name}}/" class="list-group-item list-group-item-action">Back to Space</a>
-                <br><br>
+                <br>
             </div>
         </div>
     </div>
@@ -68,5 +82,8 @@
 
 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
+    {% if tab == 'banner' %}
+        <script type="text/javascript" src="{% static 'js/generic/image-handler.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/space/manage/update.js' %}"></script>
+    {% endif %}
 {% endblock %}

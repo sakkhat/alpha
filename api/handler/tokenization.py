@@ -4,6 +4,8 @@ from jwt import decode as __decode
 from jwt import encode as __encode
 from jwt.exceptions import InvalidTokenError
 
+from time import time
+
 
 def decode(token):
 	try:
@@ -13,6 +15,8 @@ def decode(token):
 		return None
 
 
-def encode(data):
+def encode(data, time_stamp=None):
+	if time_stamp:
+		data['time_stamp'] = int(time())
 	token = __encode(data, settings.SECRET_KEY, algorithm='HS256')
 	return token.decode()

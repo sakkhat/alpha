@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
-from generic.variables import LOGIN_URL
-from generic.mail import verify_email
+from generic.constants import LOGIN_URL
+from generic.service.mail import verify_email
 
 from space.models import ProductReact,Space,Status
 
@@ -17,8 +17,11 @@ from space.models import ProductReact,Space,Status
 def profile(request):
 	context = {}
 
+	user = request.user
+	context['user'] = user
+
 	if request.user.has_space:
-		space = Space.objects.get(owner=request.user)
+		space = Space.objects.get(owner_id=user.id)
 		status = Status.objects.get(space=space)
 		context['space'] = space
 		context['status'] = status
@@ -53,6 +56,8 @@ def update(request):
 	else:
 		form = ProfileUpdateForm(user=request.user)
 
+	token = token_encode({'user_id' : user.id })
+	context['token'] = token
 	context['form'] = form
 
 	return render(request, 'account/manage/update.html', context)

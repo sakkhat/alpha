@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from account.models import Account
 from space.models import Status,Product,Space
@@ -27,7 +28,7 @@ class Notification(models.Model):
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.CharField(max_length=50)
 	message = models.TextField()
-	action = models.CharField(max_length=120, default='#')
+	action = models.CharField(max_length=60, default='#')
 	seen = models.BooleanField(default=False)
 
 
@@ -42,6 +43,9 @@ class PinnedProduct(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
+	class Meta:
+		unique_together = ('user', 'product')
+
 
 
 class Favorite(models.Model):
@@ -52,3 +56,20 @@ class Favorite(models.Model):
 	time_date = models.DateTimeField(auto_now_add=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
 	user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+	class Meta:
+		unique_together = ('space', 'user')
+
+
+
+class Payment(models.Model):
+	"""
+	Doc here
+	"""
+	transection_id = models.CharField(max_length=32)
+	space = models.ForeignKey(Space, on_delete=models.CASCADE)
+	time_date = models.DateTimeField(auto_now_add=True)
+	base_fee = models.FloatField()
+	discount = models.PositiveSmallIntegerField(
+		validators=[MinValueValidator(0),MaxValueValidator(100)])
+	total_pay = models.FloatField()

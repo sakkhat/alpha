@@ -78,6 +78,7 @@
                 this.state = {
                     'thumbnail' : '{{request.user.thumbnail}}',
                     'uploading' : false,
+                    'token' : '{{ token }}'
                 }
 
                 this.handleSelect = this.handleSelect.bind(this);
@@ -96,12 +97,14 @@
                     }
 
                     var formData = new FormData();
+                    formData.append('what', 'account');
+                    formData.append('token', this.state.token);
                     formData.append('image', file);
 
 
                     var $crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
                     var ac_id = '{{request.user.phone}}'
-                    const url = '/api/user/'+ac_id+'/thumbnail/?format=json';
+                    const url = '/api/media/update/';
                     fetch(url, {
                         method: 'PUT',
                         body : formData,
@@ -114,10 +117,13 @@
                     .then(response => response.json())
                     .then(data =>{
                         this.setState({
-                            thumbnail : data.thumbnail,
+                            thumbnail : data.image,
                             uploading : false
                         });
 
+                    })
+                    .catch(error =>{
+                        
                     });
 
                     this.setState({

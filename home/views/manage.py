@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 
-from generic.variables import LOGIN_URL
+from generic.constants import LOGIN_URL
 from generic.views import invalid_request
 
 from home.models import Favorite, PinnedProduct,Notification

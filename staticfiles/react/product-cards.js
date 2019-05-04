@@ -86,17 +86,9 @@ class ProductCards extends React.Component {
 						{this.state.list}
 					</div>
 					<div className="d-flex justify-content-center">
-						<div>
-		                    <div className="spinner-grow text-muted"></div>
-		                    <div className="spinner-grow text-primary"></div>
-		                    <div className="spinner-grow text-success"></div>
-		                    <div className="spinner-grow text-info"></div>
-		                    <div className="spinner-grow text-warning"></div>
-		                    <div className="spinner-grow text-danger"></div>
-		                    <div className="spinner-grow text-secondary"></div>
-		                    <div className="spinner-grow text-dark"></div>
-		                    <div className="spinner-grow text-light"></div>
-		                </div>
+						<div className="col-md-6">
+							<button className="btn btn-block btn-outline-secondary mb-5 disabled">Loading...</button>
+						</div>
 					</div>
 				</div>
 			);
@@ -106,6 +98,11 @@ class ProductCards extends React.Component {
 				<div class="container-fluid">
 					<div className="row justify-content-center"> 
 						{this.state.list}
+					</div>
+					<div className="d-flex justify-content-center">
+						<div className="col-md-6">
+							<button className="btn btn-block btn-outline-secondary mb-5 disabled">No More</button>
+						</div>
 					</div>
 				</div>
 			);

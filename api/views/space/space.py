@@ -4,7 +4,7 @@ from api.serializer_models.space.space import SpaceStatusSerializer
 
 from django.contrib.postgres.search import SearchVector
 
-from generic.variables import SPACE_PAGINATION_SIZE
+from generic.constants import SPACE_PAGINATION_SIZE
 
 from rest_framework.decorators import api_view,permission_classes,renderer_classes
 from rest_framework.exceptions import NotFound

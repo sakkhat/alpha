@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from space.models import Product, ProductReact, Category, Space
 from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
 
-from generic.variables import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
+from generic.constants import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
 
 
 
@@ -225,14 +225,10 @@ def __query_filter(query, **kwargs):
 
 	if query == 'trending':
 
-		offset = page*PRODUCT_PAGINATION_SIZE
-
-		if offset >= MAX_TRENDING_PRODUCT:
-			result = Product.objects.none()
-		elif offset + PRODUCT_PAGINATION_SIZE >= MAX_TRENDING_PRODUCT:
-			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:MAX_TRENDING_PRODUCT]
+		if page==0:
+			result = Product.objects.order_by('-time_date').order_by('-react_good')[0:MAX_TRENDING_PRODUCT]
 		else:
-			result = Product.objects.order_by('-time_date').order_by('-react_good')[offset:offset+PRODUCT_PAGINATION_SIZE]
+			result = Product.objects.none()			
 
 		serializer = ProductSerializer(result, many=True)
 		return serializer

@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filter %}
 
 {% block extra_head %}
-	<title>{{ request.user.name }}</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/account/manage/info.css'%}">
+	<title>{{ user.name }}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/account/manage/profile.css'%}">
 {% endblock %}
 
 
@@ -13,7 +14,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div id="user-avatar">
-                        <img src="{{request.user.thumbnail}}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
+                    <img src="{{request.user.thumbnail}}" onerror="this.src='https://i.postimg.cc/0N8mRzvP/user.png'">
                 </div>
                 <div class="list-group">
                     <a href="update/" class="list-group-item list-group-item-action">Update Info</a>
@@ -24,26 +25,17 @@
             <div class="col-md-6">
                 <div class="list-group">
                     <h5 class="list-group-item list-group-item-dark">About</h5>
-                    <h6 class="list-group-item">Name: {{ request.user.name }}</h5>
-                    <h6 class="list-group-item">Phone: {{ request.user.phone }}</h5>
-                    <h6 class="list-group-item">Email: {{ request.user.email }}</h5>
-                    {% if request.user.gender == 'M' %}
-                        <h6 class="list-group-item">Gender: Male</h5>
-                    {% elif request.user.gender == 'F' %}
-                        <h6 class="list-group-item">Gender: Female</h5>
-                    {% else %}
-                        <h6 class="list-group-item">Gender: Other</h5>
-                    {% endif %}
+                    <h6 class="list-group-item">Name: {{ user.name }}</h5>
+                    <h6 class="list-group-item">Phone: {{ user.phone }}</h5>
+                    <h6 class="list-group-item">Email: {{ user.email }}</h5>
+                    <h6 class="list-group-item">Gender: {{ user.gender | gender }}</h6>
                 </div>
                 <br><br>
 
-                {% if request.user.has_space %}
+                {% if user.has_space %}
                     <div>
-                        <a class="list-group-item list-group-item-action list-group-item-dark" 
-                                style="text-align: center;" href="/space/{{space.name}}">
-                            <h5 style="font-weight: bold;">{{space.name}}</h5>
-                        </a>
-                        <table class="table table-bordered table-secondary">
+                        <h5 class="list-group-item text-center list-group-item-dark">{{space.name}}</h5>
+                        <table class="table table-bordered table-secondary mb-0">
                             <thead>
                                 <tr>
                                     <th>Rating</th>
@@ -51,16 +43,18 @@
                                     <th>Total Favorite</th>
                                     <th>Total Pinned</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr>
                                     <td>{{status.rating}}</td>
                                     <td>{{status.total_post}}</td>
                                     <td>{{status.total_favorite}}</td>
                                     <td>{{status.total_pinned}}</td>
                                 </tr>
-                            </thead>
+                            </tbody>
                         </table>
                         <a href="/space/{{space.name}}/" class="list-group-item bg-primary">
-                            <h5 style="margin: 0px; color:white; text-align: center;">Dashboard</h5>
+                            <h5 class="text-center text-white mt-0 mb-0">GO Dashboard</h5>
                         </a>
                         <br><br>
                     </div>

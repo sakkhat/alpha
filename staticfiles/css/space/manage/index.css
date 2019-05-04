@@ -1,3 +1,7 @@
+body {
+	background-color: #E2E9EA;
+}
+
 .banner-slider-item {
 	height: 350px; width: 100%;
 }

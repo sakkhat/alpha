@@ -5,12 +5,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
 
 from generic.media import Image
-from generic.variables import LOGIN_URL, now_str, SPACE_BANNER_PATH
+from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
 
-from home.models import Favorite,PinnedProduct
+from home.models import (Favorite,PinnedProduct, Notification,
+	_NOTIFICATION_LABEL_DIC as NDIC )
 
-from space.forms import SpaceCreateForm,SpaceUpdateForm
+from space.manage.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
@@ -80,6 +81,7 @@ def create(request):
 			space = form.save()
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
+			_notify(user)
 			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
@@ -90,6 +92,17 @@ def create(request):
 	context['form'] = form
 
 	return render(request, 'space/manage/create.html', context)
+
+
+def _notify(user):
+	Notification.objects.create(
+		user=user,
+		label=NDIC['offer'],
+		title='Congrates!',
+		message='You got 1 free product post for your space',
+		action='/account/'
+		)
+	user.has_notification = True
 
 
 @login_required(login_url=LOGIN_URL)
@@ -108,11 +121,21 @@ def update(request, name):
 
 					return redirect('/space/'+space.name+'/')
 
-			banners = Banner.objects.filter(space=space)
+			tab = request.GET.get('tab', 'information')
+			tab = tab.lower()
+
+			if tab == 'banner':
+				banners = Banner.objects.filter(space_id=space.id)
+				context['banners'] = banners
+			else:
+				tab = 'information'
+				form = SpaceUpdateForm(space=space)
+				context['form'] = form
+
+			token = token_encode({'user_id' : request.user.id })
+			context['tab'] = tab
 			context['space'] = space
-			context['banners'] = banners
-			form = SpaceUpdateForm(space=space)
-			context['form'] = form
+			context['token'] = token
 
 			return render(request, 'space/manage/update.html', context)
 
@@ -120,34 +143,3 @@ def update(request, name):
 		pass
 
 	return invalid_request(request, context)
-
-
-@login_required(login_url=LOGIN_URL)
-def update_space_banner(request, name , uid):
-	if request.method == 'POST':
-		try:
-			space = Space.objects.get(name__iexact=name)
-			if request.user == space.owner:
-				try:
-					banner = Banner.objects.get(uid=uid)
-					if banner.space == space:
-						file = request.FILES.get('banner', None)
-						if file is not None:
-							img_src = Image.load(file_stream=file)
-							img_path = Image.save(SPACE_BANNER_PATH, img_src)
-
-							Image.delete(banner.location)
-							banner.delete()
-
-							new_banner = Banner(space=space, location=img_path)
-							new_banner.save()
-
-							return redirect('/space/'+space.name+'/update/')
-
-
-				except ObjectDoesNotExist as e:
-					pass
-		except ObjectDoesNotExist as e:
-			pass
-
-	return invalid_request(request)

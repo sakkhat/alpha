@@ -24,3 +24,6 @@ def feedback(request):
 
 def privacy_policy(request):
 	return render(request, 'home/pages/privacy_policy.html', {})
+
+def cookie(request):
+	return render(request, 'home/pages/cookie.html', {})

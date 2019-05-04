@@ -2,105 +2,100 @@
 {% load static %}
 
 {% block extra_head %}
-	<title>Product Update</title>
+	<title>Product Update - {{tab | capfirst }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
 {% endblock %}
 
 
 {% block extra_content %}
     
-    <div class="d-flex justify-content-center align-items-center">
-    	<div class="col-md-8">
-    		<div class="list-group-item">
-	            <ul class="nav nav-tabs" role="tablist">
-	                {% for item in media %}
-                        <li class="nav-item">
-                            {% if forloop.first %}
-                            <a class="nav-link active" data-toggle="pill" href="#img{{forloop.counter}}">
-                            {% else %}
-                            <a class="nav-link" data-toggle="pill" href="#img{{forloop.counter}}">
-                            {% endif %}
-                                <img class="product-avatar-select" src="{{ item.location }}">
-                            </a>
-                        </li>
-                    {% endfor %}
-	            </ul>
-
-	          <!-- Tab panes -->
-	            <div class="tab-content">
-
-	            	{% for item in media %}
-	            		{% if forloop.first %}
-	            		<div id="img{{forloop.counter}}" class="container tab-pane active product-avatar">
-	            		{% else %}
-	            		<div id="img{{forloop.counter}}" class="container tab-pane product-avatar">
-	            		{% endif %}
-
-		                    <img src="{{ item.location }}" id="img-view-{{forloop.counter}}">
-		                    <form method="POST" enctype="multipart/form-data" action="{{ item.uid }}/">
-		                    	{% csrf_token %}
-		                    	<label class="image-text-block" for="image{{forloop.counter}}">
-		                            <h6>Select Image</h6>
-		                        </label>
-		                        <input type="file" accept=".png, .jpeg, .jpg" name="image" id="image{{forloop.counter}}" class="d-none" onchange = 'openFile{{forloop.counter}}(event)'>
-		                        <button class="btn btn-primary btn-block" type="submit">Upload Selected Image</button>
-		                    </form>
-		                </div>
-	            	{% endfor %}
-	            </div>
-	        </div>
-	        <br>
-    		<form method="POST" class="list-group-item">
-    			{% csrf_token %}<br>
-    			{{ form.title.label}}
-    			{{ form.title }}<br>
-
-    			{{ form.description.label}}
-    			{{ form.description}}<br>
-
-    			{{ form.category.label}}
-    			{{ form.category }}<br>
-
-    			{{ form.price.label }}
-    			{{ form.price }}<br>
-
-    			<div class="list-group-item">
-                    <div class="custom-control custom-checkbox">
-                        {{ form.in_stock}}
-                        <label class="custom-control-label" for="id_in_stock">In Stock</label>
-                    </div>
-                </div> 
-
-                <div class="list-group-item">
-                    <label>Product Request Method</label>
-                    <div class="custom-control custom-checkbox">
-                        {{ form.phone_request }}
-                        <label class="custom-control-label" for="id_phone_request">
-                            Phone Request
-                        </label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                        {{ form.email_request }}
-                        <label class="custom-control-label" for="id_email_request">
-                            Email Request
-                        </label>
-                    </div>
-                </div>
-                <br>
-    			<button class="btn btn-success">Update</button>
-    		</form>
-    		<br>
-            <div class="list-group-item">
-                <a class="btn btn-primary" href="/space/product/{{product.uid}}/">Go to product view</a>
-                <button type="button" id="delete-button" class="btn btn-danger" data-toggle="dropdown">
-                    Delete  
-                </button>
-                <div class="dropdown-menu">
-                    <div class="dropdown-item btn-danger" href="#" onclick="deleteRequest()">Confirm</div>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <div>
+                    <h5 class="list-group-item bg-secondary text-white">Update Product</h5>
+                    {% if tab == 'images' %}
+                        <a href="/space/product/{{product.uid}}/update/?tab=details" class="list-group-item">Details</a>
+                        <a href="/space/product/{{product.uid}}/update/?tab=images" class="list-group-item active">Images</a>
+                    {% else %}
+                        <a href="/space/product/{{product.uid}}/update/?tab=details" class="list-group-item active">Details</a>
+                        <a href="/space/product/{{product.uid}}/update/?tab=images" class="list-group-item">Images</a>
+                    {% endif %}
                 </div>
             </div>
-    		<br><br>
-    	</div>
+            <div class="col-md-7">
+                {% if tab == 'images' %}
+                    <div class="media-slick-container">
+                        {% for item in media %}
+                            <div class="list-group-item image-container">
+                                <img src="{{item.location}}" id="item-{{forloop.counter}}">
+                                <form id="form-{{forloop.counter}}">
+                                    {% csrf_token %}
+                                    <label for="item-{{forloop.counter}}-input" class="btn btn-outline-secondary pickers">Choose</label>
+                                    <input type="text" name="what" value="product" class="d-none">
+                                    <input type="text" name="current" value="{{item.uid}}" class="d-none">
+                                    <input type="text" name="space" value="{{product.space.name}}" class="d-none">
+                                    <input type="text" name="token" value="{{token}}" class="d-none">
+                                    <input type="file" id="item-{{forloop.counter}}-input" name="image" class="d-none" onchange="previewImage(event, '#item-{{forloop.counter}}', '#item-{{forloop.counter}}-uploader')" accept=".png, .jpg, .jpeg">
+                                    <button type="button" class="btn btn-success uploader" onclick="upload(this.id, 'form-{{forloop.counter}}')" id="item-{{forloop.counter}}-uploader">Save</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <form method="POST" class="list-group-item">
+                        {% csrf_token %}<br>
+                        {{ form.title.label}}
+                        {{ form.title }}<br>
+
+                        {{ form.description.label}}
+                        {{ form.description}}<br>
+
+                        {{ form.category.label}}
+                        {{ form.category }}<br>
+
+                        {{ form.price.label }}
+                        {{ form.price }}<br>
+
+                        <div class="list-group-item">
+                            <div class="custom-control custom-checkbox">
+                                {{ form.in_stock}}
+                                <label class="custom-control-label" for="id_in_stock">In Stock</label>
+                            </div>
+                        </div> 
+
+                        <div class="list-group-item">
+                            <label>Product Request Method</label>
+                            <div class="custom-control custom-checkbox">
+                                {{ form.phone_request }}
+                                <label class="custom-control-label" for="id_phone_request">
+                                    Phone Request
+                                </label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                {{ form.email_request }}
+                                <label class="custom-control-label" for="id_email_request">
+                                    Email Request
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+                        <button class="btn btn-success">Update</button>
+                    </form>
+                {% endif %}
+                <br>
+                <div class="list-group-item">
+                    <a class="btn btn-primary" href="/space/product/{{product.uid}}/">Go to product view</a>
+                    <a href="/space/product/{{product.uid}}/update/delete/" class="btn btn-danger">Delete</a>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    	
     </div>
 
 {% endblock %}
@@ -108,18 +103,7 @@
 	
 
 {% block extra_script %}
-	<script type="text/javascript" src="{% static 'js/generic/image-preview.js'%}"></script>
-    <script type="text/javascript">
-        var deleteRequest = function(event) {
-           $("#delete-button").html('Deleting all records <span class="spinner-border spinner-border-sm"></span>').toggleClass(' disabled');
-           $('#delete-spinner').removeClass('d-none');
-           fetch('/space/product/{{product.uid}}/update/delete/')
-           .then(response => response.json())
-           .then(data =>{
-                console.log(data.data);
-                window.location = "/space/{{product.space.name}}";
-           });
-        };
-    </script>
-
+    <script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/generic/image-handler.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/space/product/update.js'%}"></script>
 {% endblock %}

@@ -4,8 +4,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 
-from generic.variables import now_str
-
 
 def verify_email(request, user):
 

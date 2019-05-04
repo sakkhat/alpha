@@ -5,14 +5,15 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from generic.media import Image
-from generic.variables import (LOGIN_URL, now_str, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
+from generic.constants import (LOGIN_URL, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
 	MIN_RATE_FOR_SPACE_TRENDING)
-from generic.views import json_response, invalid_request
+from generic.forms import PasswordConfirmForm
+from generic.media import Image
+from generic.views import json_response, invalid_request, password_confirmation
 
 from home.models import PinnedProduct
 
-from space.forms import ProductPostForm,ProductUpdateForm
+from space.product.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status,Category
 
 
@@ -151,12 +152,19 @@ def update(request, uid):
 
 					return redirect('/space/product/'+uid+'/')
 
+			tab = request.GET.get('tab', 'details')
+			tab = tab.lower()
+			if tab == 'images':
+				media = ProductMedia.objects.filter(product=product)
+				context['media'] = media
+			else:
+				tab = 'details'
+				form = ProductUpdateForm(product=product)
+				context['form'] = form
 
-			form = ProductUpdateForm(product=product)
-			media = ProductMedia.objects.filter(product=product)
-
-			context['form'] = form
-			context['media'] = media
+			token = token_encode({'user_id' : request.user.id })
+			context['token'] = token
+			context['tab'] = tab
 			context['product'] = product
 
 			return render(request, 'space/product/update.html', context) 
@@ -170,13 +178,29 @@ def update(request, uid):
 
 @login_required(login_url=LOGIN_URL)
 def delete(request, uid):
+	context = {}
+	if request.method == 'POST':
+		form = PasswordConfirmForm(request.POST, user=request.user)
+		if form.is_valid():
+			return _delete_data(request, uid)
+
+	else:
+		form = PasswordConfirmForm(user=request.user)
+
+	context['form'] = form
+
+	print(context)
+	return password_confirmation(request, context)
+
+
+
+def _delete_data(request, uid):
 	try:
 		product = Product.objects.get(uid=uid)
 		if product.space.owner == request.user:
 			space_name = product.space.name
 			
 			# count of total
-
 			total_pin = PinnedProduct.objects.filter(product_id=product.uid).count()
 			PinnedProduct.objects.filter(product_id=product.uid).delete()
 			ProductReact.objects.filter(product_id=product.uid).delete()
@@ -208,46 +232,8 @@ def delete(request, uid):
 
 			product.delete()
 
-			return json_response(request, json_data='product deleted')
-
+			return redirect('/space/'+space_name+'/')
 	except ObjectDoesNotExist as e:
 		pass
-	return json_response(request, json_data='something went wrong')
 
-
-
-
-
-@login_required(login_url=LOGIN_URL)
-def update_product_media(request, uid, media_id):
-	if request.method == 'POST':
-		try:
-			product = Product.objects.get(uid=uid)
-			media = ProductMedia.objects.get(uid=media_id)
-
-			if media.product == product:
-				file = request.FILES.get('image', None)
-
-				if file is not None:
-					img_src = Image.load(file_stream=file)
-
-					if img_src is not None:
-						img_path = Image.save(PRODUCTS_FILE_PATH, img_src)
-
-						Image.delete(media.location)
-						media.delete()
-
-						new_media = ProductMedia(location = img_path, product=product)
-						new_media.uid = random()
-						new_media.save()
-
-						product.logo_url = new_media.location
-						product.save()
-
-
-		except ObjectDoesNotExist as e:
-			pass
-
-
-	return redirect('/space/product/'+uid+'/update/')
-
+	return invalid_request(request)
