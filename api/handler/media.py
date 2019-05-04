@@ -104,6 +104,11 @@ def _update_product_media(user, uid, space_name, file):
 
 		img_src = ImageHandler.load(file_stream=file)
 		img_path = ImageHandler.save(PRODUCTS_FILE_PATH, img_src)
+
+		if product.logo_url == product_media.location:
+			product.logo_url = img_path
+			product.save()
+
 		ImageHandler.delete(product_media.location)
 		product_media.location = img_path
 		product_media.save()

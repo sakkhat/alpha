@@ -152,12 +152,19 @@ def update(request, uid):
 
 					return redirect('/space/product/'+uid+'/')
 
+			tab = request.GET.get('tab', 'details')
+			tab = tab.lower()
+			if tab == 'images':
+				media = ProductMedia.objects.filter(product=product)
+				context['media'] = media
+			else:
+				tab = 'details'
+				form = ProductUpdateForm(product=product)
+				context['form'] = form
 
-			form = ProductUpdateForm(product=product)
-			media = ProductMedia.objects.filter(product=product)
-
-			context['form'] = form
-			context['media'] = media
+			token = token_encode({'user_id' : request.user.id })
+			context['token'] = token
+			context['tab'] = tab
 			context['product'] = product
 
 			return render(request, 'space/product/update.html', context) 
@@ -230,40 +237,3 @@ def _delete_data(request, uid):
 		pass
 
 	return invalid_request(request)
-
-
-
-#### TODO: Transfer
-
-@login_required(login_url=LOGIN_URL)
-def update_product_media(request, uid, media_id):
-	if request.method == 'POST':
-		try:
-			product = Product.objects.get(uid=uid)
-			media = ProductMedia.objects.get(uid=media_id)
-
-			if media.product == product:
-				file = request.FILES.get('image', None)
-
-				if file is not None:
-					img_src = Image.load(file_stream=file)
-
-					if img_src is not None:
-						img_path = Image.save(PRODUCTS_FILE_PATH, img_src)
-
-						Image.delete(media.location)
-						media.delete()
-
-						new_media = ProductMedia(location = img_path, product=product)
-						new_media.save()
-
-						product.logo_url = new_media.location
-						product.save()
-
-
-		except ObjectDoesNotExist as e:
-			pass
-
-
-	return redirect('/space/product/'+uid+'/update/')
-

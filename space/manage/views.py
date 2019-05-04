@@ -143,34 +143,3 @@ def update(request, name):
 		pass
 
 	return invalid_request(request, context)
-
-
-@login_required(login_url=LOGIN_URL)
-def update_space_banner(request, name , uid):
-	if request.method == 'POST':
-		try:
-			space = Space.objects.get(name__iexact=name)
-			if request.user == space.owner:
-				try:
-					banner = Banner.objects.get(uid=uid)
-					if banner.space == space:
-						file = request.FILES.get('banner', None)
-						if file is not None:
-							img_src = Image.load(file_stream=file)
-							img_path = Image.save(SPACE_BANNER_PATH, img_src)
-
-							Image.delete(banner.location)
-							banner.delete()
-
-							new_banner = Banner(space=space, location=img_path)
-							new_banner.save()
-
-							return redirect('/space/'+space.name+'/update/')
-
-
-				except ObjectDoesNotExist as e:
-					pass
-		except ObjectDoesNotExist as e:
-			pass
-
-	return invalid_request(request)

@@ -25,21 +25,44 @@
             </div>
             <div class="col-md-7">
                 {% if tab == 'banner' %}
-                    {% for banner in banners %}
-                        <div class="list-group-item banner-container">
-                            <img src="{{banner.location}}" id="banner-{{forloop.counter}}">
-                            <form id="form-{{forloop.counter}}">
-                                {% csrf_token %}
-                                <label for="banner-{{forloop.counter}}-input" class="btn btn-outline-secondary pickers">Choose</label>
-                                <input type="text" name="what" value="banner" class="d-none">
-                                <input type="text" name="current" value="{{banner.uid}}" class="d-none">
-                                <input type="text" name="space" value="{{space.name}}" class="d-none">
-                                <input type="text" name="token" value="{{token}}" class="d-none">
-                                <input type="file" id="banner-{{forloop.counter}}-input" name="image" class="d-none" onchange="previewImage(event, '#banner-{{forloop.counter}}', '#banner-{{forloop.counter}}-uploader')" accept=".png, .jpg, .jpeg">
-                                <button type="button" class="btn btn-success uploader" onclick="upload(this.id, 'form-{{forloop.counter}}')" id="banner-{{forloop.counter}}-uploader">Save</button>
-                            </form>
+                    <div id="banner-slider" class="carousel slide" data-ride="carousel">
+                        <ul class="carousel-indicators">
+                            <li data-target="#banner-slider" data-slide-to="0"></li>
+                            <li data-target="#banner-slider" data-slide-to="1"></li>
+                            <li data-target="#banner-slider" data-slide-to="2"></li>
+                        </ul>
+
+                        <div class="carousel-inner">
+                            {% for banner in banners %}
+                                {% if forloop.first %}
+                                <div class="carousel-item active">
+                                {% else %}
+                                <div class="carousel-item">
+                                {% endif %}
+                                    <div class="list-group-item banner-container">
+                                        <img src="{{banner.location}}" id="banner-{{forloop.counter}}">
+                                        <form id="form-{{forloop.counter}}">
+                                            {% csrf_token %}
+                                            <label for="banner-{{forloop.counter}}-input" class="btn btn-outline-secondary pickers">Choose</label>
+                                            <input type="text" name="what" value="banner" class="d-none">
+                                            <input type="text" name="current" value="{{banner.uid}}" class="d-none">
+                                            <input type="text" name="space" value="{{space.name}}" class="d-none">
+                                            <input type="text" name="token" value="{{token}}" class="d-none">
+                                            <input type="file" id="banner-{{forloop.counter}}-input" name="image" class="d-none" onchange="previewImage(event, '#banner-{{forloop.counter}}', '#banner-{{forloop.counter}}-uploader')" accept=".png, .jpg, .jpeg">
+                                            <button type="button" class="btn btn-success uploader" onclick="upload(this.id, 'form-{{forloop.counter}}')" id="banner-{{forloop.counter}}-uploader">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
                         </div>
-                    {% endfor %}
+                        <a class="carousel-control-prev" href="#banner-slider" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#banner-slider" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                    </div>
                 {% else %}
                     <form method="POST">
                         {% csrf_token %}

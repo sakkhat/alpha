@@ -1,6 +1,6 @@
 from django.urls import path, include
 from api.handler import media
-from api.views import account, home
+from api.views import home
 from api.views.space import space, product
 
 urlpatterns = [
@@ -25,6 +25,4 @@ urlpatterns = [
 	path('space/<name>/activity/favorite/', space.favorite_request, name='favorite-view'),
 
 	path('media/update/', media.update, name='media-update'),
-
-	path('user/<ac_id>/thumbnail/', account.user_thumbnail_update, name='user-thumbnail')
 ]
