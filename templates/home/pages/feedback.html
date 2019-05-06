@@ -3,20 +3,7 @@
 
 {% block extra_head %}
 	<title>Feedback - Sakkhat</title>
-	<style type="text/css">
-		.media-block {
-			display: flex; justify-content: center;align-items: center;
-			max-height: 400px; max-width: 400px; min-width: 200px; min-height: 200px;
-			margin: auto;
-		}
-		.media-block img {
-			padding: 10px; 
-			width: 100%; height: 100%;
-		}
-		body {
-			background-color: rgb(10,10,10);
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home/page/feedback.css' %}">
 {% endblock %}
 
 
@@ -29,7 +16,7 @@
 				</div>
 				<p align="center" class="display-4">Help us to improve our service</p>
 			</div>
-			<div class="col-md-6 mt-2">
+			<div class="col-md-6 mt-2 mb-3">
 				{% if sent %}
 					<h6 class="list-group-item list-group-item-success">Thanks for your feedback</h6>
 				{% endif %}

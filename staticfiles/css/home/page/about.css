@@ -1,0 +1,13 @@
+body,html {
+	background-color: rgb(10,10,10);
+}
+.block-article{
+	height: 100%; width: 100%; margin: 0px;
+	color: white; text-align: center; padding: 10px;
+}
+.block-media {
+	background-color: white; height: 100%;
+}
+.block-media img {
+	width: 80%; height: 80%;
+}

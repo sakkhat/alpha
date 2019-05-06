@@ -8,6 +8,10 @@ body,html {
 	height: 60px;
 }
 
+#site-nav-bar nav {
+	background-color: #0A0A0A;
+}
+
 #sakkhat-brand-link {
   background-color: white; border-radius: 5px; 
   padding: 2px 4px 2px 4px;

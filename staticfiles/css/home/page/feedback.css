@@ -1,0 +1,12 @@
+body,html {
+	background-color: rgb(10,10,10);
+}
+.media-block {
+	display: flex; justify-content: center;align-items: center;
+	max-height: 400px; max-width: 400px; min-width: 200px; min-height: 200px;
+	margin: auto;
+}
+.media-block img {
+	padding: 10px; 
+	width: 100%; height: 100%;
+}
