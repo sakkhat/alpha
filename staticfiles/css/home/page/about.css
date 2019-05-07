@@ -1,13 +1,31 @@
 body,html {
-	background-color: rgb(10,10,10);
+	background-color: #0A0A0A; margin: 0px;
 }
-.block-article{
-	height: 100%; width: 100%; margin: 0px;
-	color: white; text-align: center; padding: 10px;
+.container-fluid {
+	width: 100%; margin: 0px;
+}
+.block {
+	padding: 80px 20px; margin: 0px; width: 100%;
+}
+.block-bg-black {
+	background-color: #0A0A0A; color: #FFFFFF;
+}
+.block-bg-white {
+	background-color: #FFFFFF; color: #000000;
 }
 .block-media {
-	background-color: white; height: 100%;
+	position: relative; display: flex; justify-content: center;
 }
 .block-media img {
-	width: 80%; height: 80%;
+	width: 80%; height: auto;
+}
+.block-text h6 {
+	font-family: monospace; margin: 0px; padding: 0px;
+}
+
+.block-text article {
+	font-size: 30px;
+}
+.item-icon {
+	width: 30px; height: 30px; margin: auto 0px;
 }
