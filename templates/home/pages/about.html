@@ -3,39 +3,71 @@
 
 {% block extra_head %}
 	<title>About Sakkhat</title>
-	<style type="text/css">
-		body {
-			background-color: rgb(10,10,10);
-		}
-		.block-article{
-			height: 100%; width: 100%; margin: 0px;
-			color: white; text-align: center; padding: 10px;
-		}
-		.block-media {
-			background-color: white; height: 100%;
-		}
-		.block-media img {
-			width: 80%; height: 80%;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/home/page/about.css' %}">
 {% endblock %}
 
 
 {% block extra_content %}
-	<!-- <div class="background"></div>
-	<div class="d-flex justify-content-center">
-		<div class="col-md-8 block">
-			<img class="mx-auto d-block" src="{% static 'res/vector/seller.svg'%}">
-			<article>Sakkhat is providing a better platform for micro sellers. A meeting place for self service providers and their customers.</article>
-		</div>
-	</div> -->
-	<div class="container-fluid">
+	<div class="container-fluid block block-bg-black">
 		<div class="row">
-			<div class="col-md-6 block-article">
-				<article class="display-4">Sakkhat is providing a better platform for micro sellers. A meeting place for self service providers and their customers.</article>
-			</div>
 			<div class="col-md-6 block-media">
-				<img class="mx-auto d-block" src="{% static 'res/vector/seller.svg'%}">
+				<img src="{% static 'res/vector/seller.svg'%}">
+			</div>
+			<div class="col-md-6 block-text">
+				<h6 class="display-4">Sakkhat ?</h6>
+				<article class="lead">Sakkhat is providing a better platform for micro marketing. A meeting place for micro sellers and their buyers.</article>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid block block-bg-white">
+		<div class="row">
+			<div class="col-md-12 block-text">
+				<h6 class="display-4">User Account</h6>
+				<article class="lead">After creating an account user can access all posts and spaces and can filter them (Trening, Recent, Category), react on posts, pin a post, add a space to favorite. All these activities will be addressed to user account activity panel, where the user can get all the activity record.</article>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid block block-bg-black">
+		<div class="row">
+			<div class="col-md-12 block-text">
+				<h6 class="display-4">Space</h6>
+				<article class="lead">Space is the virtual shop where the sellers present their products with posts and manage them. Space admin have full control over the space to manage. Every individual account can create a single space which will be associated with the account. The owner account user can't give react and pinned own product posts. And also can't add the space to favorite list.</article>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid block block-bg-white">
+		<div class="row">
+			<div class="col-md-12 block-text">
+				<h6 class="display-4">Product Post</h6>
+				<article class="lead">A space can create a post for a product.</article>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid block block-bg-black">
+		<div class="row">
+			<div class="col-md-6 block-media">
+				<img src="{% static 'res/vector/activity.svg'%}">
+			</div>
+			<div class="col-md-6 block-text">
+				<h6 class="display-4">Rating Calculation</h6>
+				<article class="lead">
+					Product
+					<ul class="list-unstyle">
+						<li>
+							Reacts
+							<ul>
+								<li><img src="{% static 'res/vector/good.svg'%}" class="item-icon"> Good = +3</li>
+								<li><img src="{% static 'res/vector/bad.svg'%}" class="item-icon"> Bad = -1</li>
+								<li><img src="{% static 'res/vector/fake.svg'%}" class="item-icon"> Fake = -2</li>
+							</ul>
+						</li>
+						<li><img src="{% static 'res/vector/pin.svg'%}" class="item-icon"> Pin = +2</li>
+					</ul>
+					Space
+					<ul class="list-unstyle">
+						<li><img src="{% static 'res/vector/favorite.svg'%}" class="item-icon"> Favorite = +4</li>
+					</ul>
+				</article>
 			</div>
 		</div>
 	</div>

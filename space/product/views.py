@@ -139,17 +139,7 @@ def update(request, uid):
 			if request.method == 'POST':
 				form = ProductUpdateForm(request.POST, product=product)
 				if form.is_valid():
-					
-					product.title = form.cleaned_data['title']
-					product.description = form.cleaned_data['description']
-					product.price = form.cleaned_data['price']
-					product.category = form.cleaned_data['category']
-					product.in_stock = form.cleaned_data['in_stock']
-					product.phone_request = form.cleaned_data['phone_request']
-					product.email_request = form.cleaned_data['email_request']
-
-					product.save()
-
+					product = form.save()
 					return redirect('/space/product/'+uid+'/')
 
 			tab = request.GET.get('tab', 'details')
@@ -168,7 +158,6 @@ def update(request, uid):
 			context['product'] = product
 
 			return render(request, 'space/product/update.html', context) 
-
 
 	except ObjectDoesNotExist as e:
 		pass

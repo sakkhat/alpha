@@ -96,18 +96,13 @@ def change_password(request):
 	if request.method == 'POST':
 		form = PasswordChangeForm(request.POST, user=request.user)
 		if form.is_valid():
-			new_password = form.cleaned_data['confirm_password']
-			user = request.user
-			user.set_password(new_password)
-			user.save()
-
+			user = form.save()
 			logout(request)
 			login(request, user)
 
 			return redirect('/account/')
-
-
-	form = PasswordChangeForm(user=request.user)
+	else:
+		form = PasswordChangeForm(user=request.user)
 	context['form'] = form
 
 	return render(request, 'account/password/change.html', context)

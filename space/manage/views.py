@@ -115,10 +115,7 @@ def update(request, name):
 			if request.method == 'POST':
 				form = SpaceUpdateForm(request.POST, space=space)
 				if form.is_valid():
-					description = form.cleaned_data['description']
-					space.description = description
-					space.save()
-
+					space = form.save()
 					return redirect('/space/'+space.name+'/')
 
 			tab = request.GET.get('tab', 'information')

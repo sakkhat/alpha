@@ -6,7 +6,7 @@
 	height: 200px;
 }
 
-body {
+body,html {
 	background-color: rgb(10,10,10);
 }
 .view img{

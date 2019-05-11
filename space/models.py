@@ -50,11 +50,8 @@ class Category(models.Model):
 	cover_url = models.CharField(max_length=150)
 	total_products = models.PositiveIntegerField(default=0)
 
-
 	def __str__(self):
 		return _PRODDUCT_CATEGORY_DIC[self.name]
-
-
 
 
 class Space(models.Model):

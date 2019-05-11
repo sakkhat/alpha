@@ -77,9 +77,6 @@ class ProductPostForm(forms.ModelForm):
 			else:
 				post.logo_url = self.img3_path
 
-
-
-
 			post.save()
 
 			media1 = ProductMedia(location=self.img1_path, product=post)
@@ -93,13 +90,9 @@ class ProductPostForm(forms.ModelForm):
 		return post
 
 
-
 	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop('request', None)
 		super(ProductPostForm, self).__init__(*args, **kwargs)
-
-
-
 
 
 
@@ -133,8 +126,29 @@ class ProductUpdateForm(forms.ModelForm):
 		category = self.cleaned_data['category']
 		if category is None:
 			raise forms.ValidationError('product must have a category')
-		else:
-			return category
+
+		if self.product.category != category:
+			self.product.category.total_products -= 1
+			self.product.category.save()
+			category.total_products += 1
+			category.save()
+
+		return category
+
+
+	def save(self, commit=True):
+		self.product.title = self.cleaned_data['title']
+		self.product.description = self.cleaned_data['description']
+		self.product.price = self.cleaned_data['price']
+		self.product.category = self.cleaned_data['category']
+		self.product.in_stock = self.cleaned_data['in_stock']
+		self.product.phone_request = self.cleaned_data['phone_request']
+		self.product.email_request = self.cleaned_data['email_request']
+
+		if commit:
+			self.product.save()
+
+		return self.product
 
 
 	def __init__(self, *args, **kwargs):
