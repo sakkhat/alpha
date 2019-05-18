@@ -1,6 +1,6 @@
 from django import forms
 from generic.media import Image
-from generic.constants import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH
+from generic.constants import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH, SPACE_LOGO_PATH
 from space.models import Space, Banner
 
 
@@ -11,6 +11,11 @@ class SpaceCreateForm(forms.ModelForm):
 
 	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
+
+	logo = forms.ImageField(widget=forms.FileInput(attrs=
+		{'class':'custom-file-input','onchange':'openFile(event, "logo-view")'}))
+
+	logo_path = None
 
 	class Meta:
 		model = Space
@@ -23,6 +28,12 @@ class SpaceCreateForm(forms.ModelForm):
 				{'placeholder':'My description. Follow: https://facebook.com/sakkhat.inc/', 'class':'form-control'})
 		}
 
+	def clean_logo(self):
+		logo = self.cleaned_data['logo']
+		self.logo_path = Image.load_and_save(logo, SPACE_LOGO_PATH)
+		if not self.logo_path:
+			raise forms.ValidationError('invalid file input')
+		return logo
 
 	def clean_name(self):
 		name = self.cleaned_data['name']
@@ -46,6 +57,7 @@ class SpaceCreateForm(forms.ModelForm):
 	def save(self, commit=True):
 		space = super(SpaceCreateForm, self).save(commit=False)
 		space.owner = self.request.user
+		space.logo = self.logo_path
 		if commit:
 			space.save()
 
@@ -57,7 +69,6 @@ class SpaceCreateForm(forms.ModelForm):
 			banner2.save()
 			banner3.save()
 
-			
 		return space
 
 

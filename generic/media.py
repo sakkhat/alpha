@@ -43,6 +43,13 @@ class Image():
 
 		return '/'+loc+'/'+filename
 
+	def load_and_save(file_stream=None, loc=None):
+		if not file_stream or not loc:
+			return None
+		img_src = Image.load(file_stream=file_stream)
+		img_path = Image.save(loc, img_src)
+		return img_path
+
 
 	def delete(loc):
 		try:
