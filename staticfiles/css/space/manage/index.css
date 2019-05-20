@@ -20,7 +20,7 @@
 	text-align: center;
 }
 #description {
-	font-size: 15px; line-height: 18px; margin: 15px 0px 5px 0px;
+	font-size: 15px; line-height: 18px; margin: 15px 10px 5px 10px;
 	line-height: 18px;
 }
 .activity {
@@ -34,4 +34,7 @@
 }
 .settings{
 	font-size: 12px;
+}
+#react-progress-block {
+	clear: left;
 }
