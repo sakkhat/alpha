@@ -51,10 +51,8 @@ def index(request, name):
 		context['space'] = space
 		context['banners'] = banners
 		context['status'] = status
-		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
 		context['has_favorite'] = False
 		context['token'] = token
-
 		try:
 			favorite = Favorite.objects.get(user_id=request.user.id, space_id=space.id)
 			context['has_favorite'] = True
@@ -65,7 +63,7 @@ def index(request, name):
 	except ObjectDoesNotExist as e:
 		return invalid_request(request, context)
 
-	
+
 @login_required(login_url=LOGIN_URL)
 def create(request):
 	if request.user.has_space:
@@ -76,15 +74,18 @@ def create(request):
 	if request.method == 'POST':
 		if request.user.has_space:
 			return invalid_request(request)
-		form = SpaceCreateForm(request.POST, request=request)
+		form = SpaceCreateForm(request.POST, request.FILES, request=request)
 		if form.is_valid():
 			space = form.save()
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
-			_notify(user)
+			# _notify(user)
 			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
+
+		else:
+			print(form.errors)
 
 	else:
 		form = SpaceCreateForm(request=request)

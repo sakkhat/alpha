@@ -13,17 +13,20 @@ class SpaceCreateForm(forms.ModelForm):
 		'/','|','{','}','[',']','(',')','?','>','<','^']
 
 	logo = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input','onchange':'openFile(event, "logo-view")'}))
+		{'class':'custom-file-input','onchange':'openFile(event, "logo-view")',
+		'accept':'.jpg, .png, .jpeg'}))
 
 	logo_path = None
 
 	class Meta:
 		model = Space
-		fields = ['name', 'description',]
+		fields = ['name', 'display_name', 'description',]
 
 		widgets = {
 			'name' : forms.TextInput(attrs=
-				{'placeholder':'Sakkhat', 'class':'form-control'}),
+				{'placeholder':'Unique Name (max 20 char)', 'class':'form-control'}),
+			'display_name' : forms.TextInput(attrs=
+				{'placeholder':'Display Name (max 80 char)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
 				{'placeholder':'My description. Follow: https://facebook.com/sakkhat.inc/', 'class':'form-control'})
 		}
@@ -33,6 +36,7 @@ class SpaceCreateForm(forms.ModelForm):
 		self.logo_path = Image.load_and_save(logo, SPACE_LOGO_PATH)
 		if not self.logo_path:
 			raise forms.ValidationError('invalid file input')
+		print(logo)
 		return logo
 
 	def clean_name(self):
