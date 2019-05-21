@@ -14,7 +14,7 @@ class SpaceCards extends React.Component {
 	}
 
 	getSpaceURL(name){
-		return '/space/'+name.toString()+'/';
+		return '/space/'+name+'/';
 	}
 
 
@@ -25,14 +25,24 @@ class SpaceCards extends React.Component {
 			if(data.length != 0){
 				const results = data.map((item) => 
 					<div className="col-auto mb-3">
-						<div className="card space-box">
-							<h5 className="card-title bg-dark text-white list-group-item">{item.space}</h5>
-							<div className="card-body">
-								<p className="card-text float-left mr-2 lead">Posts: {item.total_post}</p>
-								<p className="card-text lead">Rating: {item.rating}</p>
-								<a href={this.getSpaceURL(item.space)} class="card-link btn btn-success">Visit</a>
-							</div>
-						</div>
+						<div className="card text-white position-relative">
+							<img src={item.logo} className="card-img"/>
+					        <div className="card-img-overlay">
+					        	<div className="d-flex justify-content-center">
+					            	<img className="space-logo" src={item.logo}/>
+						        </div>
+						        <h6 className="space-name">@{item.space}</h6>
+						        <div>
+						            <h6 className="activity">Favorite <span className="activity-counter">{item.total_favorite}</span></h6>
+						            <h6 className="activity">Pinned <span className="activity-counter">{item.total_pinned}</span></h6>
+						            <h6 className="activity">Posts <span className="activity-counter">{item.total_post}</span></h6>
+						            <h6 className="activity">Rating <span className="activity-counter">{item.rating}</span></h6>
+						        </div>
+						        <div className="space-link">
+						        	<a href={this.getSpaceURL(item.space)} className="btn btn-light btn-sm">Visit</a>
+						        </div>
+					        </div>
+					    </div>
 					</div>
 				);
 

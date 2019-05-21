@@ -6,6 +6,14 @@ from space.models import Status
 
 class SpaceStatusSerializer(ModelSerializer):
 	space = ReadOnlyField(source='space.name')
+	logo = ReadOnlyField(source='space.logo')
 	class Meta:
 		model = Status
-		fields = ['rating', 'total_post','space']
+		fields = [
+			'total_favorite', 
+			'total_pinned', 
+			'rating', 
+			'total_post',
+			'logo',
+			'space'
+		]
