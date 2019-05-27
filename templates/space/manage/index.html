@@ -6,6 +6,7 @@
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/container.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
    
 {% endblock %}
@@ -75,9 +76,12 @@
         </div>
     </div>
     <br>
-    <div class="container-fluid">
-        <div class="row justify-content-center" id="cards-container" url="/api/product/?space={{space.name}}&token={{token}}" renderID="cards-container">
-       </div>
+    <div class="row-container bg-white">
+        <div class="container-fluid">
+            <h4 class="text-center row-header">All Products</h4>
+            <div class="row justify-content-center" id="cards-container" url="/api/product/?space={{space.name}}&token={{token}}" renderID="cards-container">
+            </div>
+        </div>
     </div>
 
 {% endblock %}
