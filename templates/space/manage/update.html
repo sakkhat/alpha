@@ -13,13 +13,19 @@
         <div class="row justify-content-center">
             <div class="col-md-3 mb-3">
                 <div>
-                    <h4 class="list-group-item bg-secondary text-white">Update</h4>
+                    <h5 class="list-group-item bg-secondary text-white">Update</h5>
                     {% if tab == 'information' %}
                         <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item active">Information</a>
                         <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
+        				<a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item">Logo</a>
+        			{% elif tab == 'logo' %}
+        				<a href="/space/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
+                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
+        				<a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item active">Logo</a>
                     {% else %}
                         <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
                         <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item active">Banner</a>
+                        <a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item">Logo</a>
                     {% endif %}
                 </div>
             </div>
@@ -63,13 +69,46 @@
                             <span class="carousel-control-next-icon"></span>
                         </a>
                     </div>
+                {% elif tab == 'logo' %}
+                	<div class="list-group-item">
+	                    <div class="logo-container">
+	                    	<img src="{{space.logo}}" id="space-logo">
+	                    </div>
+	                    <form id="form-space-logo">
+	                        {% csrf_token %}
+	                        <label for="space-logo-input" class="btn btn-outline-secondary pickers">Choose</label>
+	                        <input type="text" name="what" value="space_logo" class="d-none">
+	                        <input type="text" name="space" value="{{space.name}}" class="d-none">
+	                        <input type="text" name="token" value="{{token}}" class="d-none">
+	                        <input type="file" id="space-logo-input" name="image" class="d-none" onchange="previewImage(event, '#space-logo', '#space-logo-uploader')" accept=".png, .jpg, .jpeg">
+	                        <button type="button" class="btn btn-success uploader" onclick="upload(this.id, 'form-space-logo')" id="space-logo-uploader">Save</button>
+	                    </form>
+	                </div>
                 {% else %}
-                    <form method="POST">
+                    <form method="POST" class="list-group-item">
                         {% csrf_token %}
-                        <div class="list-group-item">
-                            {{ form}}
-                        </div>
-                        <button type="submit" class="btn btn-success btn-block">Update</button>
+                        {% if form.errors %}
+		                    {% for field in form %}
+		                        {% for error in field.errors %}
+		                            <div class="alert alert-danger">
+		                                <strong>{{ error|escape }}</strong>
+		                            </div>
+		                        {% endfor %}
+		                    {% endfor %}
+		                    {% for error in form.non_field_errors %}
+		                        <div class="alert alert-danger">
+		                            <strong>{{ error|escape }}</strong>
+		                        </div>
+		                    {% endfor %}
+		                {% endif %}
+
+                        {{ form.name.label }}
+                        {{ form.name}}
+                        {{ form.display_name.label }}
+                        {{ form.display_name }}
+                        {{ form.description.label }}
+                        {{ form.description}}
+                        <button type="submit" class="btn btn-success mt-3">Update</button>
                     </form>
                 {% endif %}
                 <br>
@@ -82,7 +121,7 @@
 
 
 {% block extra_script %}
-    {% if tab == 'banner' %}
+    {% if tab == 'banner' or tab == 'logo' %}
         <script type="text/javascript" src="{% static 'js/generic/image-handler.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/space/manage/update.js' %}"></script>
     {% endif %}

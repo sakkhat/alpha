@@ -1,0 +1,15 @@
+.title1 {
+	font-family: "Lucida Console";
+	margin-top: 50px;
+	font-weight: bold;
+}
+
+.title2 {
+	font-family: "Lucida Console";
+	font-weight: bold;
+}
+
+.article-body {
+	font-family: "Courier New";
+	font-weight: normal;
+}

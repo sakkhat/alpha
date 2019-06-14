@@ -53,7 +53,6 @@ class SpaceCreateForm(forms.ModelForm):
 		query = Space.objects.filter(name__iexact=name).first()
 		if query:
 			raise forms.ValidationError('Space name already taken')
-
 		return name
 
 
@@ -84,17 +83,29 @@ class SpaceCreateForm(forms.ModelForm):
 class SpaceUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Space
-		fields = ['description',]
+		fields = ['name','display_name','description',]
 
 		widgets = {
-			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'})
+			'name' : forms.TextInput(attrs={'class':'form-control mb-2'}),
+			'display_name' : forms.TextInput(attrs={'class':'form-control mb-2'}),
+			'description' : forms.Textarea(attrs={'class':'form-control'})
 		}
 
 
+	def clean(self):
+		cleaned_data = self.cleaned_data
+		name = cleaned_data['name']
+
+		query = Space.objects.filter(name__iexact=name).exclude(id=self.space.id).first()
+		if query is not None:
+			raise forms.ValidationError('space name already taken')
+		return cleaned_data
+
+
 	def save(self, commit=True):
-		description = self.cleaned_data['description']
-		self.space.description = description
+		self.space.name = self.cleaned_data['name']
+		self.space.display_name = self.cleaned_data['display_name']
+		self.space.description = self.cleaned_data['description']
 		if commit:
 			self.space.save()
 		return self.space
@@ -102,4 +113,6 @@ class SpaceUpdateForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.space = kwargs.pop('space', None)
 		super(SpaceUpdateForm, self).__init__(*args, **kwargs)
+		self.fields['name'].initial = self.space.name
+		self.fields['display_name'].initial = self.space.display_name
 		self.fields['description'].initial = self.space.description

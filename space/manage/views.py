@@ -112,32 +112,32 @@ def update(request, name):
 	try:
 		space = Space.objects.get(name__iexact=name)
 		if request.user == space.owner:
-
-			if request.method == 'POST':
-				form = SpaceUpdateForm(request.POST, space=space)
-				if form.is_valid():
-					space = form.save()
-					return redirect('/space/'+space.name+'/')
-
 			tab = request.GET.get('tab', 'information')
 			tab = tab.lower()
 
 			if tab == 'banner':
 				banners = Banner.objects.filter(space_id=space.id)
 				context['banners'] = banners
+				token = token_encode({'user_id' : request.user.id })
+				context['token'] = token
+			elif tab == 'logo':
+				token = token_encode({'user_id' : request.user.id })
+				context['token'] = token
 			else:
 				tab = 'information'
-				form = SpaceUpdateForm(space=space)
+				if request.method == 'POST':
+					form = SpaceUpdateForm(request.POST, space=space)
+					if form.is_valid():
+						space = form.save()
+						return redirect('/space/'+space.name+'/')
+				else:
+					form = SpaceUpdateForm(space=space)
 				context['form'] = form
 
-			token = token_encode({'user_id' : request.user.id })
 			context['tab'] = tab
 			context['space'] = space
-			context['token'] = token
-
 			return render(request, 'space/manage/update.html', context)
 
 	except ObjectDoesNotExist as e:
 		pass
-
 	return invalid_request(request, context)

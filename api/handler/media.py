@@ -5,7 +5,7 @@ from api.handler.tokenization import decode as token_decode
 from django.core.exceptions import ObjectDoesNotExist
 
 from generic.constants import (FILE_CHUNK_SIZE,PRODUCTS_FILE_PATH,USER_THUMBNAIL_PATH,
-	SPACE_BANNER_PATH)
+	SPACE_BANNER_PATH, SPACE_LOGO_PATH)
 from generic.media import Image as ImageHandler
 
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
@@ -57,6 +57,11 @@ def update(request):
 			raise NotFound('invalid request')
 		return _update_banner(user, uid, space_name, file)
 
+	elif what == 'space_logo':
+		if space_name is None:
+			raise NotFound('invalid request')
+		return _update_space_logo(user, space_name, file)
+
 	elif what == 'product':
 		if uid is None:
 			raise NotFound('invalid request')
@@ -92,6 +97,18 @@ def _update_banner(user, uid, space_name, file):
 		raise NotFound('invalid request')
 
 
+def _update_space_logo(user, space_name, file):
+	try:
+		space = Space.objects.get(name__iexact=space_name)
+		if space.owner_id != user.id:
+			raise PermissionDenied('access permission denied')
+		img_path = ImageHandler.load_and_save(file_stream=file, loc=SPACE_LOGO_PATH)
+		space.logo = img_path
+		space.save()
+		return Response({'image' : img_path})
+	except ObjectDoesNotExist as e:
+		raise NotFound('invalid request')
+
 
 def _update_product_media(user, uid, space_name, file):
 	try:
@@ -102,9 +119,7 @@ def _update_product_media(user, uid, space_name, file):
 		if product.space_id != space.id:
 			raise PermissionDenied('access permission denied')
 
-		img_src = ImageHandler.load(file_stream=file)
-		img_path = ImageHandler.save(PRODUCTS_FILE_PATH, img_src)
-
+		img_path = ImageHandler.load_and_save(file_stream=file, loc=PRODUCTS_FILE_PATH)
 		if product.logo_url == product_media.location:
 			product.logo_url = img_path
 			product.save()
