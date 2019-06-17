@@ -51,10 +51,8 @@ def index(request, name):
 		context['space'] = space
 		context['banners'] = banners
 		context['status'] = status
-		context['total_react'] = (status.total_good_react+status.total_bad_react+status.total_fake_react)
 		context['has_favorite'] = False
 		context['token'] = token
-
 		try:
 			favorite = Favorite.objects.get(user_id=request.user.id, space_id=space.id)
 			context['has_favorite'] = True
@@ -65,7 +63,7 @@ def index(request, name):
 	except ObjectDoesNotExist as e:
 		return invalid_request(request, context)
 
-	
+
 @login_required(login_url=LOGIN_URL)
 def create(request):
 	if request.user.has_space:
@@ -76,15 +74,18 @@ def create(request):
 	if request.method == 'POST':
 		if request.user.has_space:
 			return invalid_request(request)
-		form = SpaceCreateForm(request.POST, request=request)
+		form = SpaceCreateForm(request.POST, request.FILES, request=request)
 		if form.is_valid():
 			space = form.save()
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
-			_notify(user)
+			# _notify(user)
 			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
+
+		else:
+			print(form.errors)
 
 	else:
 		form = SpaceCreateForm(request=request)
@@ -111,32 +112,32 @@ def update(request, name):
 	try:
 		space = Space.objects.get(name__iexact=name)
 		if request.user == space.owner:
-
-			if request.method == 'POST':
-				form = SpaceUpdateForm(request.POST, space=space)
-				if form.is_valid():
-					space = form.save()
-					return redirect('/space/'+space.name+'/')
-
 			tab = request.GET.get('tab', 'information')
 			tab = tab.lower()
 
 			if tab == 'banner':
 				banners = Banner.objects.filter(space_id=space.id)
 				context['banners'] = banners
+				token = token_encode({'user_id' : request.user.id })
+				context['token'] = token
+			elif tab == 'logo':
+				token = token_encode({'user_id' : request.user.id })
+				context['token'] = token
 			else:
 				tab = 'information'
-				form = SpaceUpdateForm(space=space)
+				if request.method == 'POST':
+					form = SpaceUpdateForm(request.POST, space=space)
+					if form.is_valid():
+						space = form.save()
+						return redirect('/space/'+space.name+'/')
+				else:
+					form = SpaceUpdateForm(space=space)
 				context['form'] = form
 
-			token = token_encode({'user_id' : request.user.id })
 			context['tab'] = tab
 			context['space'] = space
-			context['token'] = token
-
 			return render(request, 'space/manage/update.html', context)
 
 	except ObjectDoesNotExist as e:
 		pass
-
 	return invalid_request(request, context)

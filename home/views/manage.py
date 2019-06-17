@@ -48,7 +48,8 @@ def index(request):
 		'-react_good')[:4]
 
 
-	top_spaces = Status.objects.values('space__name', 'rating', 'total_post').order_by('-rating')[:8]
+	top_spaces = Status.objects.values('space__name', 'space__logo', 'total_pinned','total_favorite',
+		 'rating', 'total_post').order_by('-rating')[:8]
 
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-time_date')[:5]

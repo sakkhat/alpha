@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/space-box.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/container.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/home/manage/index.css'%}">
 {% endblock %}
@@ -215,19 +216,28 @@
         </div>
         <br>
     </div>
-
-    <div>
-        <h4 class="text-center row-header">Top Spaces</h4>
-        <div class="container-fluid">
+    <div class="container-fluid">
+        <div class="bg-white row-container">
+            <h4 class="text-center row-header">Top Spaces</h4>
             <div class="row justify-content-center">
                 {% for item in top_spaces %}
                     <div class="col-auto mb-3">
-                        <div class="card space-box">
-                            <h5 class="card-title bg-dark text-white list-group-item">{{item.space__name}}</h5>
-                            <div class="card-body">
-                                <p class="card-text float-left mr-2 lead">Posts: {{item.total_post}}</p>
-                                <p class="card-text lead">Rating: {{item.rating}}</p>
-                                <a href="/space/{{item.space__name}}/" class="card-link btn btn-success">Visit</a>
+                        <div class="card text-white position-relative">
+                            <img src="{{item.space__logo}}" class="card-img">
+                            <div class="card-img-overlay">
+                                <div class="d-flex justify-content-center">
+                                    <img class="space-logo" src="{{item.space__logo}}">
+                                </div>
+                                <h6 class="space-name">@{{item.space__name}}</h6>
+                                <div>
+                                    <h6 class="activity">Favorite <span class="activity-counter">{{item.total_favorite}}</span></h6>
+                                    <h6 class="activity">Pinned <span class="activity-counter">{{item.total_pinned}}</span></h6>
+                                    <h6 class="activity">Posts <span class="activity-counter">{{item.total_post}}</span></h6>
+                                    <h6 class="activity">Rating <span class="activity-counter">{{item.rating}}</span></h6>
+                                </div>
+                                <div class="space-link">
+                                    <a href="/space/{{item.space__name}}" class="btn btn-light btn-sm">Visit</a>
+                                </div>
                             </div>
                         </div>
                     </div>

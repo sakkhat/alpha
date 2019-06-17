@@ -3,6 +3,7 @@ FILE_CHUNK_SIZE = 2500000
 PRODUCTS_FILE_PATH = 'data/product'
 USER_THUMBNAIL_PATH = 'data/user'
 SPACE_BANNER_PATH = 'data/space/banner'
+SPACE_LOGO_PATH = 'data/space/logo'
 
 REACT_GOOD_POINT = 3
 REACT_BAD_POINT = -1

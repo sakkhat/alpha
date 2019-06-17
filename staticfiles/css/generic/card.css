@@ -73,7 +73,7 @@
 
 
 .fixed-card {
-	width: 300px; height: 300px;
+	width: 300px; height: 300px; position: relative;
 }
 .fixed-card img {
 	width: 100%; vertical-align: top; height: 100%;

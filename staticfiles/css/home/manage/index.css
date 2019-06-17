@@ -8,11 +8,3 @@
 .col-config {
 	margin: 0; padding: 0;
 }
-
-.row-container {
-	min-width: 300px;
-	margin: 0px;
-}
-.row-header {
-	padding: 10px 5px;
-}

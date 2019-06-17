@@ -33,6 +33,9 @@
                 <br><br>
 
                 {% if user.has_space %}
+                    <div class="alert alert-warning">
+                        <p>Currently beta version is running. No fee will be charged for anything. Check out the <a href="/page/terms/">Terms of service</a></p>
+                    </div>
                     <div>
                         <h5 class="list-group-item text-center list-group-item-dark">{{space.name}}</h5>
                         <table class="table table-bordered table-secondary mb-0">
@@ -60,8 +63,7 @@
                     </div>
 
                 {% else %}
-                    <a href="/space/create/" class="list-group-item list-group-item-action bg-success"
-                        style="color: white; text-align: center;">
+                    <a href="/space/create/" class="list-group-item list-group-item-action bg-success text-center text-white">
                         Create Space
                     </a>
                 {% endif %}

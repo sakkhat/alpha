@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filter %}
 
 {% block extra_head %}
 	<title>{{ space.name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/generic/container.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/manage/index.css' %}">
    
 {% endblock %}
 
 
 {% block extra_content %}
-	<div class="container-fluid">
+	<div class="container-fluid list-group-item">
         <div class="row">
             <div class="col-lg-9">
-
                 <div id="banner-slider" class="carousel slide" data-ride="carousel">
                     
                     <ul class="carousel-indicators">
@@ -45,50 +46,42 @@
                         <span class="carousel-control-next-icon"></span>
                     </a>
                 </div>
-
-                <div class="list-group-item">
-                    <p>{{space.description | urlize | linebreaks }}</p>    
-                </div>
-
-                <div class="list-group-item">
-                    <div class="category-tags">
-                        <div style="display: flex; justify-content: flex-end;" id="pin-block">
-                            
-                        </div>
-                    </div><br>
-
-                    <div id="react-progress-block">
-                        
-                    </div>
-                    
-                </div>
-                <br>
             </div>
-
             <div class="col-lg-3">
-                <div class="list-group" style="color: white">
-                    <h4 class="list-group-item disable bg-dark">Status</h4>
-                    <h6 class="list-group-item text-dark">Rating : {{status.rating}}</h6>
-                    <h6 class="list-group-item text-dark">Posts : {{status.total_post}}</h6>
-                    <h6 class="list-group-item text-dark">Reacts : {{total_react}}</h6>
-                    <h6 class="list-group-item text-dark">Favorites : {{ status.total_favorite }}</h6>
-                    <h6 class="list-group-item text-dark">Total Pinned : {{status.total_pinned}}</h6>
+                <div class="d-flex justify-content-center">
+                    <img id="space-logo" src="{{ space.logo}}">
                 </div>
-                <br><br>
-                {% if request.user.is_authenticated and request.user == space.owner %}
-                    <div class="list-group">
-                        <h5 class="list-group-item bg-primary text-white">Manage</h5>
-                        <a class="list-group-item list-group-item-action" href="update/">Update</a>
-                        <a class="list-group-item list-group-item-action" href="/space/product/create/">Product Create</a>
+                <h6 id="space-name">@{{space.name}}</h6>
+                <div>
+                    <h6 class="activity">Favorite <span class="activity-counter">{{status.total_favorite}}</span></h6>
+                    <h6 class="activity">Pinned <span class="activity-counter">{{status.total_pinned}}</span></h6>
+                    <h6 class="activity">Reacts <span class="activity-counter">{{status|total_reacts}}</span></h6>
+                    <h6 class="activity">Rating <span class="activity-counter">{{status.rating}}</span></h6>
+                </div>
+                <div id="react-progress-block">
+                </div>
+                <div class="mt-4" id="pin-block"> 
+                </div>
+                {% if request.user == space.owner %}
+                    <div class="list-group list-group-horizontal settings">
+                        <a class="list-group-item list-group-item-primary" href="update/">Update</a>
+                        <a class="list-group-item list-group-item-primary" href="/space/product/create/">Product Create</a>
                     </div>
-                    <br>
                 {% endif %}
             </div>
         </div>
+        <div class="row details">
+            <h6 class="lead" id="display-name">{{space.display_name}}</h6>
+            <p id="description">{{space.description | linebreaks | urlize}}</p>
+        </div>
     </div>
-    <div class="container-fluid">
-        <div class="row justify-content-center" id="cards-container" url="/api/product/?space={{space.name}}&token={{token}}" renderID="cards-container">
-       </div>
+    <br>
+    <div class="row-container bg-white">
+        <div class="container-fluid">
+            <h4 class="text-center row-header">All Products</h4>
+            <div class="row justify-content-center" id="cards-container" url="/api/product/?space={{space.name}}&token={{token}}" renderID="cards-container">
+            </div>
+        </div>
     </div>
 
 {% endblock %}
@@ -178,12 +171,13 @@
         
         class ReactProgress extends React.Component {
 
+
             constructor(props){
                 super(props);
-
-                var good=(parseFloat( {{status.total_good_react}}/{{total_react}})*100).toFixed(2);
-                var bad=(parseFloat( {{status.total_bad_react}}/{{total_react}})*100).toFixed(2);
-                var fake=(parseFloat({{status.total_fake_react}}/{{total_react}})*100).toFixed(2);
+                const total_reacts = {{ status | total_reacts }};
+                var good=(parseFloat( {{status.total_good_react}}/ total_reacts )*100).toFixed(2);
+                var bad=(parseFloat( {{status.total_bad_react}}/ total_reacts )*100).toFixed(2);
+                var fake=(parseFloat({{status.total_fake_react}}/ total_reacts )*100).toFixed(2);
 
                 if (good == 'NaN'){
                     good = 0;

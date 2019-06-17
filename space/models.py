@@ -59,7 +59,9 @@ class Space(models.Model):
 	Doc here
 	"""
 	owner = models.OneToOneField(Account, on_delete=models.CASCADE)
-	name = models.CharField(max_length=30, unique=True)
+	logo = models.CharField(max_length=150)
+	name = models.CharField(max_length=20, unique=True)
+	display_name = models.CharField(max_length=40)
 	description = models.TextField()
 	join = models.DateTimeField(auto_now_add=True)
 	discount = models.PositiveSmallIntegerField(

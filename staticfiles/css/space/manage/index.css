@@ -1,8 +1,40 @@
 .banner-slider-item {
-	height: 350px; width: 100%;
+	height: 350px; width: 100%; margin-bottom: 5px;
 }
 
 .banner-slider-item img {
 	width: 100%;
 	object-fit: cover;
+}
+#space-logo {
+	width: 120px; height: 120px; object-fit: cover;
+	border-radius: 50%; border: 3px solid darkgray;
+}
+#display-name {
+	display: block; text-align: center;
+	font-size: 30px; margin: auto; padding: 3px 5px 8px 5px;
+}
+#space-name {
+	font-size: 17px; font-weight: bold; margin: 0px;
+	padding: 8px 3px; display: block;
+	text-align: center;
+}
+#description {
+	font-size: 15px; line-height: 18px; margin: 15px 10px 5px 10px;
+	line-height: 18px;
+}
+.activity {
+	font-size: 12px; color: #242424; float: left; padding: 3px 5px;
+}
+.activity-counter {
+	font-weight: bold; color: black;
+}
+.details {
+	padding: 10px 15px;
+}
+.settings{
+	font-size: 12px;
+}
+#react-progress-block {
+	clear: left;
 }
