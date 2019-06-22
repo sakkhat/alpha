@@ -138,7 +138,7 @@ def manager(request, format=None):
 
 
 	elif space is not None:
-		serializer = __space_product(data['space_id'], page=page)
+		serializer = __space_product(space, page=page)
 
 	else:
 		serializer = __all_products(page)
@@ -247,7 +247,12 @@ def __query_filter(query, **kwargs):
 
 
 
-def __space_product(space_id, **kwargs):
+def __space_product(space_name, **kwargs):
+	space = None
+	try:
+		space = Space.objects.get(name__iexact=space_name)
+	except ObjectDoesNotExist as e:
+		return None
 
 	limit = kwargs.get('limit', None)
 	page = kwargs.get('page', None)
@@ -256,7 +261,7 @@ def __space_product(space_id, **kwargs):
 		return None
 
 	offset = page*PRODUCT_PAGINATION_SIZE
-	result = Product.objects.filter(space_id=space_id)[offset:offset+PRODUCT_PAGINATION_SIZE]	
+	result = Product.objects.filter(space_id=space.id)[offset:offset+PRODUCT_PAGINATION_SIZE]	
 	serializer = ProductSerializer(result, many=True)
 	return serializer
 

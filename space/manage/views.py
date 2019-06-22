@@ -1,5 +1,3 @@
-from api.handler.tokenization import encode as token_encode
-
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect, render
@@ -7,6 +5,7 @@ from django.shortcuts import redirect, render
 from generic.media import Image
 from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
+from generic.variables import get_api_token
 
 from home.models import (Favorite,PinnedProduct, Notification,
 	_NOTIFICATION_LABEL_DIC as NDIC )
@@ -24,7 +23,7 @@ def route(request):
 def manager(request):
 
 	space_list = Space.objects.all()
-	token = token_encode({'user_id' : request.user.id })
+	token = get_api_token(request)
 	context = {
 		'space_list' : space_list,
 		'token' : token
@@ -43,10 +42,8 @@ def index(request, name):
 
 		banners = Banner.objects.filter(space=space)
 
-		token = token_encode({
-			'user_id' : request.user.id, 
-			'space_id' : space.id,	
-		})
+		token = get_api_token(request)
+		####################
 
 		context['space'] = space
 		context['banners'] = banners
@@ -118,10 +115,10 @@ def update(request, name):
 			if tab == 'banner':
 				banners = Banner.objects.filter(space_id=space.id)
 				context['banners'] = banners
-				token = token_encode({'user_id' : request.user.id })
+				token = get_api_token(request)
 				context['token'] = token
 			elif tab == 'logo':
-				token = token_encode({'user_id' : request.user.id })
+				token = get_api_token(token)
 				context['token'] = token
 			else:
 				tab = 'information'

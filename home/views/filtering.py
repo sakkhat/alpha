@@ -1,9 +1,8 @@
-from api.handler.tokenization import encode as token_encode
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from generic.constants import LOGIN_URL
+from generic.variables import get_api_token
 from generic.views import invalid_request
 
 from space.models import Product
@@ -11,9 +10,9 @@ from space.models import Product
 @login_required(login_url=LOGIN_URL)
 def trending(request):
 	context = {}
-	token = token_encode({'user_id' : request.user.id })
+	print(request.session.get('user_api_token'))
+	token = get_api_token(request)
 	context['token'] = token
-
 	return render(request, 'home/filtering/trending.html', context)
 
 
@@ -31,8 +30,7 @@ def search(request):
 	if query is None:
 		return redirect('/')
 
-	token = token_encode({'user_id' : request.user.id })
-
+	token = get_api_token(request)
 	context['token'] = token
 	context['query'] = query
 	context['what'] = what.lower()

@@ -1,5 +1,3 @@
-from api.handler.tokenization import encode as token_encode
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
@@ -10,6 +8,7 @@ from generic.constants import (LOGIN_URL, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
 from generic.forms import PasswordConfirmForm
 from generic.media import Image
 from generic.views import json_response, invalid_request, password_confirmation
+from generic.variables import get_api_token
 
 from home.models import PinnedProduct
 
@@ -53,7 +52,7 @@ def view(request, uid):
 		else:
 			context['has_pin'] = False
 
-		token = token_encode({'user_id' : request.user.id })
+		token = get_api_token(request)
 		context['token'] = token
 
 
@@ -83,7 +82,7 @@ def manager(request):
 
 		user = request.user
 
-		token = token_encode({'user_id' : user.id })
+		token = get_api_token(request)
 		context['token'] = token
 
 
@@ -152,7 +151,7 @@ def update(request, uid):
 				form = ProductUpdateForm(product=product)
 				context['form'] = form
 
-			token = token_encode({'user_id' : request.user.id })
+			token = get_api_token(request)
 			context['token'] = token
 			context['tab'] = tab
 			context['product'] = product

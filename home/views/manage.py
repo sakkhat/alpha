@@ -1,4 +1,3 @@
-from api.handler.tokenization import encode as token_encode
 from api.handler.tokenization import decode as token_decode
 
 from django.contrib.auth.decorators import login_required
@@ -7,6 +6,7 @@ from django.shortcuts import render, redirect
 
 from generic.constants import LOGIN_URL
 from generic.views import invalid_request
+from generic.variables import get_api_token
 
 from home.models import Favorite, PinnedProduct,Notification
 from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC
@@ -53,13 +53,13 @@ def index(request):
 
 	if request.user.is_authenticated:
 		favorite = Favorite.objects.filter(user=request.user).order_by('-time_date')[:5]
-		token = token_encode({'user_id' : request.user.id })
+		token = get_api_token(request)
 
 		context['favorite'] = favorite
 		context['token'] = token
 
 	else:
-		token = token_encode({'guest_uid' : uuid1().hex })
+		token = get_api_token(request)
 		context['token'] = token
 
 
@@ -103,7 +103,7 @@ def notification(request):
 		else:
 			context['query'] = 'all'
 
-	token = token_encode({'user_id' : request.user.id })
+	token = get_api_token(request)
 	context['token'] = token
 	return render(request, 'home/manage/notification.html', context)
 

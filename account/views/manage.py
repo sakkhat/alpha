@@ -1,13 +1,12 @@
 from account.forms import ProfileUpdateForm
 from account.models import Account
 
-from api.handler.tokenization import encode as token_encode
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
 from generic.constants import LOGIN_URL
+from generic.variables import get_api_token
 from generic.service.mail import verify_email
 
 from space.models import ProductReact,Space,Status
@@ -49,7 +48,7 @@ def update(request):
 	else:
 		form = ProfileUpdateForm(user=request.user)
 
-	token = token_encode({'user_id' : user.id })
+	token = get_api_token(request)
 	context['token'] = token
 	context['form'] = form
 
@@ -90,20 +89,20 @@ def activity_manager(request):
 
 @login_required(login_url=LOGIN_URL)
 def activity_product_react_list(request):
-	token = token_encode({'user_id' : request.user.id})
+	token = get_api_token(request)
 	context = {'token' : token}
 	return render(request, 'account/manage/product_react_list.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
 def activity_favorite_space_list(request):
-	token = token_encode({'user_id' : request.user.id})
+	token = get_api_token(request)
 	context = {'token' : token}
 	return render(request, 'account/manage/favorite_space_list.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
 def activity_pinned_product_list(request):
-	token = token_encode({'user_id' : request.user.id})
+	token = get_api_token(request)
 	context = {'token' : token}
 	return render(request, 'account/manage/pinned_product_list.html', context)
