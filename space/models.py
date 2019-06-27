@@ -62,7 +62,7 @@ class Space(models.Model):
 	logo = models.CharField(max_length=150)
 	name = models.CharField(max_length=20, unique=True)
 	display_name = models.CharField(max_length=40)
-	description = models.TextField()
+	description = models.TextField(max_length=1500)
 	join = models.DateTimeField(auto_now_add=True)
 	discount = models.PositiveSmallIntegerField(
 		validators=[MinValueValidator(0),MaxValueValidator(100)],default=0)
@@ -86,7 +86,7 @@ class Product(models.Model):
 	uid = models.UUIDField(primary_key=True, default=uuid4)
 	title = models.CharField(max_length=30)
 	price = models.FloatField()
-	description = models.TextField()
+	description = models.TextField(max_length=1500)
 	logo_url = models.CharField(max_length=150)
 	time_date = models.DateTimeField(auto_now=True)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)

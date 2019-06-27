@@ -1,20 +1,23 @@
-from time import time
-def now_string(mul=1):
-	"""
-	current time in string format
-	"""
-	return str(int(time()*(10**mul)))
-
-
-
-from string import ascii_letters, digits
+from api.handler.tokenization import encode
+from base64 import encodestring as __encode_string
+from base64 import decodestring as __decode_string
 import random as _rand
+from string import ascii_letters, digits
+from uuid import UUID
+
+
+def is_valid_uuid(uuid):
+	try:
+		return UUID(uuid)
+	except ValueError as e:
+		return None
+
+
 def random_string(prefix='', size=12):
 	symbols = '_-'
 	return prefix.join(_rand.choices(ascii_letters+digits+symbols, k=size))
 
 
-from api.handler.tokenization import encode
 def get_api_token(request):
 	token = request.session.get('user_api_token', None)
 	if token is None:

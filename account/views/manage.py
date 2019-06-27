@@ -6,7 +6,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render,redirect
 
 from generic.constants import LOGIN_URL
-from generic.variables import get_api_token
+from generic.crypto import get_api_token
 from generic.service.mail import verify_email
 
 from space.models import ProductReact,Space,Status

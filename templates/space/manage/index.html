@@ -3,7 +3,7 @@
 {% load filter %}
 
 {% block extra_head %}
-	<title>{{ space.name }}</title>
+	<title>{{ space.display_name }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/container.css' %}">
@@ -72,7 +72,7 @@
         </div>
         <div class="row details">
             <h6 class="lead" id="display-name">{{space.display_name}}</h6>
-            <p id="description">{{space.description | linebreaks | urlize}}</p>
+            <p id="description">{{space.description | urlize | linebreaks }}</p>
         </div>
     </div>
     <br>

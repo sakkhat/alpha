@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from generic.constants import LOGIN_URL
-from generic.variables import get_api_token
+from generic.crypto import get_api_token
 from generic.views import invalid_request
 
 from space.models import Product

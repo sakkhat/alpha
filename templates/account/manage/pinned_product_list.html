@@ -16,7 +16,7 @@
             <table class="table table-bordered table-secondary">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Product</th><th>Time</th>
+                        <th>Product</th><th>Space</th><th>Time</th>
                     </tr>
                 </thead>
                 <tbody id="table-row-block">
@@ -52,8 +52,12 @@
                 return new Date(timeDate).toLocaleString();
             }
 
-            getSpaceLink(product){
-                return '/space/product/'+product;
+            getSpaceLink(item){
+                return '/'+item.space;
+            }
+
+            getProductLink(item){
+                return '/'+item.space+'/product/'+item.product;
             }
 
             componentDidMount(){
@@ -63,7 +67,8 @@
                 .then(data =>{
                     const data_list = data.map((item) =>      
                             <tr>
-                                <td><a href={this.getSpaceLink(item.product)}>{item.product}</a></td>
+                                <td><a href={this.getProductLink(item)}>{item.title}</a></td>
+                                <td><a href={this.getSpaceLink(item)}>{item.space}</a></td>
                                 <td>{this.handleTimestamp(item.time_date)}</td>
                             </tr>
                         );

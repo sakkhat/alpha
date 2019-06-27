@@ -53,7 +53,7 @@
             }
 
             getSpaceLink(space){
-                return '/space/'+space;
+                return '/'+space;
             }
 
             componentDidMount(){
@@ -63,7 +63,7 @@
                 .then(data =>{
                     const data_list = data.map((item) =>      
                             <tr>
-                                <td><a href={this.getSpaceLink(item.space)}>{item.space}</a></td>
+                                <td><a href={this.getSpaceLink(item.space)}>{item.display}</a></td>
                                 <td>{this.handleTimestamp(item.time_date)}</td>
                             </tr>
                         );

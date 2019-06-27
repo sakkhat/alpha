@@ -59,17 +59,3 @@ class Favorite(models.Model):
 
 	class Meta:
 		unique_together = ('space', 'user')
-
-
-
-class Payment(models.Model):
-	"""
-	Doc here
-	"""
-	transection_id = models.CharField(max_length=32)
-	space = models.ForeignKey(Space, on_delete=models.CASCADE)
-	time_date = models.DateTimeField(auto_now_add=True)
-	base_fee = models.FloatField()
-	discount = models.PositiveSmallIntegerField(
-		validators=[MinValueValidator(0),MaxValueValidator(100)])
-	total_pay = models.FloatField()

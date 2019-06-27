@@ -6,16 +6,19 @@ from rest_framework.serializers import ReadOnlyField
 
 class FavoriteSpaceSerializer(ModelSerializer):
 	space = ReadOnlyField(source='space.name')
+	display = ReadOnlyField(source='space.display_name') 
 	class Meta:
 		model = Favorite
-		fields = ('time_date', 'space')
+		fields = ('time_date', 'space', 'display')
 
 
 
 class PinnedProductSerializer(ModelSerializer):
+	space = ReadOnlyField(source='product.space.name')
+	title = ReadOnlyField(source='product.title')
 	class Meta:
 		model = PinnedProduct
-		fields = ('uid', 'time_date', 'product') 
+		fields = ('time_date', 'product','title', 'space') 
 
 
 

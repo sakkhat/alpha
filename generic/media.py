@@ -1,14 +1,13 @@
 from django.core.files.storage import FileSystemStorage as FSS
 
 from generic.constants import FILE_CHUNK_SIZE
-from generic.variables import random_string
+from generic.crypto import random_string
 
 from io import BytesIO
 from PIL import Image as PillowImage
 from time import time
 from os import remove, makedirs
 from os.path import isdir
-
 
 
 class Image():
@@ -34,7 +33,7 @@ class Image():
 
 	def save(loc, file):
 		storage = FSS(location = loc)
-		filename = random_string()+'.'+file.format
+		filename = random_string(size=32)+'.'+file.format
 
 		if isdir(storage.location) == False:
 			makedirs(storage.location)

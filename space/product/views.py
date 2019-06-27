@@ -5,10 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from generic.constants import (LOGIN_URL, PRODUCTS_FILE_PATH, ACTIVITY_POINT,
 	MIN_RATE_FOR_SPACE_TRENDING)
+from generic.crypto import get_api_token, is_valid_uuid
 from generic.forms import PasswordConfirmForm
 from generic.media import Image
 from generic.views import json_response, invalid_request, password_confirmation
-from generic.variables import get_api_token
 
 from home.models import PinnedProduct
 
@@ -22,15 +22,20 @@ def route(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def view(request, uid):
-	context = {}
+def view(request, space_name, product_uid):
+	product_uid = is_valid_uuid(product_uid)
+	if product_uid is None:
+		return invalid_request(request)
 	try:
-		product = Product.objects.get(uid = uid)
+		product = Product.objects.get(uid = product_uid, space__name__iexact=space_name)
 		media = ProductMedia.objects.filter(product_id=product.uid)
+
+		# related product
 		related_products = Product.objects.filter(category_id=product.category_id).values(
 			'uid', 'title','price', 'space__name', 'react_good', 'react_bad', 'react_fake',
 			'logo_url').order_by('-time_date')[:10]
 
+		context = {}
 
 		react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
 		if react_obj is not None:
@@ -100,10 +105,8 @@ def manager(request):
 	return render(request, 'space/product/list.html', context)
 
 
-
 @login_required(login_url=LOGIN_URL)
 def create(request):
-	context = {}
 	if request.method == 'POST':
 		form = ProductPostForm(request.POST, request.FILES ,request=request)
 		if form.is_valid():
@@ -122,16 +125,19 @@ def create(request):
 
 	else:
 		form = ProductPostForm(request=request)
-
+	context = {}
 	context['form'] = form
 
 	return render(request, 'space/product/create.html',context)
 
 
 @login_required(login_url=LOGIN_URL)
-def update(request, uid):
+def update(request, space_name, product_uid):
+	product_uid = is_valid_uuid(product_uid)
+	if product_uid is None:
+		return invalid_request(request)
 	try:
-		product = Product.objects.get(uid=uid)
+		product = Product.objects.get(uid=product_uid, space__name__iexact=space_name)
 		if product.space.owner == request.user:
 			context = {}
 
@@ -165,12 +171,16 @@ def update(request, uid):
 
 
 @login_required(login_url=LOGIN_URL)
-def delete(request, uid):
+def delete(request, space_name, product_uid):
+	product_uid = is_valid_uuid(product_uid)
+	if product_uid is None:
+		return invalid_request(request)
+
 	context = {}
 	if request.method == 'POST':
 		form = PasswordConfirmForm(request.POST, user=request.user)
 		if form.is_valid():
-			return _delete_data(request, uid)
+			return _delete_data(request, space_name, product_uid)
 
 	else:
 		form = PasswordConfirmForm(user=request.user)
@@ -181,10 +191,9 @@ def delete(request, uid):
 	return password_confirmation(request, context)
 
 
-
-def _delete_data(request, uid):
+def _delete_data(request, space_name, product_uid):
 	try:
-		product = Product.objects.get(uid=uid)
+		product = Product.objects.get(uid=product_uid, space__name__iexact=space_name)
 		if product.space.owner == request.user:
 			space_name = product.space.name
 			
@@ -220,8 +229,7 @@ def _delete_data(request, uid):
 
 			product.delete()
 
-			return redirect('/space/'+space_name+'/')
+			return redirect('/'+space_name+'/')
 	except ObjectDoesNotExist as e:
 		pass
-
 	return invalid_request(request)

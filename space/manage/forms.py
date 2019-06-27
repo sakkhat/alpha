@@ -6,8 +6,9 @@ from space.models import Space, Banner
 
 
 class SpaceCreateForm(forms.ModelForm):
-	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','auth','web','create','api',
-		'url', 'http', 'https','product','account','user','all','notification']
+	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','create','api','admin',
+		'url', 'http', 'https','product','account','user','notification','page','account',
+		'home','feed','trending','explore','search',]
 
 	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']

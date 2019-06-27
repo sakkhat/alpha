@@ -26,12 +26,13 @@ from home import views as index
 
 urlpatterns = [
 	
-	# managed all index functionality in home
+	
     path('api/', include('api.urls')),
-    path('', include('home.urls')),
     path('admin/', site.urls),
     path('account/', include('account.urls')),
     path('space/', include('space.urls')),
+    # managed all index functionality in home
+    path('', include('home.urls')),
 ]
 
 if settings.DEBUG:

@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from generic.media import Image
 from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
-from generic.variables import get_api_token
+from generic.crypto import get_api_token
 
 from home.models import (Favorite,PinnedProduct, Notification,
 	_NOTIFICATION_LABEL_DIC as NDIC )
@@ -33,14 +33,14 @@ def manager(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def index(request, name):
+def index(request, space_name):
 
 	context = {}
 	try:
-		space = Space.objects.get(name__iexact=name)
-		status = Status.objects.get(space=space)
+		space = Space.objects.get(name__iexact=space_name)
+		status = Status.objects.get(space_id=space.id)
 
-		banners = Banner.objects.filter(space=space)
+		banners = Banner.objects.filter(space_id=space.id)
 
 		token = get_api_token(request)
 		####################
@@ -76,7 +76,6 @@ def create(request):
 			space = form.save()
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
-			# _notify(user)
 			request.user.save()
 
 			return redirect('/space/'+space.name+'/')
@@ -92,22 +91,11 @@ def create(request):
 	return render(request, 'space/manage/create.html', context)
 
 
-def _notify(user):
-	Notification.objects.create(
-		user=user,
-		label=NDIC['offer'],
-		title='Congrates!',
-		message='You got 1 free product post for your space',
-		action='/account/'
-		)
-	user.has_notification = True
-
-
 @login_required(login_url=LOGIN_URL)
-def update(request, name):
+def update(request, space_name):
 	context = {}
 	try:
-		space = Space.objects.get(name__iexact=name)
+		space = Space.objects.get(name__iexact=space_name)
 		if request.user == space.owner:
 			tab = request.GET.get('tab', 'information')
 			tab = tab.lower()

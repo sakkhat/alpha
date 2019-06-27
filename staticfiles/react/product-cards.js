@@ -14,8 +14,9 @@ class ProductCards extends React.Component {
 		this.loadMore = this.loadMore.bind(this);
 	}
 
-	getProductURL(uid){
-		return '/space/product/'+uid.toString()+'/';
+	getProductURL(space, uid){
+		console.log('Hello');
+		return '/'+space.toString()+'/product/'+uid.toString()+'/';
 	}
 
 	fetchData(){
@@ -46,7 +47,7 @@ class ProductCards extends React.Component {
 	                                </button>
 	                            </div>
 	                        </figcaption>
-	                        <a href={this.getProductURL(item.uid)}></a>
+	                        <a href={this.getProductURL(item.space, item.uid)}></a>
 	                    </figure>
 	                </div>
 				);

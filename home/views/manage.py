@@ -5,8 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 
 from generic.constants import LOGIN_URL
+from generic.crypto import get_api_token
 from generic.views import invalid_request
-from generic.variables import get_api_token
+
 
 from home.models import Favorite, PinnedProduct,Notification
 from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC

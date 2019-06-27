@@ -9,14 +9,14 @@
 {% block extra_content %}
     
     <div class="d-flex justify-content-center align-items-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <h5 style="text-align: center;" class="list-group-item list-group-item-dark">
                 Your reacts on products
             </h5>
             <table class="table table-bordered table-secondary">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Product ID</th><th>React</th><th>Time</th>
+                        <th>Product</th><th>Space</th><th>React</th><th>Time</th>
                     </tr>
                 </thead>
                 <tbody id="table-row-block">
@@ -60,8 +60,12 @@
                 return new Date(timeDate).toLocaleString();
             }
 
-            getProductLink(product){
-                return '/space/product/'+product;
+            getProductLink(item){
+                return '/'+item.space+'/product/'+item.product;
+            }
+
+            getSpaceLink(item){
+                return '/'+item.space;
             }
 
             componentDidMount(){
@@ -71,7 +75,8 @@
                 .then(data =>{
                     const data_list = data.map((item) =>      
                             <tr>
-                                <td><a href={this.getProductLink(item.product)}>{item.product}</a></td>
+                                <td><a href={this.getProductLink(item)}>{item.title}</a></td>
+                                <td><a href={this.getSpaceLink(item)}>{item.space}</a></td>
                                 <td>{this.handleReact(item.react)}</td>
                                 <td>{this.handleTimestamp(item.time_date)}</td>
                             </tr>

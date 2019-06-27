@@ -14,9 +14,11 @@ class ProductSerializer(ModelSerializer):
 
 
 class ProductReactSerializer(ModelSerializer):
+	title = ReadOnlyField(source='product.title')
+	space = ReadOnlyField(source='product.space.name')
 	class Meta:
 		model = ProductReact
-		fields = ('__all__')
+		fields = ('react','time_date', 'product', 'title', 'space')
 
 
 

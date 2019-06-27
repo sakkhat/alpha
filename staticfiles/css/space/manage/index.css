@@ -11,7 +11,7 @@
 	border-radius: 50%; border: 3px solid darkgray;
 }
 #display-name {
-	display: block; text-align: center;
+	display: block; text-align: center; width: 100%;
 	font-size: 30px; margin: auto; padding: 3px 5px 8px 5px;
 }
 #space-name {
@@ -21,7 +21,6 @@
 }
 #description {
 	font-size: 15px; line-height: 18px; margin: 15px 10px 5px 10px;
-	line-height: 18px;
 }
 .activity {
 	font-size: 12px; color: #242424; float: left; padding: 3px 5px;

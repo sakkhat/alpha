@@ -14,5 +14,7 @@ urlpatterns = [
 	path('page/terms/', pages.terms, name='terms'),
 	path('page/feedback/', pages.feedback, name='feedback'),
 	path('page/privacy-policy/', pages.privacy_policy, name='privacy_policy'),
-	path('page/cookie/', pages.cookie, name='cookie')
+	path('page/cookie/', pages.cookie, name='cookie'),
+
+	path('', include('space.urls')),
 ]

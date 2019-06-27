@@ -14,7 +14,7 @@ class SpaceCards extends React.Component {
 	}
 
 	getSpaceURL(name){
-		return '/space/'+name+'/';
+		return '/'+name+'/';
 	}
 
 
