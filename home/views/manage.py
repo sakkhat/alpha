@@ -10,7 +10,7 @@ from generic.views import invalid_request
 
 
 from home.models import Favorite, PinnedProduct,Notification
-from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC
+from space.models import Product,Category,Status, _PRODDUCT_CATEGORY_KEY_DIC,Space
 
 from uuid import uuid1
 
@@ -76,20 +76,39 @@ def index(request):
 	return render(request, 'home/manage/index.html', context)
 
 
-
-
-
 def manager(request):
-	if request.method == 'GET' and request.user.is_authenticated:
-		what = request.GET.get('filter',None)
-		if what is not None:
-			what = what.lower()
-			if what == 'pinned-products':
-				return render(request, 'home/filtering/pinned.html', {})
-
 	return index(request)
 
 
+@login_required(login_url=LOGIN_URL)
+def explore(request):
+	space_list = Space.objects.all()
+	token = get_api_token(request)
+	context = {
+		'space_list' : space_list,
+		'token' : token
+	}
+
+	return render(request, 'home/manage/explore.html', context)
+
+
+@login_required(login_url=LOGIN_URL)
+def explore_product(request):
+	context = {}
+	has_attribute = False
+
+	if request.method == 'GET':
+		category = request.GET.get('category', None)
+		token = get_api_token(request)
+		context['token'] = token
+
+		if category is not None:
+			has_attribute = True
+			context['category'] = category
+
+	context['has_attribute'] = has_attribute
+
+	return render(request, 'home/manage/explore_product.html', context)
 
 
 
@@ -107,8 +126,6 @@ def notification(request):
 	token = get_api_token(request)
 	context['token'] = token
 	return render(request, 'home/manage/notification.html', context)
-
-
 
 
 @login_required(login_url=LOGIN_URL)

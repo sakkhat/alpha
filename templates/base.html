@@ -1,11 +1,20 @@
 {% load static %}
+{% load filter %}
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="{% static 'res/favicon.png' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/bootstrap.min.css' %}">
+
+    {% developing_mode as developing %}
+    {% if developing %}
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/bootstrap.min.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    {% endif %}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css'%}">
 	{% block extra_head %}
@@ -36,13 +45,10 @@
                     </form>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/trending/">Trending <i class="fa fa-line-chart"></i></a>
+                            <a class="nav-link" href="/trending/"><i class="fa fa-bolt"></i> Trending</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/space/all/">Spaces</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/space/product/all/">Products</a>
+                            <a class="nav-link" href="/explore/"><i class="fa fa-bullseye"></i> Explore</a>
                         </li>
                         {% if not request.user.is_authenticated %}
                             <li class="nav-item">
@@ -55,9 +61,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/notification/">
                                     {% if request.user.has_notification %}
-                                        Notification <i class="fa fa-bell" style="color:#ff6961;"><sup>*</sup></i>
+                                        <i class="fa fa-bell" style="color:#ff6961;"><sup>*</sup></i> Notification
                                     {% else %}
-                                        Notification <i class="fa fa-bell"></i>
+                                        <i class="fa fa-bell"></i> Notification
                                     {% endif %}
                                 </a>
                             </li>
@@ -123,9 +129,17 @@
     </div>
 
 	<!-- JQuery , Popper and Bootstrap Library -->
-	<script type="text/javascript" src="{% static 'lib/js/jquery.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/js/popper.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/js/bootstrap.min.js' %}"></script>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <script type="text/javascript" src="{% static 'lib/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/popper.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/bootstrap.min.js' %}"></script>
+    {% else %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/esm/popper-utils.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    {% endif %}
+	
 
 	{% block extra_script %}
 	<!-- react library, react scripts and other scripts -->

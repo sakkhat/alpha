@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load filter %}
 {% block extra_head %}
     
     <meta property="og:title" content="{{product.title}}">
@@ -8,11 +8,20 @@
     <meta property="og:image" content="">
     <meta property="og:url" content="">
 
-    <title>{{ product.title }} | {{ product.space.name }}</title>
+    <title>{{ product.title }} | {{ product.space.display_name }}</title>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+    {% developing_mode as developing %}
+    {% if developing %}
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.css">
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    {% endif %}
+
+	
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/space/product/single.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
@@ -66,7 +75,7 @@
                 </h5>
                 <a class="list-group-item bg-light" href="/{{product.space.name}}/">@{{ product.space.name }}</a>
                 <div class="list-group-item">
-                    <a class="btn btn-sm btn-outline-dark" href="/space/product/all/?category={{product.category}}">{{ product.category }}</a>
+                    <a class="btn btn-sm btn-outline-dark" href="/explore/product/?category={{product.category}}">{{ product.category }}</a>
                     <div class="float-right">
                         <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button&size=large&appId=1320512341429071&width=73&height=28" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                     </div>
@@ -167,13 +176,24 @@
 
 
 {% block extra_script %}
-	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+	
     <script type="text/javascript" src="{% static 'js/space/product/single.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
     
-    <script type="text/javascript" src="{% static 'lib/js/react.min.js'%}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js'%}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/browser.min.js'%}"></script>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+    {% else %}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.js"></script>
+
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    {% endif %}
 
     <script type="text/babel">
         class ProductReact extends React.Component {

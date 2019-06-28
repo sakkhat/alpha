@@ -14,37 +14,19 @@ from space.manage.forms import SpaceCreateForm,SpaceUpdateForm
 from space.models import Space,Product,Status,Banner
 
 
-@login_required(login_url=LOGIN_URL)
-def route(request):
-	return redirect('/space/all/')
-
-
-@login_required(login_url=LOGIN_URL)
-def manager(request):
-
-	space_list = Space.objects.all()
-	token = get_api_token(request)
-	context = {
-		'space_list' : space_list,
-		'token' : token
-	}
-
-	return render(request, 'space/manage/list.html', context)
-
 
 @login_required(login_url=LOGIN_URL)
 def index(request, space_name):
 
-	context = {}
+	
 	try:
 		space = Space.objects.get(name__iexact=space_name)
 		status = Status.objects.get(space_id=space.id)
 
 		banners = Banner.objects.filter(space_id=space.id)
-
 		token = get_api_token(request)
-		####################
-
+		
+		context = {}
 		context['space'] = space
 		context['banners'] = banners
 		context['status'] = status
@@ -58,7 +40,7 @@ def index(request, space_name):
 
 		return render(request, 'space/manage/index.html', context)
 	except ObjectDoesNotExist as e:
-		return invalid_request(request, context)
+		return invalid_request(request)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -78,7 +60,7 @@ def create(request):
 			request.user.has_space=True
 			request.user.save()
 
-			return redirect('/space/'+space.name+'/')
+			return redirect('/'+space.name+'/')
 
 		else:
 			print(form.errors)
@@ -106,7 +88,7 @@ def update(request, space_name):
 				token = get_api_token(request)
 				context['token'] = token
 			elif tab == 'logo':
-				token = get_api_token(token)
+				token = get_api_token(request)
 				context['token'] = token
 			else:
 				tab = 'information'

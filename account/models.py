@@ -51,7 +51,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 	Doc here
 	"""
 	phone = models.CharField(max_length=11, unique=True)
-	name = models.CharField(max_length=80)
+	name = models.CharField(max_length=40)
 	gender = models.CharField(max_length=1, choices=_GENDER)
 	email = models.EmailField(max_length=45, unique=True)
 	thumbnail = models.CharField(default='https://i.postimg.cc/Y2zkXSFB/user.png', max_length=150)

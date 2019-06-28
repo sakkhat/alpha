@@ -6,10 +6,13 @@ urlpatterns = [
 	path('', manage.manager , name='view-manager'),
 	path('notification/', manage.notification, name='notification'),
 	path('notification/<uid>/action/', manage.notification_route, name='notification-route'),
+	path('explore/', manage.explore, name='explore'),
+	path('explore/product/', manage.explore_product, name='explore-product'),
+
 	
 	path('trending/', filtering.trending, name='trending'),
 	path('search/', filtering.search, name='search'),
-
+	
 	path('page/about/', pages.about, name='about'),
 	path('page/terms/', pages.terms, name='terms'),
 	path('page/feedback/', pages.feedback, name='feedback'),

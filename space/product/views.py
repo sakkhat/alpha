@@ -16,10 +16,6 @@ from space.product.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status,Category
 
 
-@login_required(login_url=LOGIN_URL)
-def route(request):
-	return redirect('/space/product/all/')
-
 
 @login_required(login_url=LOGIN_URL)
 def view(request, space_name, product_uid):
@@ -74,35 +70,6 @@ def view(request, space_name, product_uid):
 	except ObjectDoesNotExist as e:
 		return invalid_request(request=request)
 
-
-@login_required(login_url=LOGIN_URL)
-def manager(request):
-	context = {}
-	has_attribute = False
-
-	if request.method == 'GET':
-		category = request.GET.get('category', None)
-		pinned_by = request.GET.get('pinned_by', None)
-		query = request.GET.get('query', None)
-
-		user = request.user
-
-		token = get_api_token(request)
-		context['token'] = token
-
-
-		if category is not None:
-			has_attribute = True
-			context['category'] = category
-
-		elif pinned_by is not None:
-			has_attribute = True
-			context['pinned_by'] = True		
-			context['user_name'] = user.name
-
-	context['has_attribute'] = has_attribute
-
-	return render(request, 'space/product/list.html', context)
 
 
 @login_required(login_url=LOGIN_URL)

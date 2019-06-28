@@ -15,7 +15,6 @@ class ProductCards extends React.Component {
 	}
 
 	getProductURL(space, uid){
-		console.log('Hello');
 		return '/'+space.toString()+'/product/'+uid.toString()+'/';
 	}
 

@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filter %}
 
 {% block extra_head %}
-	<title>Sakkhat</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+	<title>Sakkhat - meet your needs</title>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/emoji.css' %}">
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.css">
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    {% endif %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/card.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/space-box.css' %}">
@@ -39,7 +47,7 @@
                                 <h5 class="title1">{{item}}</h5>
                                 <h5 class="title2">{{item.total_products}}</h5>
                             </figcaption>
-                            <a href="/space/product/all/?category={{item}}"></a>
+                            <a href="/explore/product/?category={{item}}"></a>
                         </figure>
                     {% endfor %}
                 </div>
@@ -250,7 +258,13 @@
 
 
 {% block extra_script %}
-	<script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+    {% else %}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.js"></script>
+    {% endif %}
     <script type="text/javascript" src="{% static 'js/generic/slider.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/home/manage/index.js' %}"></script>
+	
 {% endblock %}

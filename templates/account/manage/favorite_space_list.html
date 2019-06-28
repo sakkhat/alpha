@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filter %}
 
 {% block extra_head %}
-	<title>{{ request.user.name }} | Reacts on products</title>
+	<title>{{ request.user.name }}'s favorite space list | Sakkhat</title>
 {% endblock %}
 
 
@@ -31,9 +32,18 @@
 
 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
+    {% else %}
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    {% endif %}
+
+    
 
     <script type="text/babel">
         

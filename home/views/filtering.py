@@ -10,7 +10,6 @@ from space.models import Product
 @login_required(login_url=LOGIN_URL)
 def trending(request):
 	context = {}
-	print(request.session.get('user_api_token'))
 	token = get_api_token(request)
 	context['token'] = token
 	return render(request, 'home/filtering/trending.html', context)

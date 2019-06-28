@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filter %}
 
 {% block extra_head %}
 	<title>Product Update - {{tab | capfirst }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
+    {% developing_mode as developing %}
+    {% if developing %}
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/css/slick-theme.css' %}">
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick-theme.css">
+    {% endif %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/generic/slick-slider.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/space/product/update.css'%}">
@@ -103,7 +110,13 @@
 	
 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+    {% developing_mode as developing %}
+    {% if developing %}
+        <script type="text/javascript" src="{% static 'lib/js/slick.min.js' %}"></script>
+    {% else %}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.0/slick.min.js"></script>
+    {% endif %}
+
 	<script type="text/javascript" src="{% static 'js/generic/image-handler.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/space/product/update.js'%}"></script>
 {% endblock %}
