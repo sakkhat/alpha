@@ -79,11 +79,7 @@
                                     <a class="list-group-item list-group-item-action" href="/account/">
                                         {{ request.user.name }}
                                     </a>
-                                    {% if request.user.has_space %}
-                                        <a class="list-group-item list-group-item-action" href="/space/product/create/">
-                                            Product Create
-                                        </a>
-                                    {% else %}
+                                    {% if not request.user.has_space %}
                                         <a class="list-group-item list-group-item-action" href="/space/create/">
                                             Space Create
                                         </a>

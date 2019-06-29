@@ -5,8 +5,9 @@ from space.product import views as product
 
 
 urlpatterns = [
-	path('<space_name>/', manage.index, name='space_view'),
-	path('<space_name>/update/', manage.update, name='space_update'),
+	path('create/', manage.create, name='space-create'),
+	path('<space_name>/', manage.index, name='space-view'),
+	path('<space_name>/update/', manage.update, name='space-update'),
 
 	path('<space_name>/product/create/', product.create, name='product-create'),
 	path('<space_name>/product/<product_uid>/', product.view, name='product-view'),

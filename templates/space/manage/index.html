@@ -71,7 +71,7 @@
                 {% if request.user == space.owner %}
                     <div class="list-group list-group-horizontal settings">
                         <a class="list-group-item list-group-item-primary" href="update/">Update</a>
-                        <a class="list-group-item list-group-item-primary" href="/space/product/create/">Product Create</a>
+                        <a class="list-group-item list-group-item-primary" href="/{{space.name}}/product/create/">Product Create</a>
                     </div>
                 {% endif %}
             </div>

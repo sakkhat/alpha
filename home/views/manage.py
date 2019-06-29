@@ -52,17 +52,6 @@ def index(request):
 	top_spaces = Status.objects.values('space__name', 'space__logo', 'total_pinned','total_favorite',
 		 'rating', 'total_post').order_by('-rating')[:8]
 
-	if request.user.is_authenticated:
-		favorite = Favorite.objects.filter(user=request.user).order_by('-time_date')[:5]
-		token = get_api_token(request)
-
-		context['favorite'] = favorite
-		context['token'] = token
-
-	else:
-		token = get_api_token(request)
-		context['token'] = token
-
 
 	context['recent_products'] = recent_products
 	context['most_goods_products'] = most_goods_products
@@ -70,8 +59,6 @@ def index(request):
 	context['top_womens_products'] = top_womens_products
 	context['top_gadgets_products'] = top_gadgets_products
 	context['top_spaces'] = top_spaces
-
-	# response = render -> set new guest cockie
 	
 	return render(request, 'home/manage/index.html', context)
 

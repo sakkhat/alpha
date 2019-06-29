@@ -17,8 +17,6 @@ from space.models import Space,Product,Status,Banner
 
 @login_required(login_url=LOGIN_URL)
 def index(request, space_name):
-
-	
 	try:
 		space = Space.objects.get(name__iexact=space_name)
 		status = Status.objects.get(space_id=space.id)
@@ -45,9 +43,9 @@ def index(request, space_name):
 
 @login_required(login_url=LOGIN_URL)
 def create(request):
+	print('i am here')
 	if request.user.has_space:
 		return invalid_request(request)
-		
 	context = {}
 
 	if request.method == 'POST':
@@ -59,17 +57,13 @@ def create(request):
 			status = Status.objects.create(space=space)
 			request.user.has_space=True
 			request.user.save()
-
 			return redirect('/'+space.name+'/')
 
 		else:
 			print(form.errors)
-
 	else:
 		form = SpaceCreateForm(request=request)
-
 	context['form'] = form
-
 	return render(request, 'space/manage/create.html', context)
 
 
