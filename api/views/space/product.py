@@ -35,8 +35,9 @@ def product_react_list(request, format=None):
 	data = token_decode(token)
 	if data is None:
 		raise NotFound('invalid request')
-	user_id = data['user_id']
-	result = ProductReact.objects.filter(user_id=user_id).order_by('-time_date')
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
+	result = ProductReact.objects.filter(user_id=data['user_id']).order_by('-time_date')
 	serializer = ProductReactSerializer(result, many=True)
 	return Response(serializer.data)
 
@@ -50,15 +51,11 @@ def product_react_request(request, uid, format=None):
 	what = request.GET.get('react', None)
 	if token is None:
 		raise NotFound('request not found')
-
 	data = token_decode(token)
 	if data is None:
 		raise None('invalid request')
-
-	user_id = data['user_id']
-	if request.user.id != user_id:
-		PermissionDenied('access denied')
-
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
 	if what is None:
 		try:
 			result = Product.objects.get(uid=uid)
@@ -84,23 +81,16 @@ def product_pinned_request(request, uid, format=None):
 	req = request.GET.get('req', None)
 	if token is None:
 		raise NotFound('request not found')
-
 	data = token_decode(token)
 	if data is None:
 		raise None('invalid request')
-
-	user_id = data['user_id']
-	if request.user.id != user_id:
-		PermissionDenied('access denied')
-
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
 	req = req.upper()
 	result = activity.handle_pin(request.user, uid, req)
 	if not result:
 		raise NotFound('request not found')
-
 	return Response({'response' : True});
-
-
 
 
 
@@ -114,6 +104,8 @@ def manager(request, format=None):
 	data = token_decode(token)
 	if data is None:
 		raise NotFound('invalid request')
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
 
 	category = request.GET.get('category', None)
 	query = request.GET.get('query', None)
@@ -127,15 +119,12 @@ def manager(request, format=None):
 
 	if category is not None:
 		serializer = __category_filter(category, page=page)
-			
-		
+
 	elif query is not None:
 		serializer = __query_filter(query, page=page)
 
-
 	elif pinned_by is not None:
 		serializer = __user_pinned_filter(data['user_id'], page=page, request=request)
-
 
 	elif space is not None:
 		serializer = __space_product(space, page=page)
@@ -155,7 +144,6 @@ def __clean_value(value):
 	if value is not None:
 		if value.isdigit():
 			return abs(int(value))
-
 	return None
 
 
@@ -178,7 +166,6 @@ def __category_filter(category, **kwargs):
 
 		offset = page*PRODUCT_PAGINATION_SIZE
 		result = Product.objects.filter(category_id=category_obj.id)[offset:offset+PRODUCT_PAGINATION_SIZE]
-
 
 		serializer = ProductSerializer(result, many=True)
 		return serializer
@@ -232,7 +219,6 @@ def __query_filter(query, **kwargs):
 
 		serializer = ProductSerializer(result, many=True)
 		return serializer
-
 
 	elif len(query) > 0:
 

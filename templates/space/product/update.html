@@ -26,11 +26,11 @@
                 <div>
                     <h5 class="list-group-item bg-secondary text-white">Update Product</h5>
                     {% if tab == 'images' %}
-                        <a href="/space/product/{{product.uid}}/update/?tab=details" class="list-group-item">Details</a>
-                        <a href="/space/product/{{product.uid}}/update/?tab=images" class="list-group-item active">Images</a>
+                        <a href="/{{space_name}}/product/{{product.uid}}/update/?tab=details" class="list-group-item">Details</a>
+                        <a href="/{{space_name}}/product/{{product.uid}}/update/?tab=images" class="list-group-item active">Images</a>
                     {% else %}
-                        <a href="/space/product/{{product.uid}}/update/?tab=details" class="list-group-item active">Details</a>
-                        <a href="/space/product/{{product.uid}}/update/?tab=images" class="list-group-item">Images</a>
+                        <a href="/{{space_name}}/product/{{product.uid}}/update/?tab=details" class="list-group-item active">Details</a>
+                        <a href="/{{space_name}}/product/{{product.uid}}/update/?tab=images" class="list-group-item">Images</a>
                     {% endif %}
                 </div>
             </div>
@@ -96,8 +96,8 @@
                 {% endif %}
                 <br>
                 <div class="list-group-item">
-                    <a class="btn btn-primary" href="/space/product/{{product.uid}}/">Go to product view</a>
-                    <a href="/space/product/{{product.uid}}/update/delete/" class="btn btn-danger">Delete</a>
+                    <a class="btn btn-primary" href="/{{space_name}}/product/{{product.uid}}/">Go to product view</a>
+                    <a href="/{{space_name}}/product/{{product.uid}}/update/delete/" class="btn btn-danger">Delete</a>
                 </div>
                 <br><br>
             </div>

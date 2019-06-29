@@ -73,7 +73,7 @@ def view(request, space_name, product_uid):
 
 
 @login_required(login_url=LOGIN_URL)
-def create(request):
+def create(request, space_name):
 	if request.method == 'POST':
 		form = ProductPostForm(request.POST, request.FILES ,request=request)
 		if form.is_valid():
@@ -88,7 +88,7 @@ def create(request):
 			category.total_products += 1
 			category.save()
 
-			return redirect('/space/product/'+str(post.uid)+'/')
+			return redirect('/'+space_name+'/product/'+str(post.uid)+'/')
 
 	else:
 		form = ProductPostForm(request=request)
@@ -112,7 +112,7 @@ def update(request, space_name, product_uid):
 				form = ProductUpdateForm(request.POST, product=product)
 				if form.is_valid():
 					product = form.save()
-					return redirect('/space/product/'+uid+'/')
+					return redirect('/'+space_name+'/product/'+str(product_uid)+'/')
 
 			tab = request.GET.get('tab', 'details')
 			tab = tab.lower()
@@ -128,6 +128,7 @@ def update(request, space_name, product_uid):
 			context['token'] = token
 			context['tab'] = tab
 			context['product'] = product
+			context['space_name'] = space_name
 
 			return render(request, 'space/product/update.html', context) 
 

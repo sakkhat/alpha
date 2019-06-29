@@ -23,12 +23,15 @@ from space.models import Status
 def favorite_request(request, name, format=None):
 	token = request.GET.get('token', None)
 	req = request.GET.get('req', None)
-
+	
 	if token is None:
 		raise NotFound('invalid request')
 	data = token_decode(token)
 	if data is None:
 		raise NotFound('invalid request')
+
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
 
 	if req is None:
 		raise NotFound('request not found')
@@ -56,6 +59,9 @@ def manager(request, format=None):
 	data = token_decode(token)
 	if data is None:
 		raise NotFound('invalid request')
+
+	if request.user.id != data['user_id']:
+		raise PermissionDenied('access denied')
 
 	serializer = None
 
