@@ -57,7 +57,8 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/account/signup/">Sign Up</a>
                             </li>
-                        {% else %}
+
+                        {% else  %}
                             <li class="nav-item">
                                 <a class="nav-link" href="/notification/">
                                     {% if request.user.has_notification %}
@@ -67,8 +68,6 @@
                                     {% endif %}
                                 </a>
                             </li>
-                        {% endif %}
-                        {% if request.user.is_authenticated %}
                             <div class="nav-link btn-group">
                                 <div class="dropdown-toggle" data-toggle="dropdown" 
                                     style="cursor: pointer; color: white;"> 

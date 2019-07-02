@@ -28,7 +28,7 @@ class Notification(models.Model):
 	label = models.CharField(max_length=2, choices=_NOTIFICATION_LABEL, default='Gn')
 	title = models.CharField(max_length=50)
 	message = models.TextField()
-	action = models.CharField(max_length=60, default='#')
+	action = models.CharField(max_length=60, default='/notification/#')
 	seen = models.BooleanField(default=False)
 
 

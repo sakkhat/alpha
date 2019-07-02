@@ -33,7 +33,7 @@ class Image():
 
 	def save(loc, file):
 		storage = FSS(location = loc)
-		filename = random_string(size=32)+'.'+file.format
+		filename = random_string(size=64)+'.'+file.format
 
 		if isdir(storage.location) == False:
 			makedirs(storage.location)

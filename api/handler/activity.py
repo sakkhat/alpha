@@ -209,4 +209,3 @@ def _decrease_fake_react(product, status):
 	product.react_fake -= 1
 	status.total_fake_react -= 1
 	status.rating = _addition(status.rating, ACTIVITY_POINT['FAKE'])
-

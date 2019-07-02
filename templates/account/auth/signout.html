@@ -8,18 +8,19 @@
 
 
 {% block extra_content %}
-	<center><h5>Signed out</h5></center>
-	<div id="hello">
-		
-	</div>
+	<center><h3 class="display-4 mt-3">Signed out</h3></center>
 {% endblock %}
 
 
 {% block extra_script %}
-
-	<script type="text/javascript" src="{% static 'lib/js/react.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/js/react-dom.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/js/browser.min.js' %}"></script>
-
-	<script type="text/babel" src="{% static 'react/home/index.js' %}"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			window.setTimeout(
+				function (){
+					window.location.href = "/";
+				},
+				2000
+			);
+		})
+	</script>
 {% endblock %}
