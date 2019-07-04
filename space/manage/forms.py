@@ -1,17 +1,21 @@
 from django import forms
+
 from generic.media import Image
 from generic.constants import FILE_CHUNK_SIZE, PRODUCTS_FILE_PATH, SPACE_LOGO_PATH
+from generic.crypto import hashing_into_int
+
 from space.models import Space, Banner
 
 
-
-class SpaceCreateForm(forms.ModelForm):
-	_UNUSABLE_NAMES = ['space','sakkhat','login','signin','signup','create','api','admin',
+_UNUSABLE_NAMES = ['space','login','signin','signup','create','api','admin',
 		'url', 'http', 'https','product','account','user','notification','page','account',
 		'home','feed','trending','explore','search',]
 
-	_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
+_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
+
+
+class SpaceCreateForm(forms.ModelForm):
 
 	logo = forms.ImageField(widget=forms.FileInput(attrs=
 		{'class':'custom-file-input','onchange':'openFile(event, "logo-view")',
@@ -37,21 +41,22 @@ class SpaceCreateForm(forms.ModelForm):
 		self.logo_path = Image.load_and_save(logo, SPACE_LOGO_PATH)
 		if not self.logo_path:
 			raise forms.ValidationError('invalid file input')
-		print(logo)
 		return logo
 
 	def clean_name(self):
 		name = self.cleaned_data['name']
-		
-		for i in self._UNUSABLE_SYMBOLS:
+		__name = name.lowe()
+		if 'sakkhat' in __name:
+			raise forms.ValidationError('Restricted Name')
+		for i in _UNUSABLE_SYMBOLS:
 			if i in name:
-				raise forms.ValidationError(i+ "is invalid")
+				raise forms.ValidationError(i+ " is invalid")
 
-		for i in self._UNUSABLE_NAMES:
-			if i.lower() == name.lower():
+		for i in _UNUSABLE_NAMES:
+			if i == __name:
 				raise forms.ValidationError('Restricted Name')
 
-		query = Space.objects.filter(name__iexact=name).first()
+		query = Space.objects.filter(code=hashing_into_int(name)).first()
 		if query:
 			raise forms.ValidationError('Space name already taken')
 		return name
@@ -60,6 +65,7 @@ class SpaceCreateForm(forms.ModelForm):
 
 	def save(self, commit=True):
 		space = super(SpaceCreateForm, self).save(commit=False)
+		space.code = hashing_into_int(space.name)
 		space.owner = self.request.user
 		space.logo = self.logo_path
 		if commit:
@@ -96,8 +102,17 @@ class SpaceUpdateForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = self.cleaned_data
 		name = cleaned_data['name']
+		__name = name.lower()
+		if 'sakkhat' in __name:
+			raise forms.ValidationError('Restricted Name')
+		for i in _UNUSABLE_SYMBOLS:
+			if i in name:
+				raise forms.ValidationError(i+ " is invalid")
 
-		query = Space.objects.filter(name__iexact=name).exclude(id=self.space.id).first()
+		for i in _UNUSABLE_NAMES:
+			if i == __name:
+				raise forms.ValidationError('Restricted Name')
+		query = Space.objects.filter(code=hashing_into_int(name)).exclude(id=self.space.id).first()
 		if query is not None:
 			raise forms.ValidationError('space name already taken')
 		return cleaned_data
@@ -105,6 +120,7 @@ class SpaceUpdateForm(forms.ModelForm):
 
 	def save(self, commit=True):
 		self.space.name = self.cleaned_data['name']
+		self.space.code = hashing_into_int(self.cleaned_data['name'])
 		self.space.display_name = self.cleaned_data['display_name']
 		self.space.description = self.cleaned_data['description']
 		if commit:

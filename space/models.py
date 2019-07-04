@@ -58,11 +58,13 @@ class Space(models.Model):
 	display_name = models.CharField(max_length=50)
 	description = models.TextField(max_length=1500)
 	join = models.DateTimeField(auto_now_add=True)
-	discount = models.PositiveSmallIntegerField(
-		validators=[MinValueValidator(0),MaxValueValidator(100)],default=0)
+	code = models.DecimalField(max_digits=24, decimal_places=0, unique=True)
 
 	def __str__(self):
 		return self.name
+
+	class Meta:
+		models.Index(fields=['code', 'owner'])
 
 
 

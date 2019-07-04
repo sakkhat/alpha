@@ -5,6 +5,7 @@ from home.models import Favorite, PinnedProduct
 
 from generic.constants import (ACTIVITY_POINT,MAX_TRENDING_SPACE,
 	MIN_RATE_FOR_SPACE_TRENDING)
+from generic.crypto import hashing_into_int
 
 from space.models import Product, ProductReact, Space, Status
 
@@ -124,7 +125,7 @@ def handle_favorite(user, name, req):
 	if not user.is_authenticated:
 		return False
 	try:
-		space = Space.objects.get(name__iexact=name)
+		space = Space.objects.get(code=hashing_into_int(name))
 		if space.owner_id == user.id:
 			return False			
 		

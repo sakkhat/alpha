@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from generic.media import Image
 from generic.constants import LOGIN_URL, SPACE_BANNER_PATH
 from generic.views import invalid_request, json_response
-from generic.crypto import get_api_token
+from generic.crypto import get_api_token, hashing_into_int
 
 from home.models import (Favorite,PinnedProduct, Notification,
 	_NOTIFICATION_LABEL_DIC as NDIC )
@@ -18,12 +18,11 @@ from space.models import Space,Product,Status,Banner
 @login_required(login_url=LOGIN_URL)
 def index(request, space_name):
 	try:
-		space = Space.objects.get(name__iexact=space_name)
+		space = Space.objects.get(code=hashing_into_int(space_name))
 		status = Status.objects.get(space_id=space.id)
-
 		banners = Banner.objects.filter(space_id=space.id)
 		token = get_api_token(request)
-		
+
 		context = {}
 		context['space'] = space
 		context['banners'] = banners
@@ -43,7 +42,6 @@ def index(request, space_name):
 
 @login_required(login_url=LOGIN_URL)
 def create(request):
-	print('i am here')
 	if request.user.has_space:
 		return invalid_request(request)
 	context = {}
@@ -60,7 +58,7 @@ def create(request):
 			return redirect('/'+space.name+'/')
 
 		else:
-			print(form.errors)
+			pass
 	else:
 		form = SpaceCreateForm(request=request)
 	context['form'] = form
@@ -71,7 +69,7 @@ def create(request):
 def update(request, space_name):
 	context = {}
 	try:
-		space = Space.objects.get(name__iexact=space_name)
+		space = Space.objects.get(code=hashing_into_int(space_name))
 		if request.user == space.owner:
 			tab = request.GET.get('tab', 'information')
 			tab = tab.lower()

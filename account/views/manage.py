@@ -42,8 +42,8 @@ def update(request):
 				user.save()
 				verify_email(request, user)
 				return render(request, 'account/auth/verify.html', {})
-
-			user.save()
+			
+			user = form.save()
 			return redirect('/account/')
 	else:
 		form = ProfileUpdateForm(user=request.user)

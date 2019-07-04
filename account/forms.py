@@ -131,7 +131,6 @@ class PasswordChangeForm(forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)
-
 		super(PasswordChangeForm, self).__init__(*args, **kwargs)
 
 
@@ -142,7 +141,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ['name', 'email', 'gender']
+		fields = ['name', 'email', 'phone', 'gender']
 
 		widgets = {
 			'name' : forms.TextInput(attrs={
@@ -150,7 +149,11 @@ class ProfileUpdateForm(forms.ModelForm):
 				}),
 
 			'email' : forms.EmailInput(attrs={
-				'placeholder' : 'Email (optional)', 'class' : 'form-control'
+				'placeholder' : 'Email', 'class' : 'form-control'
+				}),
+
+			'phone' : forms.TextInput(attrs={
+				'placeholder' : 'Phone', 'class' : 'form-control'
 				}),
 
 			'gender' : forms.Select(attrs={
@@ -164,6 +167,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 		password = cleaned_data['password']
 		email = cleaned_data['email']
+		phone = cleaned_data['phone']
 		gender = cleaned_data['gender']
 
 		valid = self.user.check_password(password)
@@ -173,6 +177,10 @@ class ProfileUpdateForm(forms.ModelForm):
 		duplicate_email = Account.objects.filter(email=email).exclude(id=self.user.id)
 		if duplicate_email.exists():
 			raise forms.ValidationError('This email is already registered')
+
+		duplicate_phone = Account.objects.filter(phone=phone).exclude(id=self.user.id)
+		if duplicate_phone.exists():
+			raise forms.ValidationError('This phone is already registered')
 
 		if gender is None:
 			raise forms.ValidationError('set a gender')
@@ -189,10 +197,12 @@ class ProfileUpdateForm(forms.ModelForm):
 	def save(self, commit=True):
 		name = self.cleaned_data['name']
 		email = self.cleaned_data['email']
+		phone = self.cleaned_data['phone']
 		gender = self.cleaned_data['gender']
 
 		self.user.name = name
 		self.user.email = email
+		self.user.phone = phone
 		self.user.gender = gender
 
 		if commit:
@@ -202,9 +212,9 @@ class ProfileUpdateForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)
-
 		super(ProfileUpdateForm, self).__init__(*args, **kwargs)		
 
 		self.fields['name'].initial = self.user.name
 		self.fields['email'].initial = self.user.email
+		self.fields['phone'].initial = self.user.phone
 		self.fields['gender'].initial = self.user.gender

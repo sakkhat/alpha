@@ -9,6 +9,9 @@ from api.handler.tokenization import decode as token_decode
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import ObjectDoesNotExist
 
+from generic.constants import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
+from generic.crypto import hashing_into_int
+
 from home.models import PinnedProduct
 
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
@@ -19,9 +22,6 @@ from rest_framework.response import Response
 
 from space.models import Product, ProductReact, Category, Space
 from space.models import _PRODDUCT_CATEGORY_KEY_DIC as category_key
-
-from generic.constants import PRODUCT_PAGINATION_SIZE, MAX_TRENDING_PRODUCT
-
 
 
 
@@ -236,7 +236,7 @@ def __query_filter(query, **kwargs):
 def __space_product(space_name, **kwargs):
 	space = None
 	try:
-		space = Space.objects.get(name__iexact=space_name)
+		space = Space.objects.get(code=hashing_into_int(space_name))
 	except ObjectDoesNotExist as e:
 		return None
 
