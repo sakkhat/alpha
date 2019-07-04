@@ -74,8 +74,8 @@ class SignupForm(forms.ModelForm):
 
 
 class SigninForm(forms.Form):
-	phone = forms.CharField(max_length=12, widget=forms.TextInput(attrs=
-		{'placeholder' : 'Phone', 
+	email = forms.EmailField(widget=forms.TextInput(attrs=
+		{'placeholder' : 'Email', 
 		'class' : 'form-control'}))
 
 	password = forms.CharField(widget=forms.PasswordInput(attrs=
@@ -85,10 +85,10 @@ class SigninForm(forms.Form):
 
 	def clean(self):
 		cleaned_data = self.cleaned_data
-		phone = cleaned_data['phone']
+		email = cleaned_data['email']
 		password = cleaned_data['password']
 
-		user = authenticate(phone=phone, password=password)
+		user = authenticate(email=email, password=password)
 		if user:
 			self.user = user
 			return cleaned_data

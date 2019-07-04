@@ -28,7 +28,7 @@
                 
                 <form class="sign-in-form" method="POST">
                     {% csrf_token %}
-                	{{ form.phone }}
+                	{{ form.email }}
                 	{{ form.password }}
                     <input type="submit" value="Sign In" class="btn btn-success btn-block">
                 </form>

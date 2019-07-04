@@ -23,7 +23,7 @@ def index(request):
 
 	mens_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['men-fashion'])
 	womens_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['women-fashion'])
-	gadets_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['gadget'])
+	gadets_category = categories.get(name=_PRODDUCT_CATEGORY_KEY_DIC['gadget-accessories'])
 
 	recent_products = Product.objects.filter(in_stock=True).values(
 		'uid', 'title', 'price', 'react_good', 'react_bad', 'react_fake', 'logo_url', 'space__name').order_by(

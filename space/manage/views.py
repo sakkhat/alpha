@@ -90,7 +90,7 @@ def update(request, space_name):
 					form = SpaceUpdateForm(request.POST, space=space)
 					if form.is_valid():
 						space = form.save()
-						return redirect('/space/'+space.name+'/')
+						return redirect('/'+space.name+'/')
 				else:
 					form = SpaceUpdateForm(space=space)
 				context['form'] = form

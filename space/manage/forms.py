@@ -27,7 +27,7 @@ class SpaceCreateForm(forms.ModelForm):
 			'name' : forms.TextInput(attrs=
 				{'placeholder':'Unique Name (max 20 char)', 'class':'form-control'}),
 			'display_name' : forms.TextInput(attrs=
-				{'placeholder':'Display Name (max 80 char)', 'class':'form-control'}),
+				{'placeholder':'Display Name (max 50 char)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
 				{'placeholder':'My description. Follow: https://facebook.com/sakkhat.inc/', 'class':'form-control'})
 		}

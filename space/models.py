@@ -9,29 +9,23 @@ from uuid import uuid4
 
 _PRODDUCT_CATEGORY = (
 	('Ots', 'Others'),
-	('Gdt', 'Gadget'),
+	('GnA', 'Gadget-Accessories'),
 	('MFs', 'Men-Fashion'),
 	('WFs', 'Women-Fashion'),
-	('CAc', 'Computer-Accessory'),
-	('Elc', 'Electronics')
 )
 
 _PRODDUCT_CATEGORY_DIC = {
 	'Ots': 'Others',
-	'Gdt': 'Gadget',
+	'GnA': 'Gadget-Accessories',
 	'MFs': 'Men-Fashion',
 	'WFs': 'Women-Fashion',
-	'CAc': 'Computer-Accessory',
-	'Elc': 'Electronics',
 }
 
 _PRODDUCT_CATEGORY_KEY_DIC = {
 	'others' : 'Ots',
-	'gadget' : 'Gdt',
+	'gadget-accessories' : 'GnA',
 	'men-fashion' : 'MFs',
 	'women-fashion' : 'WFs',
-	'computer-accessory' : 'CAc',
-	'electronics' : 'Elc',
 }
 
 
@@ -61,7 +55,7 @@ class Space(models.Model):
 	owner = models.OneToOneField(Account, on_delete=models.CASCADE)
 	logo = models.CharField(max_length=150)
 	name = models.CharField(max_length=20, unique=True)
-	display_name = models.CharField(max_length=40)
+	display_name = models.CharField(max_length=50)
 	description = models.TextField(max_length=1500)
 	join = models.DateTimeField(auto_now_add=True)
 	discount = models.PositiveSmallIntegerField(

@@ -15,17 +15,17 @@
                 <div>
                     <h5 class="list-group-item bg-secondary text-white">Update</h5>
                     {% if tab == 'information' %}
-                        <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item active">Information</a>
-                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
+                        <a href="/{{space.name}}/update/?tab=information" class="list-group-item active">Information</a>
+                        <a href="/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
         				<a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item">Logo</a>
         			{% elif tab == 'logo' %}
-        				<a href="/space/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
-                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
-        				<a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item active">Logo</a>
+        				<a href="/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
+                        <a href="/{{space.name}}/update/?tab=banner" class="list-group-item">Banner</a>
+        				<a href="/{{space.name}}/update/?tab=logo" class="list-group-item active">Logo</a>
                     {% else %}
-                        <a href="/space/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
-                        <a href="/space/{{space.name}}/update/?tab=banner" class="list-group-item active">Banner</a>
-                        <a href="/space/{{space.name}}/update/?tab=logo" class="list-group-item">Logo</a>
+                        <a href="/{{space.name}}/update/?tab=information" class="list-group-item">Information</a>
+                        <a href="/{{space.name}}/update/?tab=banner" class="list-group-item active">Banner</a>
+                        <a href="/{{space.name}}/update/?tab=logo" class="list-group-item">Logo</a>
                     {% endif %}
                 </div>
             </div>

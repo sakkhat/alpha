@@ -63,8 +63,8 @@ class Account(AbstractBaseUser,PermissionsMixin):
 	is_staff = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
 
-	USERNAME_FIELD = 'phone'
-	REQUIRED_FIELDS = ['name', 'email', 'gender']
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['name', 'phone', 'gender']
 
 	objects = UserManager()
 
