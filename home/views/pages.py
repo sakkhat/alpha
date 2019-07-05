@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, HttpResponse
-
 from home.forms import FeedbackForm
 
 
@@ -14,7 +13,7 @@ def feedback(request):
 	if request.method == 'POST':
 		form = FeedbackForm(request.POST, user=request.user)
 		if form.is_valid():
-			form.send()
+			form.save()
 			context['sent'] = True
 
 	form = FeedbackForm(user=request.user)

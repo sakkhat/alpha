@@ -47,7 +47,6 @@ class PinnedProduct(models.Model):
 		unique_together = ('user', 'product')
 
 
-
 class Favorite(models.Model):
 	"""
 	Doc here
@@ -59,3 +58,8 @@ class Favorite(models.Model):
 
 	class Meta:
 		unique_together = ('space', 'user')
+
+
+class Feedback(models.Model):
+	body = models.CharField(max_length=250)
+	email = models.EmailField()
