@@ -16,11 +16,15 @@ class FeedbackForm(forms.ModelForm):
 				})
 		}
 
+	def clean(self):
+		email = self.cleaned_data.get('email', None)
+		return self.cleaned_data
+
 	def __init__(self, *args, **kwargs):
 		self.user = kwargs.pop('user', None)
 		super(FeedbackForm, self).__init__(*args, **kwargs)
 		if self.user.is_authenticated:
-			self.fields['userS'].initial = self.user.email
+			self.fields['email'].initial = self.user.email
 
 
 	def save(self, commit=True):

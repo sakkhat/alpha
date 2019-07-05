@@ -35,9 +35,11 @@ class SignupForm(forms.ModelForm):
 		}
 
 	def clean(self):
-		phone = self.cleaned_data['phone']
-		email = self.cleaned_data['email']
+		phone = self.cleaned_data.get('phone', None)
+		email = self.cleaned_data.get('email', None)
 
+		if not phone.isdigit():
+			raise forms.ValidationError('invalid phone')
 		query = Account.objects.filter(phone=phone).first()
 		if query:
 			raise forms.ValidationError('this phone already registered')
@@ -46,8 +48,8 @@ class SignupForm(forms.ModelForm):
 		if query:
 			raise forms.ValidationError('this email already taken')
 
-		password = self.cleaned_data['password']
-		confirm_password = self.cleaned_data['confirm_password']
+		password = self.cleaned_data.get('password',None)
+		confirm_password = self.cleaned_data.get('confirm_password',None)
 		if password and confirm_password and password != confirm_password:
 			raise forms.ValidationError("passwords doesn't matched")
 
@@ -64,7 +66,7 @@ class SignupForm(forms.ModelForm):
 
 
 class SigninForm(forms.Form):
-	email = forms.EmailField(widget=forms.TextInput(attrs=
+	email = forms.EmailField(widget=forms.EmailInput(attrs=
 		{'placeholder' : 'Email', 
 		'class' : 'form-control'}))
 
@@ -74,15 +76,15 @@ class SigninForm(forms.Form):
 
 
 	def clean(self):
-		cleaned_data = self.cleaned_data
-		email = cleaned_data['email']
-		password = cleaned_data['password']
-
+		password = self.cleaned_data.get('password', None)
+		email = self.cleaned_data.get('email', None)
+		if not email:
+			raise forms.ValidationError('invalid email')
 		user = authenticate(email=email, password=password)
-		if user:
-			self.user = user
-			return cleaned_data
-		raise forms.ValidationError('invalid information')
+		if not user:
+			raise forms.ValidationError('invalid information')
+		self.user = user
+		return self.cleaned_data
 
 
 
@@ -96,14 +98,14 @@ class PasswordChangeForm(forms.Form):
 		{'placeholder' : 'Confirm Password', 'class' : 'form-control'}))
 
 	def clean_current_password(self):
-		current_password = self.cleaned_data['current_password']
+		current_password = self.cleaned_data.get('current_password',None)
 		isvalid = self.user.check_password(current_password)
 		if not isvalid:
 			raise forms.ValidationError('invalid password')
 		return current_password
 
 	def clean_confirm_password(self):
-		new_password = self.cleaned_data['new_password']
+		new_password = self.cleaned_data.get('new_password', None)
 		confirm_password = self.cleaned_data['confirm_password']
 
 		if new_password and confirm_password and new_password != confirm_password:
@@ -112,7 +114,7 @@ class PasswordChangeForm(forms.Form):
 
 
 	def save(self, commit=True):
-		new_password = self.cleaned_data['confirm_password']
+		new_password = self.cleaned_data.get('confirm_password',None)
 		self.user.set_password(new_password)
 		if commit:
 			self.user.save()
@@ -155,15 +157,16 @@ class ProfileUpdateForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = self.cleaned_data
 
-		password = cleaned_data['password']
-		email = cleaned_data['email']
-		phone = cleaned_data['phone']
-		gender = cleaned_data['gender']
+		password = cleaned_data.get('password',None)
+		email = cleaned_data.get('email',None)
+		phone = cleaned_data.get('phone',None)
+		gender = cleaned_data.get('gender',None)
 
 		valid = self.user.check_password(password)
 		if not valid:
 			raise forms.ValidationError('invalid password')
-
+		if not phone.isdigit():
+			raise forms.ValidationError('invalid phone')
 		duplicate_email = Account.objects.filter(email=email).exclude(id=self.user.id)
 		if duplicate_email.exists():
 			raise forms.ValidationError('This email is already registered')
@@ -179,16 +182,16 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 	def is_new_email(self):
-		if self.user.email.lower() != self.cleaned_data.get('email').lower():
+		if self.user.email.lower() != self.cleaned_data.get('email', '').lower():
 			return True
 		return False
 
 
 	def save(self, commit=True):
-		name = self.cleaned_data['name']
-		email = self.cleaned_data['email']
-		phone = self.cleaned_data['phone']
-		gender = self.cleaned_data['gender']
+		name = self.cleaned_data.get('name',None)
+		email = self.cleaned_data.get('email',None)
+		phone = self.cleaned_data.get('phone',None)
+		gender = self.cleaned_data.get('gender',None)
 
 		self.user.name = name
 		self.user.email = email

@@ -16,7 +16,8 @@ def feedback(request):
 			form.save()
 			context['sent'] = True
 
-	form = FeedbackForm(user=request.user)
+	else:
+		form = FeedbackForm(user=request.user)
 	context['form'] = form
 
 	return render(request, 'home/pages/feedback.html', context)
