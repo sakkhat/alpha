@@ -14,7 +14,7 @@ class SignupForm(forms.ModelForm):
 
 	class Meta:
 		model = Account
-		fields = ['phone', 'name', 'email', 'gender']
+		fields = ['name','phone','email','gender']
 
 		widgets = {
 			'name' : forms.TextInput(attrs={
@@ -34,34 +34,24 @@ class SignupForm(forms.ModelForm):
 				}),
 		}
 
-	def clean_phone(self):
+	def clean(self):
 		phone = self.cleaned_data['phone']
-		query = Account.objects.filter(phone=phone).first()
+		email = self.cleaned_data['email']
 
+		query = Account.objects.filter(phone=phone).first()
 		if query:
 			raise forms.ValidationError('this phone already registered')
 
-		return phone
-
-
-	def clean_email(self):
-		email = self.cleaned_data['email']
 		query = Account.objects.filter(email__iexact=email).first()
-
 		if query:
 			raise forms.ValidationError('this email already taken')
 
-		return email
-
-
-	def clean_confirm_password(self):
 		password = self.cleaned_data['password']
 		confirm_password = self.cleaned_data['confirm_password']
-
 		if password and confirm_password and password != confirm_password:
 			raise forms.ValidationError("passwords doesn't matched")
 
-		return confirm_password
+		return self.cleaned_data
 
 
 	def save(self, commit=True):

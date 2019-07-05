@@ -24,9 +24,7 @@ def signup(request):
 			user = form.save(commit=False)
 			user.is_active = False
 			user.save()
-
 			verify_email(request, user)
-
 			return render(request, 'account/auth/verify.html', {})
 
 	else:
@@ -67,7 +65,6 @@ def signin(request):
 	if request.method == 'POST':
 		form = SigninForm(request.POST)
 		if form.is_valid():
-			
 			user = form.user
 			login(request, user)
 			goto = request.GET.get('next', None)

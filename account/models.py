@@ -72,7 +72,7 @@ class Account(AbstractBaseUser,PermissionsMixin):
 		return self.name + ': '+self.phone
 
 	def get_username(self):
-		return self.phone
+		return self.email
 
 
 	def has_perm(self, perm, obj=None):
