@@ -33,7 +33,7 @@ class SpaceCreateForm(forms.ModelForm):
 			'display_name' : forms.TextInput(attrs=
 				{'placeholder':'Display Name (max 50 char)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'My description. Follow: https://facebook.com/sakkhat.inc/', 'class':'form-control'})
+				{'placeholder':'Description in 1500 characters', 'class':'form-control'})
 		}
 
 	def clean_logo(self):
@@ -45,7 +45,7 @@ class SpaceCreateForm(forms.ModelForm):
 
 	def clean_name(self):
 		name = self.cleaned_data['name']
-		__name = name.lowe()
+		__name = name.lower()
 		if 'sakkhat' in __name:
 			raise forms.ValidationError('Restricted Name')
 		for i in _UNUSABLE_SYMBOLS:

@@ -34,7 +34,7 @@ class ProductPostForm(forms.ModelForm):
 			'title' : forms.TextInput(attrs=
 				{'placeholder':'Product Name (max 30 character)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Product Description', 'class':'form-control'}),
+				{'placeholder':'Product description in 1500 characters', 'class':'form-control'}),
 
 			'price' : forms.NumberInput(attrs=
 				{'placeholder':'(TK)', 'class':'form-control'}),
