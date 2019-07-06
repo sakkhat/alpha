@@ -105,14 +105,8 @@ def update(request, space_name, product_uid):
 		return invalid_request(request)
 	try:
 		product = Product.objects.get(uid=product_uid, space__name__iexact=space_name)
-		if product.space.owner == request.user:
+		if product.space.owner_id == request.user.id:
 			context = {}
-
-			if request.method == 'POST':
-				form = ProductUpdateForm(request.POST, product=product)
-				if form.is_valid():
-					product = form.save()
-					return redirect('/'+space_name+'/product/'+str(product_uid)+'/')
 
 			tab = request.GET.get('tab', 'details')
 			tab = tab.lower()
@@ -120,8 +114,16 @@ def update(request, space_name, product_uid):
 				media = ProductMedia.objects.filter(product=product)
 				context['media'] = media
 			else:
+				if request.method == 'POST':
+					form = ProductUpdateForm(request.POST, product=product)
+					if form.is_valid():
+						product = form.save()
+						return redirect('/'+space_name+'/product/'+str(product_uid)+'/')
+					else:
+						print(form.errors)
+				else:
+					form = ProductUpdateForm(product=product)
 				tab = 'details'
-				form = ProductUpdateForm(product=product)
 				context['form'] = form
 
 			token = get_api_token(request)

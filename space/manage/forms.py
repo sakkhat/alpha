@@ -11,7 +11,7 @@ _UNUSABLE_NAMES = ['space','login','signin','signup','create','api','admin',
 		'url', 'http', 'https','product','account','user','notification','page','account',
 		'home','feed','trending','explore','search',]
 
-_UNUSABLE_SYMBOLS = [' ', '&', '*', '#', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
+_UNUSABLE_SYMBOLS = [' ', '&', '*', '#','$', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
 
 
@@ -29,7 +29,7 @@ class SpaceCreateForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs=
-				{'placeholder':'Unique Name (max 20 char)', 'class':'form-control'}),
+				{'placeholder':'Unique Name (max 20 char)', 'class':'form-control', 'minLength':'3'}),
 			'display_name' : forms.TextInput(attrs=
 				{'placeholder':'Display Name (max 50 char)', 'class':'form-control'}),
 			'description' : forms.Textarea(attrs=
@@ -93,7 +93,7 @@ class SpaceUpdateForm(forms.ModelForm):
 		fields = ['name','display_name','description',]
 
 		widgets = {
-			'name' : forms.TextInput(attrs={'class':'form-control mb-2'}),
+			'name' : forms.TextInput(attrs={'class':'form-control mb-2', 'minLength':'3'}),
 			'display_name' : forms.TextInput(attrs={'class':'form-control mb-2'}),
 			'description' : forms.Textarea(attrs={'class':'form-control'})
 		}
@@ -107,7 +107,9 @@ class SpaceUpdateForm(forms.ModelForm):
 			raise forms.ValidationError('Restricted Name')
 		for i in _UNUSABLE_SYMBOLS:
 			if i in name:
-				raise forms.ValidationError(i+ " is invalid")
+				if i == ' ':
+					raise forms.ValidationError('blank space is not allowed')
+				raise forms.ValidationError(i+" is invalid")
 
 		for i in _UNUSABLE_NAMES:
 			if i == __name:
