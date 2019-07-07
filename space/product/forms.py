@@ -8,15 +8,15 @@ from space.models import Product, ProductMedia, Space
 class ProductPostForm(forms.ModelForm):
 	img1 = forms.ImageField(widget=forms.FileInput(attrs=
 		{'class':'custom-file-input','onchange':'openFile(event, "img-view-1")', 
-		'accept':'.jpg .png .jpeg'}))
+		'accept':'.jpg, .png, .jpeg'}))
 
 	img2 = forms.ImageField(widget=forms.FileInput(attrs=
 		{'class':'custom-file-input','onchange':'openFile(event, "img-view-2")',
-		'accept':'.jpg .png .jpeg'}))
+		'accept':'.jpg, .png, .jpeg'}))
 
 	img3 = forms.ImageField(widget=forms.FileInput(attrs=
 		{'class':'custom-file-input','onchange':'openFile(event, "img-view-3")',
-		'accept':'.jpg .png .jpeg'}))
+		'accept':'.jpg, .png, .jpeg'}))
 
 	preview_select = forms.ChoiceField(
 		choices=((1, 'Image 1'), (2, 'Image 2'), (3, 'Image 3')),
