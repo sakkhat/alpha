@@ -7,13 +7,16 @@ from space.models import Product, ProductMedia, Space
 
 class ProductPostForm(forms.ModelForm):
 	img1 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input','onchange':'openFile(event, "img-view-1")'}))
+		{'class':'custom-file-input','onchange':'openFile(event, "img-view-1")', 
+		'accept':'.jpg .png .jpeg'}))
 
 	img2 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input','onchange':'openFile(event, "img-view-2")'}))
+		{'class':'custom-file-input','onchange':'openFile(event, "img-view-2")',
+		'accept':'.jpg .png .jpeg'}))
 
 	img3 = forms.ImageField(widget=forms.FileInput(attrs=
-		{'class':'custom-file-input','onchange':'openFile(event, "img-view-3")'}))
+		{'class':'custom-file-input','onchange':'openFile(event, "img-view-3")',
+		'accept':'.jpg .png .jpeg'}))
 
 	preview_select = forms.ChoiceField(
 		choices=((1, 'Image 1'), (2, 'Image 2'), (3, 'Image 3')),
@@ -32,9 +35,11 @@ class ProductPostForm(forms.ModelForm):
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
-				{'placeholder':'Product Name (max 30 character)', 'class':'form-control'}),
+				{'placeholder':'Product Name (max 30 character)', 'class':'form-control',
+				'minLength':'5'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Product description in 1500 characters', 'class':'form-control'}),
+				{'placeholder':'Product description in 1500 characters', 'class':'form-control',
+				'minLength':'30'}),
 
 			'price' : forms.NumberInput(attrs=
 				{'placeholder':'(TK)', 'class':'form-control'}),
@@ -105,9 +110,9 @@ class ProductUpdateForm(forms.ModelForm):
 
 		widgets = {
 			'title' : forms.TextInput(attrs=
-				{'placeholder':'Title', 'class':'form-control'}),
+				{'placeholder':'Title', 'class':'form-control','minLength':'5'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description', 'class':'form-control'}),
+				{'placeholder':'Description', 'class':'form-control','minLength':'30'}),
 
 			'price' : forms.NumberInput(attrs=
 				{'placeholder':'Price (TK)', 'class':'form-control'}),

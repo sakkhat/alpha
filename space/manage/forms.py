@@ -31,9 +31,10 @@ class SpaceCreateForm(forms.ModelForm):
 			'name' : forms.TextInput(attrs=
 				{'placeholder':'Unique Name (max 20 char)', 'class':'form-control', 'minLength':'3'}),
 			'display_name' : forms.TextInput(attrs=
-				{'placeholder':'Display Name (max 50 char)', 'class':'form-control'}),
+				{'placeholder':'Display Name (max 50 char)', 'class':'form-control','minLength':'5'}),
 			'description' : forms.Textarea(attrs=
-				{'placeholder':'Description in 1500 characters', 'class':'form-control'})
+				{'placeholder':'Description in 1500 characters', 'class':'form-control',
+				'minLength':'30'})
 		}
 
 	def clean_logo(self):
@@ -94,8 +95,8 @@ class SpaceUpdateForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs={'class':'form-control mb-2', 'minLength':'3'}),
-			'display_name' : forms.TextInput(attrs={'class':'form-control mb-2'}),
-			'description' : forms.Textarea(attrs={'class':'form-control'})
+			'display_name' : forms.TextInput(attrs={'class':'form-control mb-2','minLength':'5'}),
+			'description' : forms.Textarea(attrs={'class':'form-control','minLength':'30'})
 		}
 
 

@@ -4,9 +4,11 @@
 {% block extra_head %}
     
     <meta property="og:title" content="{{product.title}}">
-    <meta property="og:description" content="{{product.category}}">
-    <meta property="og:image" content="">
-    <meta property="og:url" content="">
+    <meta property="og:site_name" content="Sakkhat">
+    <meta property="og:description" content="@{{product.space.name}} | {{product.category}} | {{product.description}}">
+    <meta property="og:image" content="{{current_site}}{{product.logo_url}}">
+    <meta property="og:url" content="{{ current_site }}">
+    <meta property="fb:app_id" content="1320512341429071">
 
     <title>{{ product.title }} | {{ product.space.display_name }}</title>
 

@@ -18,11 +18,11 @@ class SignupForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs={
-				'placeholder' : 'Rafiul Islam', 'class' : 'form-control'
+				'placeholder' : 'Rafiul Islam', 'class' : 'form-control', 'minLength':'3'
 				}),
 
 			'phone' : forms.TextInput(attrs={
-				'placeholder' : '01XXXXXXXXX', 'class' : 'form-control'
+				'placeholder' : '01XXXXXXXXX', 'class' : 'form-control','minLength':'11'
 				}),
 
 			'email' : forms.EmailInput(attrs={
@@ -67,12 +67,10 @@ class SignupForm(forms.ModelForm):
 
 class SigninForm(forms.Form):
 	email = forms.EmailField(widget=forms.EmailInput(attrs=
-		{'placeholder' : 'Email', 
-		'class' : 'form-control'}))
+		{'placeholder' : 'Email', 'class' : 'form-control'}))
 
 	password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Password', 
-		'class' : 'form-control'}))
+		{'placeholder' : 'Password', 'class' : 'form-control', 'minLength':'6'}))
 
 
 	def clean(self):
@@ -91,7 +89,7 @@ class SigninForm(forms.Form):
 class PasswordChangeForm(forms.Form):
 
 	current_password = forms.CharField(widget=forms.PasswordInput(attrs=
-		{'placeholder' : 'Current Password', 'class' : 'form-control'}))
+		{'placeholder' : 'Current Password', 'class' : 'form-control', 'minLength':'6'}))
 	new_password = forms.CharField(widget=forms.PasswordInput(attrs=
 		{'placeholder' : 'New Password', 'class' : 'form-control', 'minLength':'6'}))
 	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs=
@@ -137,7 +135,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
 		widgets = {
 			'name' : forms.TextInput(attrs={
-				'placeholder' : 'Name', 'class' : 'form-control'
+				'placeholder' : 'Name', 'class' : 'form-control','minLength':'3'
 				}),
 
 			'email' : forms.EmailInput(attrs={
@@ -145,7 +143,7 @@ class ProfileUpdateForm(forms.ModelForm):
 				}),
 
 			'phone' : forms.TextInput(attrs={
-				'placeholder' : 'Phone', 'class' : 'form-control'
+				'placeholder' : 'Phone', 'class' : 'form-control','minLength':'11'
 				}),
 
 			'gender' : forms.Select(attrs={

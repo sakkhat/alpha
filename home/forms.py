@@ -8,7 +8,7 @@ class FeedbackForm(forms.ModelForm):
 		widgets = {
 			'body' : forms.Textarea(attrs={
 					'placeholder': 'Your feedback in 250 characters',
-					'maxLength' : '250', 'class' : 'form-control'
+					'maxLength' : '250', 'minLength':'20', 'class' : 'form-control'
 				}),
 			'email' : forms.EmailInput(attrs={
 					'placeholder' : 'Your email address',

@@ -119,8 +119,6 @@ def update(request, space_name, product_uid):
 					if form.is_valid():
 						product = form.save()
 						return redirect('/'+space_name+'/product/'+str(product_uid)+'/')
-					else:
-						print(form.errors)
 				else:
 					form = ProductUpdateForm(product=product)
 				tab = 'details'
