@@ -16,8 +16,6 @@ from space.product.forms import ProductPostForm,ProductUpdateForm
 from space.models import Product, ProductMedia, ProductReact,Status,Category
 
 
-
-@login_required(login_url=LOGIN_URL)
 def view(request, space_name, product_uid):
 	product_uid = is_valid_uuid(product_uid)
 	if product_uid is None:
@@ -25,13 +23,15 @@ def view(request, space_name, product_uid):
 	try:
 		product = Product.objects.get(uid = product_uid, space__name__iexact=space_name)
 		media = ProductMedia.objects.filter(product_id=product.uid)
+		context = {}
+		context['product'] = product
+		context['media'] = media
+		if not request.user.is_authenticated:
+			return render(request, 'space/product/single.html', context)
 
-		# related product
 		related_products = Product.objects.filter(category_id=product.category_id).values(
 			'uid', 'title','price', 'space__name', 'react_good', 'react_bad', 'react_fake',
 			'logo_url').order_by('-time_date')[:10]
-
-		context = {}
 
 		react_obj = ProductReact.objects.filter(product_id=product.uid, user_id=request.user.id).first()
 		if react_obj is not None:
@@ -55,17 +55,13 @@ def view(request, space_name, product_uid):
 
 		token = get_api_token(request)
 		context['token'] = token
-
-
-		context['product'] = product
-		context['media'] = media
 		
 		context['related_products'] = related_products
 
 		current_site = get_current_site(request)
 		context['current_site'] = current_site
 
-		return render(request, 'space/product/single.html', context)
+		return render(request, 'space/product/view.html', context)
 		
 	except ObjectDoesNotExist as e:
 		return invalid_request(request=request)
