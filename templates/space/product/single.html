@@ -5,7 +5,7 @@
     
     <meta property="og:title"       content="{{product.title}}">
     <meta property="og:site_name"   content="Sakkhat">
-    <meta property="og:description" content="meet your needs">
+    <meta property="og:description" content="{{product.space.name}} | {{product.category}}">
     <meta property="og:image"       content="{{current_site}}{{product.logo_url}}">
     <meta property="og:url"         content="{{ current_site }}">
     <meta property="fb:app_id"      content="1320512341429071">
@@ -79,7 +79,7 @@
                     <a class="btn btn-sm btn-outline-dark" href="/explore/product/?category={{product.category}}">{{ product.category }}</a>
                     <div class="float-right">
 
-                        <div class="fb-share-button" data-href="http://{{current_site}}{{request.get_full_path}}" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+                        <div class="fb-share-button" data-href="{{current_site}}{{request.get_full_path}}" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
                     </div>
                 </div>

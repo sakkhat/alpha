@@ -26,6 +26,8 @@ def view(request, space_name, product_uid):
 		context = {}
 		context['product'] = product
 		context['media'] = media
+		current_site = get_current_site(request)
+		context['current_site'] = current_site
 		if not request.user.is_authenticated:
 			return render(request, 'space/product/single.html', context)
 
@@ -57,9 +59,6 @@ def view(request, space_name, product_uid):
 		context['token'] = token
 		
 		context['related_products'] = related_products
-
-		current_site = get_current_site(request)
-		context['current_site'] = current_site
 
 		return render(request, 'space/product/view.html', context)
 		
