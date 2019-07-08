@@ -7,7 +7,7 @@
     <meta property="og:site_name"   content="Sakkhat">
     <meta property="og:description" content="{{product.space.name}} | {{product.category}}">
     <meta property="og:image"       content="{{request.scheme}}://{{current_site}}{{product.logo_url}}">
-    <meta property="og:url"         content="{{request.scheme}}://{{ current_site }}">
+    <meta property="og:url"         content="{{request.scheme}}://{{current_site}}{{request.get_full_path}}">
     <meta property="fb:app_id"      content="1320512341429071">
 
     <title>{{ product.title }} | {{ product.space.display_name }}</title>
