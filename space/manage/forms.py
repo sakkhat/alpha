@@ -9,7 +9,7 @@ from space.models import Space, Banner
 
 _UNUSABLE_NAMES = ['space','login','signin','signup','create','api','admin',
 		'url', 'http', 'https','product','account','user','notification','page','account',
-		'home','feed','trending','explore','search',]
+		'home','feed','trending','explore','search','data','static','media']
 
 _UNUSABLE_SYMBOLS = [' ', '&', '*', '#','$', '@', '!', '+', '%', ':', ';','"', "'", ',','`','~','\\',
 		'/','|','{','}','[',']','(',')','?','>','<','^']
