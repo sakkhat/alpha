@@ -51,7 +51,10 @@ class SpaceCreateForm(forms.ModelForm):
 			raise forms.ValidationError('Restricted Name')
 		for i in _UNUSABLE_SYMBOLS:
 			if i in name:
-				raise forms.ValidationError(i+ " is invalid")
+				if i == ' ':
+					raise forms.ValidationError('blank space is not allowed in name')
+				else:
+					raise forms.ValidationError(i+ " is invalid")
 
 		for i in _UNUSABLE_NAMES:
 			if i == __name:
@@ -109,8 +112,9 @@ class SpaceUpdateForm(forms.ModelForm):
 		for i in _UNUSABLE_SYMBOLS:
 			if i in name:
 				if i == ' ':
-					raise forms.ValidationError('blank space is not allowed')
-				raise forms.ValidationError(i+" is invalid")
+					raise forms.ValidationError('blank space is not allowed in name')
+				else:
+					raise forms.ValidationError(i+" is invalid")
 
 		for i in _UNUSABLE_NAMES:
 			if i == __name:
