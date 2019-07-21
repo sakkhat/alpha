@@ -71,7 +71,7 @@ class Space(models.Model):
 class Banner(models.Model):
 	uid = models.UUIDField(primary_key=True, default=uuid4)
 	space = models.ForeignKey(Space, on_delete=models.CASCADE)
-	location = models.CharField(default='https://i.postimg.cc/GmzSz9Nq/banner.png', max_length=150)
+	location = models.CharField(default='/static/res/space_banner.jpg', max_length=150)
 
 
 
